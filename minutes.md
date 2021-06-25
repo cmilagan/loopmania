@@ -33,6 +33,6 @@
 - Epic 2 Equip Inventory items(Subrat, Praths)
 - Epic 3 Game difficulty(Tam)
 
-## Meeting Duration: 4:30pm - 5:00pm
+### Meeting Duration: 4:30pm - 5:00pm
 
 ## ----------------------------------------------------------------------------------
