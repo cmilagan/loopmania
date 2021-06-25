@@ -4,3 +4,4 @@ Questions that need addressing:
 - How strong are allied soldiers compared to the enemies?
 - What are the actual values of damage/defence for each entity? E.g., damage of sword? defence of shield? zombie damage?
 
+- Should items have a health level and damage stats?
