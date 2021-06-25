@@ -4,6 +4,8 @@
 
 ## Attendees: Everyone
 
+## Taken by: Christian
+
 ## Outcomes:
 
 - Went over the assignment spec as a group (started deconstructing Milestone 1 due 2/07)
