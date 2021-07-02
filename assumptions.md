@@ -1,19 +1,61 @@
-Questions that need addressing:
-- Battle Related Questions:
-    - What are the battle and support (if applicable) radii values for each Enemy, Tower and Campfire?
-        - Having a circular support circumference would make interacting with square tiles difficult. Should we have a square circumference instead? (with radii representing tile width)
-    - Do characters and enemies keep moving in battle?
-        - Should we use an animation to show the initiation/engagement of battle?
-        - When battle is finished (and won), is the loot simply added to the inventory or should we animate it?
-        - When the game ends, do we return back to main menu? (trivial but spec does not specify)
+- Battle Related Assumptions:
+    - Battle and support (if applicable) radii values for each Enemy, Tower and Campfire:
+            - Slug Battle Radius: 1
+            - Slug Support Radius: 1
+            - Zombies Battle Radius: 2
+            - Zombies Support Radius: 2
+            - Vampire Battle Radius: 3
+            - Vampire Support Radius: 4
+            - Tower Support Radius: 2
+            - Campfire Support Radius: 2
+        - Circular Support Radius calculation done by starter code
+    - Characters and enemies do not keep moving in battle
+        - Notification and soundeffects to show the initiation/engagement of battle and when the character dies
+        - When battle is finished (and won) the loot is simply added to the inventory
+        - When the game ends show an ending screen with achieved score and goals
     - How strong are allied soldiers compared to the enemies?
+        - As strong as slugs
+        - Max of 5 allied soldiers at a time
+        - Allied soldiers gain full HP when passing through barracks again
+        - Allied soldiers should battle the enemies first
+    - Initial Health Stats for each character:
+        - Slug health: 3
+        - Zombie health: 5
+        - Vampire health: 20
+        - Main Character health: 100
+        - Allied Soldiers health: 5
+    - The more XP the increased damage/defence stats of weapons available from loot and Hero's Castle, enhanced enemy and ally health and damage
 
-- Item Related Questions:
-    - What are the actual values of damage/defence for each entity? E.g., damage of sword? defence of shield? zombie damage?
+- Building Related Assumptions:
+    - Each card has its own rarity of occupation: Common (60%), Uncommon (30%), Epic (9%), Rare (1%)
+        - Vampire Castle: Rare
+        - Zombie Pit: Common
+        - Tower: Rare
+        - Village: Epic
+        - Barracks: Epic
+        - Trap: Common
+        - Campfire: Epic 
+        - Rare Item Type: Legendary 
+    - Village despawns after 5 rounds
+
+- Item Related Assumptions:
+    - The Initial values of damage/defence for each entity:
+        - Slug Damage: 5
+        - Zombie Damage: 8
+        - Vampire Damage: 20 
+        - Sword Damage: 
+        - Tower Damage: 
+        - Staff Damage: 
+        - Trap Damage:
+        - Stake Damage: 
+        - Armour Defence:
+        - Helmet Defence: 
+        - Shield Defence:
     - Should items have a health level and damage stats?
         - If items have a health level, and it reduces to 0, do the items disappear? I.e., exhausted? Should we create an animation (or alternatively sound effects) to model this change?
     - Should the shield item reduce inflicted damage? Or should it simply reduce the chance of critical attack?
     - Health Potions (when aquired) will be displayed in Character's inventory. It can be used by simply clicking on it in the time of need or by pressing 'H'. When clicked, the potion item will disappear and the character's health will return to max. Should we include an animation or sound effects for this?
+    - Rare Item Type: 
     
 - Game State Related Questions:
     - Should the Game start with the Vampire Castle and Zombie Pit already built?
@@ -23,3 +65,4 @@ Questions that need addressing:
         - Amassing a specified amount of gold
         - Completing a specified number of cycles of the path
     - Will the allied soldier join the main character when the main character is positioned on the tile right in front of the barracks? (may need Observer Pattern for this)
+    - What is the size of the map?
