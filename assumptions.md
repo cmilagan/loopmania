@@ -54,7 +54,7 @@
     - Vampire Castle: 0, 5
  
 ## Inventory Related Assumptions:
-- There will be a general ‘weapons’ slot in the equipped inventory instead of a ‘sword’ slot. The main character will drag the weapon to be used from the unequipped inventory to this slot to use the weapon. 
+- There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
  
 ## Item Related Assumptions:
 - Initially, when the game starts, the main character has no weapons and will use the character base damage (fighting with fists). This base damage will then increase according to the XP 
