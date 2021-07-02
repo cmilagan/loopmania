@@ -7,7 +7,7 @@
 - Jason Yu
 - Subrat Shrestha
 - Christian Ilagan
-- Prathamesh Jagtap
+- Prathamesh Jagtap (Praths)
 
 ### Taken by: Christian
 
@@ -29,7 +29,7 @@
 - Jason Yu
 - Subrat Shrestha
 - Christian Ilagan
-- Prathamesh Jagtap
+- Prathamesh Jagtap (Praths)
 
 ### Taken by: Christian
 
@@ -53,7 +53,7 @@
 - Jason Yu
 - Subrat Shrestha
 - Christian Ilagan
-- Prathamesh Jagtap
+- Prathamesh Jagtap (Praths)
 
 ### Taken by: Prathamesh
 
@@ -70,5 +70,31 @@
     - Subrat
 
 ### Meeting Duration: 8:00pm - 9:00pm
+
+## ----------------------------------------------------------------------------------
+
+## Date: 2/07/21
+
+### Attendees:
+- Tam Do
+- Jason Yu
+- Subrat Shrestha
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+
+### Taken by: Prathamesh
+
+### Outcomes:
+
+- Finalised UML
+    - Tam, Jason, Christian
+- Finalised Project Timeline
+    - Praths, Subrat
+- Finalised Assumptions
+    - Praths, Subrat, Jason
+- Finalised frontend
+    - Christian
+
+### Meeting Duration: 2:00pm - 6:00pm
 
 ## ----------------------------------------------------------------------------------
