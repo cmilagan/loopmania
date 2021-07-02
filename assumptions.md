@@ -60,8 +60,8 @@
 - Initially, when the game starts, the main character has no weapons and will use the character base damage (fighting with fists). This base damage will then increase according to the XP 
 - The Initial Values of damage/durability for attack items:
     - Sword: 8, 10
-    - Staff: 3, 1
-    - Stake Damage: 4, 0
+    - Staff: 3, 8
+    - Stake Damage: 4, 8
 - Item Costs at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
