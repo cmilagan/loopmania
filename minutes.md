@@ -98,3 +98,26 @@
 ### Meeting Duration: 2:00pm - 6:00pm
 
 ## ----------------------------------------------------------------------------------
+
+## Date: 5/07/21
+
+### Attendees:
+- Tam Do
+- Jason Yu
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+
+### Taken by: Christian
+
+### Outcomes:
+
+- Discussion on milestone 2, allocation of tasks
+    - stubs and tests
+- Git practices and discussion on work flow
+- Identified different aspects of the program which would need to be tested
+- Discussion on stubs
+- Due on friday/saturday
+
+### Meeting Duration: 8:00pm - 9:00pm
+
+## ----------------------------------------------------------------------------------
