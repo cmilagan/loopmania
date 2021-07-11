@@ -9,6 +9,8 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.BasicEnemy;
 
 /**
  * A backend world.

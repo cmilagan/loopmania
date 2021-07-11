@@ -1,6 +1,9 @@
-package unsw.loopmania;
+package unsw.loopmania.npcs;
 
 import java.util.Random;
+
+import unsw.loopmania.MovingEntity;
+import unsw.loopmania.PathPosition;
 
 /**
  * a basic form of enemy in the world
