@@ -20,36 +20,38 @@ import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
 class EnemiesTest {
-    // Template word state
     private Character newCharacter;
-    private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-    
-    // setup basic world parameters
-    public void initializeWorld() {
-        int LOOP_SIZE = 3;
-        int characterPosition = 0;
-        // initializing the world
-        orderedPath.add(Pair.with(0, 0));
-        orderedPath.add(Pair.with(1, 0));
-        orderedPath.add(Pair.with(2, 0));
-        orderedPath.add(Pair.with(2, 1));
-        orderedPath.add(Pair.with(2, 2));
-        orderedPath.add(Pair.with(1, 2));
-        orderedPath.add(Pair.with(0, 2));
-        orderedPath.add(Pair.with(0, 1));
-        testWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
-        // initializing and adding the character
-        PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
-        newCharacter = new Character(characterPathPosition);
-        testWorld.setCharacter(newCharacter);
+    private LoopManiaWorld testWorld = initializeWorld(orderedPath);
+
+    @Test
+    void testCharacterMovement() {
+        // test Character Movement
+        int posX = newCharacter.getX();
+        int posY = newCharacter.getY(); 
+        assertEquals(Pair.with(0, 0), Pair.with(posX, posY));
+        // tick the world
+        testWorld.runTickMoves();
+        // character should move down
+        posX = newCharacter.getX();
+        posY = newCharacter.getY(); 
+        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
+        // tick the world
+        testWorld.runTickMoves();
+        // character should keep moving down
+        posX = newCharacter.getX();
+        posY = newCharacter.getY(); 
+        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+        // tick the world
+        testWorld.runTickMoves();
+        // character should change direction
+        posX = newCharacter.getX();
+        posY = newCharacter.getY(); 
+        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
     }
 
-    // Enemies Movement Test
     @Test
-    void testEnemiesMovement() {
-        initializeWorld();
-        
+    void testSlugMovement() {
         // test Slug Movement
         int slugPosition = 2;
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
@@ -79,7 +81,10 @@ class EnemiesTest {
         posX = newSlug.getX();
         posY = newSlug.getY(); 
         assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+    }
 
+    @Test
+    void testZombieMovement() {
         // test Zombie movement
         int zombiePosition = 4;
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
@@ -89,8 +94,8 @@ class EnemiesTest {
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should move up first
-        posX = newZombie.getX();
-        posY = newZombie.getY(); 
+        int posX = newZombie.getX();
+        int posY = newZombie.getY(); 
         assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
@@ -113,7 +118,10 @@ class EnemiesTest {
         posX = newZombie.getX();
         posY = newZombie.getY(); 
         assertEquals(Pair.with(2, 2), Pair.with(posX, posY));
+    }
 
+    @Test
+    void testVampireMovement() {
         // test Vampire movement
         int vampirePosition = 6;
         PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
@@ -124,8 +132,8 @@ class EnemiesTest {
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should move up first
-        posX = newVampire.getX();
-        posY = newVampire.getY(); 
+        int posX = newVampire.getX();
+        int posY = newVampire.getY(); 
         assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
@@ -152,7 +160,50 @@ class EnemiesTest {
         posY = newVampire.getY(); 
         assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
     }
-    // Allied Soldiers Test
-    // Vampire Test
+
+    // Slug Test
+    @Test
+    void testSlug() {
+
+    }
+
     // Zombie Test
+    @Test
+    void testZombie() {
+
+    }
+
+    // Vampire Test
+    @Test
+    void testVampire() {
+
+    }
+
+    // Allied Soldiers Test
+    @Test
+    void testAlliedSoldiers() {
+
+    }
+
+    // setup template world
+    public LoopManiaWorld initializeWorld(List<Pair<Integer, Integer>> orderedPath) {
+        int LOOP_SIZE = 3;
+        int characterPosition = 0;
+        // setting world path
+        orderedPath.add(Pair.with(0, 0));
+        orderedPath.add(Pair.with(1, 0));
+        orderedPath.add(Pair.with(2, 0));
+        orderedPath.add(Pair.with(2, 1));
+        orderedPath.add(Pair.with(2, 2));
+        orderedPath.add(Pair.with(1, 2));
+        orderedPath.add(Pair.with(0, 2));
+        orderedPath.add(Pair.with(0, 1));
+        LoopManiaWorld newWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
+        // initializing and adding the character
+        PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
+        newCharacter = new Character(characterPathPosition);
+        testWorld.setCharacter(newCharacter);
+        // returning template world
+        return newWorld;
+    }
 }
