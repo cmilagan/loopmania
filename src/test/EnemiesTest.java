@@ -20,39 +20,42 @@ import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
 class EnemiesTest {
+    int moveUp = -1;
+    int moveDown = 1;
+    int zombieReach = 2;
+    int vampireReach = 3;
     private Character newCharacter;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
     private LoopManiaWorld testWorld = initializeWorld(orderedPath);
 
     @Test
     void testCharacterMovement() {
-        // test Character Movement
+        int characterPosition = 0;
         int posX = newCharacter.getX();
         int posY = newCharacter.getY(); 
-        assertEquals(Pair.with(0, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // character should move down
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + moveDown), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // character should keep moving down
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + moveDown), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // character should change direction
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + moveDown), Pair.with(posX, posY));
     }
 
     @Test
     void testSlugMovement() {
-        // test Slug Movement
         int slugPosition = 2;
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
         Slug newSlug = new Slug(slugPathPosition);
@@ -62,30 +65,29 @@ class EnemiesTest {
         // should move up first
         int posX = newSlug.getX();
         int posY = newSlug.getY(); 
-        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(slugPosition + moveUp), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // should return back to spawn position
         posX = newSlug.getX();
         posY = newSlug.getY(); 
-        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(slugPosition), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // should move down now
         posX = newSlug.getX();
         posY = newSlug.getY(); 
-        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(slugPosition + moveDown), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         // should move back to spawn position
         posX = newSlug.getX();
         posY = newSlug.getY(); 
-        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(slugPosition), Pair.with(posX, posY));
     }
 
     @Test
     void testZombieMovement() {
-        // test Zombie movement
         int zombiePosition = 4;
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
         Zombie newZombie = new Zombie(zombiePathPosition);
@@ -96,33 +98,32 @@ class EnemiesTest {
         // should move up first
         int posX = newZombie.getX();
         int posY = newZombie.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(zombiePosition + moveUp * zombieReach), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should return back to spawn position
         posX = newZombie.getX();
         posY = newZombie.getY(); 
-        assertEquals(Pair.with(2, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(zombiePosition), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should move down now
         posX = newZombie.getX();
         posY = newZombie.getY(); 
-        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(zombiePosition + moveDown * zombieReach), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should move back to spawn position
         posX = newZombie.getX();
         posY = newZombie.getY(); 
-        assertEquals(Pair.with(2, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(zombiePosition), Pair.with(posX, posY));
     }
 
     @Test
     void testVampireMovement() {
-        // test Vampire movement
         int vampirePosition = 6;
         PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
         Vampire newVampire = new Vampire(vampirePathPosition);
@@ -134,7 +135,7 @@ class EnemiesTest {
         // should move up first
         int posX = newVampire.getX();
         int posY = newVampire.getY(); 
-        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(vampirePosition + moveUp * vampireReach), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
@@ -142,7 +143,7 @@ class EnemiesTest {
         // should return back to spawn position
         posX = newVampire.getX();
         posY = newVampire.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(vampirePosition), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
@@ -150,7 +151,7 @@ class EnemiesTest {
         // should move down now
         posX = newVampire.getX();
         posY = newVampire.getY(); 
-        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(vampirePosition + moveDown * vampireReach), Pair.with(posX, posY));
         // tick the world
         testWorld.runTickMoves();
         testWorld.runTickMoves();
@@ -158,28 +159,39 @@ class EnemiesTest {
         // should move back to spawn position
         posX = newVampire.getX();
         posY = newVampire.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(vampirePosition), Pair.with(posX, posY));
     }
 
-    // Slug Test
+    @Test
+    void testSlugSupportRadius() {
+        
+    }
+
+    @Test
+    void testZombieSupportRadius() {
+
+    }
+
+    @Test
+    void testVampireSupportRadius() {
+
+    }
+
     @Test
     void testSlug() {
 
     }
 
-    // Zombie Test
     @Test
     void testZombie() {
 
     }
 
-    // Vampire Test
     @Test
     void testVampire() {
 
     }
 
-    // Allied Soldiers Test
     @Test
     void testAlliedSoldiers() {
 
