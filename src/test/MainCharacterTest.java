@@ -22,16 +22,25 @@ class MainCharacterTest {
      *  - Main character spawns with health = 100
      */
     
-    @Test
     /**
      * When the character first spawns, he should have an initial health 100.
      */
+    @Test
     void testInitialHealth() {
         initializeWorld();
 
         int initialHealth = 100;
         assertEquals(newCharacter.getHealth(), initialHealth);
+
+        // Health should remain the same as no battles should occur
+        testWorld.runTickMoves();
+        assertEquals(newCharacter.getHealth(), initialHealth);
     }
+
+
+    /**
+     * 
+     */
 
     // setup template world
     public void initializeWorld() {
