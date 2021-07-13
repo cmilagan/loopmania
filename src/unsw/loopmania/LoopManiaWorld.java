@@ -12,7 +12,7 @@ import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.items.Sword;
+import unsw.loopmania.equipment.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 
 /**
