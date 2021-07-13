@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,36 @@ class AlliedSoldierTest {
         PathPosition initialPosition = new PathPosition(alliedSoldierPosition, orderedPath);
         
         AlliedSoldier newAlliedSoldier = new AlliedSoldier(initialPosition);
+        testWorld.addEntity(newAlliedSoldier);
 
         assertEquals(newAlliedSoldier.getHealth(), initialHealth);
+    }
+
+    @Test
+    /**
+     * Test if 5 is the maximum number of Allied Soldiers allowed
+     */
+    void testMaxSoldiers() {
+        initializeWorld();
+
+        for (int i = 1; i <= 5; i++) {
+            PathPosition pos = new PathPosition(i, orderedPath);
+            AlliedSoldier soldier = new AlliedSoldier(pos);
+            testWorld.addEntity(soldier);
+        }
+
+        PathPosition pos6 = new PathPosition(6, orderedPath);
+        AlliedSoldier soldier6 = new AlliedSoldier(pos6);
+
+        Throwable t = null;
+        try {
+            testWorld.addEntity(soldier6);
+        } catch (Error err) {
+            t = err;
+        }
+
+        assertTrue(t instanceof Error);
+        
     }
 
     // setup template world
