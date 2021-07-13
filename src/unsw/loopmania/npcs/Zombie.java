@@ -7,7 +7,7 @@ public class Zombie extends BasicEnemy implements EnemyMethods {
     int supportRadius;
     public Zombie(PathPosition position) {
         super(position);
-        this.battleRadius = 2;
+        this.battleRadius = 1;
         this.supportRadius = 2;
     }
     
