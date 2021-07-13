@@ -13,6 +13,7 @@ import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.equipment.Sword;
+import unsw.loopmania.items.Item;
 import unsw.loopmania.npcs.BasicEnemy;
 
 /**
@@ -206,11 +207,11 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn a sword in the world and return the sword entity
+     * spawn an item in the world and returns the item entity
      * 
-     * @return a sword to be spawned in the controller as a JavaFX node
+     * @return an item to be spawned in the controller as a JavaFX node
      */
-    public Sword addUnequippedSword() {
+    public Item addUnequippedItem() {
         // TODO = expand this - we would like to be able to add multiple types of items,
         // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -223,12 +224,20 @@ public class LoopManiaWorld {
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
 
-        // now we insert the new sword, as we know we have at least made a slot
+        // now we insert an item, as we know we have at least made a slot
         // available...
-        Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        unequippedInventoryItems.add(sword);
-        return sword;
+        Random rand = new Random();
+        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
+        Item addedItem = null;
+        if (choice > 0) {
+            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        } else {
+            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        }
+        unequippedInventoryItems.add(addedItem);
+        return addedItem;
     }
 
     /**

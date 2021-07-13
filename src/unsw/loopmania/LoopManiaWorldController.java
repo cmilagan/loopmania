@@ -33,7 +33,13 @@ import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.equipment.Armor;
+import unsw.loopmania.equipment.Helmet;
+import unsw.loopmania.equipment.Shield;
+import unsw.loopmania.equipment.Staff;
+import unsw.loopmania.equipment.Stake;
 import unsw.loopmania.equipment.Sword;
+import unsw.loopmania.items.Item;
 import unsw.loopmania.npcs.BasicEnemy;
 
 import java.util.EnumMap;
@@ -292,11 +298,11 @@ public class LoopManiaWorldController {
     /**
      * load a sword from the world, and pair it with an image in the GUI
      */
-    private void loadSword(){
+    private void loadLoot(){
         // TODO = load more types of weapon
         // start by getting first available coordinates
-        Sword sword = world.addUnequippedSword();
-        onLoad(sword);
+        Item loot = world.addUnequippedItem();
+        onLoad(loot);
     }
 
     /**
@@ -307,12 +313,12 @@ public class LoopManiaWorldController {
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
         // TODO = provide different benefits to defeating the enemy based on the type of enemy
-        loadSword();
+        loadLoot();
         loadVampireCard();
     }
 
     /**
-     * load a vampire castle card into the GUI.
+     * loads a card into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the cards GridPane.
      * @param card
@@ -341,15 +347,31 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * load a sword into the GUI.
+     * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
      * and load the image into the unequippedInventory GridPane.
-     * @param sword
+     * @param item
      */
-    private void onLoad(Sword sword) {
-        ImageView view = new ImageView(swordImage);
+    private void onLoad(Item item) {
+        ImageView view = null;
+        if (item instanceof Sword) {
+            view = new ImageView(swordImage);
+        } else if (item instanceof Armor) {
+        } else if (item instanceof Helmet) {
+        } else if (item instanceof Shield) {
+        } else if (item instanceof Staff) {
+        } else if (item instanceof Stake) {
+        } else {
+            try {
+                throw new Exception("Invalid Item");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
         addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, unequippedInventory, equippedItems);
-        addEntity(sword, view);
+        addEntity(item, view);
         unequippedInventory.getChildren().add(view);
     }
 
