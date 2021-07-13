@@ -36,11 +36,11 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.equipment.Armor;
 import unsw.loopmania.equipment.Helmet;
 import unsw.loopmania.equipment.Shield;
-import unsw.loopmania.equipment.Staff;
-import unsw.loopmania.equipment.Stake;
-import unsw.loopmania.equipment.Sword;
 import unsw.loopmania.items.Item;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.weapons.Staff;
+import unsw.loopmania.weapons.Stake;
+import unsw.loopmania.weapons.Sword;
 
 import java.util.EnumMap;
 
