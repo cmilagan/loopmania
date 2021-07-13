@@ -58,6 +58,12 @@ class MainCharacterTest {
         assertTrue(newCharacter.getHealth() < initialHealth);
     }
 
+    @Test
+    void testCharacterDeath() {
+        // TODO: test game over when health < 0.
+        // Part of issue "Main Character Test"
+    }
+
     // setup template world
     public void initializeWorld() {
         int LOOP_SIZE = 3;
