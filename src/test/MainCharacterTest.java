@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import org.javatuples.Pair;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.npcs.Zombie;
 
 class MainCharacterTest {
     private Character newCharacter;
@@ -39,8 +41,22 @@ class MainCharacterTest {
 
 
     /**
-     * 
+     * When the character engages in battle with a Zombie, he should have less
+     * health than when he spawned.
      */
+    @Test
+    void testHealthAfterBattle() {
+        initializeWorld();
+
+        PathPosition zombiePosition = new PathPosition(0, orderedPath);
+        Zombie newZombie = new Zombie(zombiePosition);
+        testWorld.addEntity(newZombie);
+        testWorld.runBattles();
+
+        int initialHealth = 100;
+
+        assertTrue(newCharacter.getHealth() < initialHealth);
+    }
 
     // setup template world
     public void initializeWorld() {
