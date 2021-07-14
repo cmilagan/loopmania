@@ -35,7 +35,6 @@ public class VillageTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-    private int characterPosition = 0;
 
     @Test
     void testVillageHeal() {
