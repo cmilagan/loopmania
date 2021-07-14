@@ -433,7 +433,7 @@ class EnemiesTest {
         // tick the world
         testWorld.runTickMoves();
 
-         /**
+        /**
          * check if the new location of Vampire is next to the Zombie
          * 
          * note: the Vampire moves next to the Zombie because the Zombie is 
@@ -450,7 +450,7 @@ class EnemiesTest {
     
     @Test
     void testSlug() {
-
+        
     }
 
     @Test
