@@ -5,21 +5,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.text.html.parser.Entity;
-
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
-import unsw.loopmania.LoopManiaWorldLoader;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
-class EnemiesTest {
+public class EnemyMovementTest {
     private int moveUp = -1;
     private int moveDown = 1;
     private int zombieReach = 2;
@@ -445,27 +441,6 @@ class EnemiesTest {
         locX = newVampire.getX();
         locY = newVampire.getY();
         assertEquals(orderedPath.get(expectedPosition), Pair.with(locX, locY));
-    }
-
-    
-    @Test
-    void testSlug() {
-        
-    }
-
-    @Test
-    void testZombie() {
-
-    }
-
-    @Test
-    void testVampire() {
-
-    }
-
-    @Test
-    void testAlliedSoldiers() {
-
     }
 
     // setup template world
