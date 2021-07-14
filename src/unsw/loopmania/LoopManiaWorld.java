@@ -106,6 +106,14 @@ public class LoopManiaWorld {
     }
 
     /**
+     * add a specified enemy in the enemies array
+     * @param enemy
+     */
+    public void addEnemy(BasicEnemy enemy) {
+        enemies.add(enemy);
+    }
+
+    /**
      * spawns enemies if the conditions warrant it, adds to world
      * @return list of the enemies to be displayed on screen
      */
