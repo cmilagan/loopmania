@@ -2,7 +2,7 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Vampire extends BasicEnemy implements EnemyMethods {
+public class Vampire extends BasicEnemy implements Enemies {
     private int battleRadius;
     private int supportRadius;
     public Vampire(PathPosition position) {

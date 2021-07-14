@@ -2,7 +2,7 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Zombie extends BasicEnemy implements EnemyMethods {
+public class Zombie extends BasicEnemy implements Enemies {
     private int battleRadius;
     private int supportRadius;
     public Zombie(PathPosition position) {
