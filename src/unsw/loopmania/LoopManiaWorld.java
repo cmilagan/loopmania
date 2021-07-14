@@ -106,7 +106,7 @@ public class LoopManiaWorld {
         List<BattleItem> shopItems = new ArrayList<>();
 
         // TODO: what should the values of x and y be? 
-        // Initialize a new pair for each item?
+        // Should we initialize a new pair for each item?
         SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
         SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
         
