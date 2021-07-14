@@ -3,8 +3,8 @@ package unsw.loopmania.npcs;
 import unsw.loopmania.PathPosition;
 
 public class Slug extends BasicEnemy implements EnemyMethods {
-    int battleRadius;
-    int supportRadius;
+    private int battleRadius;
+    private int supportRadius;
     public Slug(PathPosition position) {
         super(position);
         this.battleRadius = 1;

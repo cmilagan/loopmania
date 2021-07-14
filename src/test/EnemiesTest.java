@@ -84,7 +84,7 @@ class EnemiesTest {
         // initializing slug
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
         Slug newSlug = new Slug(slugPathPosition);
-        testWorld.addEntity(newSlug);
+        testWorld.addEnemy(newSlug);
 
         // check if initial location is correct
         int posX = newSlug.getX();
@@ -128,7 +128,7 @@ class EnemiesTest {
         // initializing another Slug
         PathPosition anotherSlugPath = new PathPosition(0, orderedPath);
         Slug anotherSlug = new Slug(anotherSlugPath);
-        testWorld.addEntity(anotherSlug);
+        testWorld.addEnemy(anotherSlug);
 
         // tick the world
         testWorld.runTickMoves();
@@ -148,7 +148,7 @@ class EnemiesTest {
         // initialize zombie
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
         Zombie newZombie = new Zombie(zombiePathPosition);
-        testWorld.addEntity(newZombie);
+        testWorld.addEnemy(newZombie);
 
         // check if initial location is correct
         int posX = newZombie.getX();
@@ -196,7 +196,7 @@ class EnemiesTest {
         // initializing another Zombie
         PathPosition newPathPosition = new PathPosition(0, orderedPath);
         Zombie anotherZombie = new Zombie(newPathPosition);
-        testWorld.addEntity(anotherZombie);
+        testWorld.addEnemy(anotherZombie);
 
         // tick the world
         testWorld.runTickMoves();
@@ -217,7 +217,7 @@ class EnemiesTest {
         // initialize vampire
         PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
         Vampire newVampire = new Vampire(vampirePathPosition);
-        testWorld.addEntity(newVampire);
+        testWorld.addEnemy(newVampire);
 
         // check if initial location is correct
         int posX = newVampire.getX();
@@ -269,7 +269,7 @@ class EnemiesTest {
         // initializing another Vampire
         PathPosition newPathPosition = new PathPosition(0, orderedPath);
         Vampire anotherVampire = new Vampire(newPathPosition);
-        testWorld.addEntity(anotherVampire);
+        testWorld.addEnemy(anotherVampire);
 
         // tick the world
         testWorld.runTickMoves();
@@ -305,12 +305,12 @@ class EnemiesTest {
         // initializing slug
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
         Slug newSlug = new Slug(slugPathPosition);
-        testWorld.addEntity(newSlug);
+        testWorld.addEnemy(newSlug);
 
         // initializing another slug which is next to the original slug
         PathPosition anotherSlugPath = new PathPosition(anotherSlugPosition, orderedPath);
         Slug slugTwo = new Slug(anotherSlugPath);
-        testWorld.addEntity(slugTwo);
+        testWorld.addEnemy(slugTwo);
 
         // tick world
         testWorld.runTickMoves();
@@ -330,6 +330,11 @@ class EnemiesTest {
     /**
      * When some enemy is within the support radius of Zombie,
      * check if Zombie goes to help (given that battle is initiated)
+     * 
+     * TODO: Update in assumptions file
+     * Zombie Damage and Support radius has been changed
+     * Damage radius = 1
+     * Support radius = 2
      */
     @Test
     void testZombieSupportRadius() {
@@ -352,7 +357,7 @@ class EnemiesTest {
         // initialize an enemy Slug next to the character
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
         Slug newSlug = new Slug(slugPathPosition);
-        testWorld.addEntity(newSlug);
+        testWorld.addEnemy(newSlug);
 
         /**
          * initialize a Zombie such that its position is within radius 2 of slug
@@ -363,7 +368,7 @@ class EnemiesTest {
          */
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
         Zombie newZombie = new Zombie(zombiePathPosition);
-        testWorld.addEntity(newZombie);
+        testWorld.addEnemy(newZombie);
 
         // tick the world
         testWorld.runTickMoves();
@@ -385,10 +390,61 @@ class EnemiesTest {
     /**
      * When some enemy is within the support radius of Vampire,
      * check if Vampire goes to help (given that battle is initiated)
+     * 
+     * TODO: Update in assumptions file
+     * Vampire Damage and Support radius has been changed
+     * Damage radius = 2
+     * Support radius = 3
      */
     @Test
     void testVampireSupportRadius() {
         initializeWorld();
+
+        int mcPosition = 6;
+        int zombiePosition = 5;
+        int vampirePosition = 2;
+        int expectedPosition = 4;
+
+        // tick the current world to ensure character is in position
+        testWorld.runTickMoves();
+        testWorld.runTickMoves();
+
+        // ensure that MC is at expected location
+        int locX = newCharacter.getX();
+        int locY = newCharacter.getY();
+        assertEquals(orderedPath.get(mcPosition), Pair.with(locX, locY));
+
+        // initialize an enemy Zombie next to the main character
+        PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
+        Zombie newZombie = new Zombie(zombiePathPosition);
+        testWorld.addEnemy(newZombie);
+
+        /**
+         * initialize a Vampire such that its position is within radius 3 of Zombie
+         * 
+         * ensure that Vampire is located before Zombie so we can check if the teleportation
+         * 
+         * takes place as expected or else movement can be attributed to the tick() outcome
+         */
+        PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
+        Vampire newVampire = new Vampire(vampirePathPosition);
+        testWorld.addEnemy(newVampire);
+
+        // tick the world
+        testWorld.runTickMoves();
+
+         /**
+         * check if the new location of Vampire is next to the Zombie
+         * 
+         * note: the Vampire moves next to the Zombie because the Zombie is 
+         * engaged in battle with the main character
+         * 
+         * note: 'engaged' in battle means MC is within the battle
+         * radius of an enemy
+         */
+        locX = newVampire.getX();
+        locY = newVampire.getY();
+        assertEquals(orderedPath.get(expectedPosition), Pair.with(locX, locY));
     }
 
     
