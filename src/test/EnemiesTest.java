@@ -259,11 +259,6 @@ class EnemiesTest {
 
     }
 
-    @Test
-    void testAlliedSoldiers() {
-
-    }
-
     // setup template world
     public void initializeWorld() {
         int LOOP_SIZE = 3;
