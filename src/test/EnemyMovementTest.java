@@ -337,9 +337,9 @@ public class EnemyMovementTest {
         initializeWorld();
 
         int mcPosition = 6;
-        int slugPosition = 5;
-        int zombiePosition = 3;
         int expectedPosition = 4;
+        int slugPosition = mcPosition - 1;
+        int zombiePosition = slugPosition - 2;
 
         // tick the world to place character in position
         testWorld.runTickMoves();
@@ -366,8 +366,8 @@ public class EnemyMovementTest {
         Zombie newZombie = new Zombie(zombiePathPosition);
         testWorld.addEnemy(newZombie);
 
-        // tick the world
-        testWorld.runTickMoves();
+        // run the battle
+        testWorld.runBattles();
 
         /**
          * check if the new location of Zombie is next to the Slug
@@ -397,9 +397,9 @@ public class EnemyMovementTest {
         initializeWorld();
 
         int mcPosition = 6;
-        int zombiePosition = 5;
-        int vampirePosition = 2;
         int expectedPosition = 4;
+        int zombiePosition = mcPosition - 1;
+        int vampirePosition = zombiePosition - 3;
 
         // tick the current world to ensure character is in position
         testWorld.runTickMoves();
@@ -427,7 +427,7 @@ public class EnemyMovementTest {
         testWorld.addEnemy(newVampire);
 
         // tick the world
-        testWorld.runTickMoves();
+        testWorld.runBattles();
 
         /**
          * check if the new location of Vampire is next to the Zombie
