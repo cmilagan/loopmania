@@ -24,6 +24,7 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Slug;
 
 /**
  * A backend world.
@@ -184,7 +185,7 @@ public class LoopManiaWorld {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
-            BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
@@ -214,6 +215,7 @@ public class LoopManiaWorld {
             // Checking if enemy is inside battle radii
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getBattleRadius()) {
                 conductFight = true;
+                System.out.println("starting battle encounter");
                 break;
             }
         }
@@ -224,25 +226,37 @@ public class LoopManiaWorld {
                 // Checking if enemy is inside support radii
                 if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getSupportRadius()) {
                     battleEnemies.add(e);
+                    System.out.println("adding enemy");
                 }
             }
+            int numberOfEnemies = battleEnemies.size();
             // Conduct Fights with Valid Enemies
-            while (character.getHealth() > 0 && battleEnemies.size() > 0) {
+            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
+                System.out.println("initiating battle phase");
                 // Continuously fight until character loses or all enemies are defeated
                 for (BasicEnemy e : battleEnemies) {
+                    // Ignore Dead Enemies
+                    if (e.getHealth() <= 0) {
+                        continue;
+                    }
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
-                    if (characterHealth == 0) break;
+                    if (characterHealth == 0) {
+                        System.out.println("character killed");
+                        break;
+                    }
                     // Calculate Enemy
                     int enemyHealth = e.applyCharacterDamage(character);
                     if (enemyHealth == 0) {
-                        battleEnemies.remove(e);
                         defeatedEnemies.add(e);
+                        System.out.println("enemy killed");
                     }
                 }
             }
+            System.out.println("battle encounter finished");
         }
         for (BasicEnemy e : defeatedEnemies) {
+            System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
             // the enemies list
             // if we killEnemy in prior loop, we get
