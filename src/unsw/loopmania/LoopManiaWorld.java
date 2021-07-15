@@ -106,6 +106,16 @@ public class LoopManiaWorld {
     }
 
     /**
+     * add a static entity (typically a building)
+     * @param staticEntity
+     */
+    public void addStaticEntity(StaticEntity staticEntity) {
+        // for adding static entities (ones without another dedicated list)
+        // TODO = if more specialised types being added from main menu, add more methods like this with specific input types...
+        buildingEntities.add(staticEntity);
+    }
+
+    /**
      * spawns enemies if the conditions warrant it, adds to world
      * @return list of the enemies to be displayed on screen
      */
