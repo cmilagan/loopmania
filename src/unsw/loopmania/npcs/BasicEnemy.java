@@ -9,9 +9,28 @@ import unsw.loopmania.PathPosition;
  * a basic form of enemy in the world
  */
 public class BasicEnemy extends MovingEntity {
-    // TODO = modify this, and add additional forms of enemy
-    public BasicEnemy(PathPosition position) {
+    private int damage;
+    private int health;
+    private int experience;
+    private int battleRadius;
+    private int supportRadius;
+
+    /**
+     * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
+     * @param position
+     * @param damage
+     * @param health
+     * @param experience
+     * @param battleRadius
+     * @param supportRadius
+     */
+    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius) {
         super(position);
+        this.damage = damage;
+        this.health = health;
+        this.experience = experience;
+        this.battleRadius = battleRadius;
+        this.supportRadius = supportRadius;
     }
 
     /**
@@ -27,5 +46,25 @@ public class BasicEnemy extends MovingEntity {
         else if (directionChoice == 1){
             moveDownPath();
         }
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getBattleRadius() {
+        return battleRadius;
+    }
+
+    public int getSupportRadius() {
+        return supportRadius;
     }
 }
