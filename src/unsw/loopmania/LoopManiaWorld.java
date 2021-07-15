@@ -209,6 +209,7 @@ public class LoopManiaWorld {
     public List<BasicEnemy> runBattles() {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
         boolean conductFight = false;
+        // Checking If there is an enemy inside battle radii
         for (BasicEnemy e : enemies) {
             // Checking if enemy is inside battle radii
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getBattleRadius()) {
@@ -216,17 +217,28 @@ public class LoopManiaWorld {
                 break;
             }
         }
-        // Conduct Fights with Valid Enemies
         if (conductFight) {
+            // Collecting all enemies inside support radii
+            List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
             for (BasicEnemy e : enemies) {
                 // Checking if enemy is inside support radii
                 if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getSupportRadius()) {
+                    battleEnemies.add(e);
+                }
+            }
+            // Conduct Fights with Valid Enemies
+            while (character.getHealth() > 0 && battleEnemies.size() > 0) {
+                // Continuously fight until character loses or all enemies are defeated
+                for (BasicEnemy e : battleEnemies) {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) break;
                     // Calculate Enemy
                     int enemyHealth = e.applyCharacterDamage(character);
-                    if (enemyHealth == 0) defeatedEnemies.add(e);
+                    if (enemyHealth == 0) {
+                        battleEnemies.remove(e);
+                        defeatedEnemies.add(e);
+                    }
                 }
             }
         }
