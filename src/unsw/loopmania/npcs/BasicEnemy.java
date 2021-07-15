@@ -4,12 +4,18 @@ import java.util.Random;
 
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.Character;
 
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity implements Enemies {
-    // TODO = modify this, and add additional forms of enemy
+public class BasicEnemy extends MovingEntity implements EnemyInterface {
+    private int health = 1;
+    private static int damage = 1;
+    private static int experience = 1;
+    private static int battleRadius = 1;
+    private static int supportRadius = 1;
+
     public BasicEnemy(PathPosition position) {
         super(position);
     }
@@ -47,5 +53,14 @@ public class BasicEnemy extends MovingEntity implements Enemies {
 
     public int getSupportRadius() {
         return 0;
+    }
+
+    public int applyCharacterDamage(Character character) {
+        int damageDealt = character.getDamage();
+        return Math.min(0, this.health - damageDealt);
+    }
+
+    public boolean rollCrit() {
+        return false;
     }
 }

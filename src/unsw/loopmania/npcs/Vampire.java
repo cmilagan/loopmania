@@ -2,9 +2,9 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Vampire extends BasicEnemy implements Enemies {
+public class Vampire extends BasicEnemy implements EnemyInterface {
+    private int health = 10;
     private static int damage = 8;
-    private static int health = 10;
     private static int experience = 100;
     private static int battleRadius = 2;
     private static int supportRadius = 3;

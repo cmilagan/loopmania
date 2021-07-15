@@ -2,9 +2,9 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Zombie extends BasicEnemy implements Enemies {
+public class Zombie extends BasicEnemy implements EnemyInterface {
+    private int health = 10;
     private static int damage = 8;
-    private static int health = 10;
     private static int experience = 100;
     private static int battleRadius = 1;
     private static int supportRadius = 2;

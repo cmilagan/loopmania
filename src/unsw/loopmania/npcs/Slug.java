@@ -2,8 +2,8 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Slug extends BasicEnemy implements Enemies {
-    private static int health = 3;
+public class Slug extends BasicEnemy implements EnemyInterface {
+    private int health = 3;
     private static int damage = 5;
     private static int experience = 50;
     private static int battleRadius = 1;

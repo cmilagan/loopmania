@@ -3,7 +3,7 @@ package unsw.loopmania.npcs;
 /**
  * all methods which each enemy should be able to handle
  */
-public interface Enemies {
+public interface EnemyInterface {
     public int getHealth();
     public int getDamage();
     public int getExperience();
