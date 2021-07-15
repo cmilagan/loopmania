@@ -388,8 +388,6 @@ public class LoopManiaWorld {
 
     /**
      * move all enemies
-     * 
-     * TODO: Use observer pattern here
      */
     private void moveBasicEnemies() {
         // TODO = expand to more types of enemy
