@@ -11,9 +11,12 @@ import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.buildings.VillageBuilding;
+import unsw.loopmania.cards.CampfireCard;
+import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
@@ -474,9 +477,17 @@ public class LoopManiaWorld {
         if (card instanceof VampireCastleCard) {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
+            // traps can only be placed on path tiles
             newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof VillageCard) {
+            // village can only be placed on path tiles
             newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+        } else if (card instanceof TowerCard) {
+
+        } else if (card instanceof ZombieGraveyardCard) {
+
+        } else if (card instanceof CampfireCard) {
+
         } else {
             try {
                 throw new Exception("Invalid Building Card Selected");
@@ -484,12 +495,12 @@ public class LoopManiaWorld {
                 e.printStackTrace();
             }
         }
+        
         buildingEntities.add(newBuilding);
-
-        // destroy the card
         card.destroy();
         cardEntities.remove(card);
         shiftCardsDownFromXCoordinate(cardNodeX);
+    
 
         return newBuilding;
     }
@@ -506,5 +517,55 @@ public class LoopManiaWorld {
 
     public List<Pair<Integer, Integer>> getOrderedPath() {
         return this.orderedPath;
+    }
+
+    /***
+     * checks the conversion of card to building is valid.
+     * @param cardNodeX
+     * @param cardNodeY
+     * @param buildingNodeX
+     * @param buildingNodeY
+     * @return boolean
+     */
+    public boolean checkValidPlacement(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        // start by getting card
+        Card card = null;
+        for (Card c: cardEntities){
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){
+                card = c;
+                break;
+            }
+        }
+
+        if (card instanceof VampireCastleCard || card instanceof TowerCard || card instanceof ZombieGraveyardCard) {
+            if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX - 1, buildingNodeY)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX, buildingNodeY - 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX - 1, buildingNodeY - 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX, buildingNodeY + 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY + 1))) {
+                        return true;
+                    }
+            }
+        } else if (card instanceof VillageCard || card instanceof TrapCard) {
+            // can only be placed on path tiles
+            if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                return true;
+            }
+        } else if (card instanceof CampfireCard) {
+            if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                return true;
+            }
+        } else {
+            try {
+                throw new Exception("Invalid Building Card Selected");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+        
     }
 }

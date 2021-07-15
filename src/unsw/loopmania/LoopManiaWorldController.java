@@ -346,11 +346,19 @@ public class LoopManiaWorldController {
 
 
         // TODO: add RNG
-        // Random rd = new Random();
-        // if (rd.nextDouble < 0.60);
-        loadLoot();
-        loadVampireCard();
-        loadVillageCard();
+        Random rd = new Random();
+        if (rd.nextDouble() < 0) {
+            loadLoot();
+        } else {
+            double rgen = rd.nextDouble();
+            if (rgen > 0.90 && rgen <= 0.99) {
+                loadVillageCard();
+            } else if (rgen > 0.6 && rgen <= 0.90) { 
+                loadVillageCard();            
+            } else if (rgen <= 0.6) {
+                loadVampireCard();
+            }
+        }
     }
 
     /**
@@ -486,8 +494,11 @@ public class LoopManiaWorldController {
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
-                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                onLoad(newBuilding);
+                                boolean canPlace = world.checkValidPlacement(nodeX, nodeY, x, y);
+                                if (canPlace) {
+                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                    onLoad(newBuilding);    
+                                }
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
