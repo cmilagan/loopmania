@@ -9,6 +9,14 @@ import org.javatuples.Pair;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.HealthPotion;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.OneRing;
+import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 
@@ -55,6 +63,9 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<VampireCastleBuilding> buildingEntities;
 
+    // a list of battle items available at the Shop
+    private List<BattleItem> battleItems;
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
      */
@@ -77,6 +88,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        battleItems = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -85,6 +97,40 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    public List<BattleItem> getBattleItems() {
+        // organize items into their respective weapon styles
+        List<BattleItem> shopItems = new ArrayList<>();
+
+        // TODO: what should the values of x and y be? 
+        // Should we initialize a new pair for each item?
+        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        
+        // initializing defence items
+        Armor armor = new Armor(newX, newY);
+        Helmet helmet = new Helmet(newX, newY);
+        Shield shield = new Shield(newX, newY);
+        shopItems.add(armor);
+        shopItems.add(helmet);
+        shopItems.add(shield);
+
+        // initializing attack items
+        Staff staff = new Staff(newX, newY);
+        Stake stake = new Stake(newX, newY);
+        Sword sword = new Sword(newX, newY);
+        shopItems.add(staff);
+        shopItems.add(stake);
+        shopItems.add(sword);
+
+        // adding other items
+        OneRing oneRing = new OneRing(newX, newY);
+        HealthPotion healthPotion = new HealthPotion(newX, newY);
+        shopItems.add(oneRing);
+        shopItems.add(healthPotion);
+
+        return shopItems;
     }
 
     /**
@@ -103,6 +149,14 @@ public class LoopManiaWorld {
         // for adding non-specific entities (ones without another dedicated list)
         // TODO = if more specialised types being added from main menu, add more methods like this with specific input types...
         nonSpecifiedEntities.add(entity);
+    }
+
+    /**
+     * add a specified enemy in the enemies array
+     * @param enemy
+     */
+    public void addEnemy(BasicEnemy enemy) {
+        enemies.add(enemy);
     }
 
     /**
@@ -286,6 +340,8 @@ public class LoopManiaWorld {
 
     /**
      * move all enemies
+     * 
+     * TODO: Use observer pattern here
      */
     private void moveBasicEnemies() {
         // TODO = expand to more types of enemy
