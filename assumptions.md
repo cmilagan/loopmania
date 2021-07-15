@@ -2,14 +2,14 @@
 - Battle and support (if applicable) radii values for each Enemy, Tower and Campfire:
     - Slug Battle Radius: 1
     - Slug Support Radius: 1
-    - Zombies Battle Radius: 2
+    - Zombies Battle Radius: 1
     - Zombies Support Radius: 2
-    - Vampire Battle Radius: 3
-    - Vampire Support Radius: 4
+    - Vampire Battle Radius: 2
+    - Vampire Support Radius: 3
     - Tower Support Radius: 2
     - Campfire Support Radius: 2
     - Circular Support Radius calculation done by starter code
-- Characters and enemies do not keep moving in battle
+- Character and enemies do not keep moving in battle
     - Notification and sound effects to show the initiation/engagement of battle and when the character dies
     - When battle is finished (and won) the loot is simply added to the inventory
     - When the game ends show an ending screen with achieved score and goals
@@ -33,6 +33,15 @@
     2. Allied soldiers
     3. Enemies (remaining enemies will attack allied soldiers first (if applicable) then main character)
     4. Main Character
+- When some enemy X is within the support radius of another enemy Y, the enemy Y teleports to X's position + 1 and the battle state should calculate the the total damage dealt on MC
+    - Note: such teleportation only occurs when the enemy is in battle
+
+## Movement Related Assumptions:
+- When enemies are spawned, they will move x blocks up then return to spawning position then move x blocks down, then return back to the spawning position and so on. At each tick, the enemy will move 1 step towards their travelling direction. The value of x varies according to the enemy type:
+    - Slug: x = 1
+    - Zombie: x = 2
+    - Vampire: x = 3  
+    - Note: multiple enemies can momentarily exist on one tile when their paths are crossing each other.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
@@ -55,6 +64,7 @@
     - Zombie Pit: 0, 5
 - You cannot place a building on an occupied tile (Occupied by another building)
 - Villages heal 10 health to character
+
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
  

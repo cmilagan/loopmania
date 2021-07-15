@@ -23,6 +23,7 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Slug;
 
 /**
  * A backend world.
@@ -182,7 +183,7 @@ public class LoopManiaWorld {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
-            BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            BasicEnemy enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }

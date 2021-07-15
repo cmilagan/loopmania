@@ -25,7 +25,7 @@ public class EntityMovementTest {
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-    /** TODO: add assumption to assumptions file
+    /**
      * Checks Made Assumption:
      * When enemies are spawned, they will move x blocks up then return to spawning position 
      * then move x blocks down, then return back to the spawning position and so on. 
@@ -175,7 +175,6 @@ public class EntityMovementTest {
         // should move up first
         posX = newZombie.getX();
         posY = newZombie.getY();
-        System.out.println(zombiePosition + moveUp * zombieReach); 
         assertEquals(orderedPath.get(zombiePosition + moveUp * zombieReach), Pair.with(posX, posY));
 
         // tick the world
@@ -226,7 +225,7 @@ public class EntityMovementTest {
     void testVampireMovement() {
         initializeWorld();
 
-        int vampirePosition = 6;
+        int vampirePosition = 3;
 
         // initialize vampire
         PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
@@ -300,7 +299,6 @@ public class EntityMovementTest {
      * When some enemy is within the support radius of Slug,
      * check if Slug helps.
      * 
-     * TODO: Add assumption to assumptions file
      * Checks Assumption:
      * 
      * When some enemy X is within the support radius of another
@@ -345,7 +343,6 @@ public class EntityMovementTest {
      * When some enemy is within the support radius of Zombie,
      * check if Zombie goes to help (given that battle is initiated).
      * 
-     * TODO: Update in assumptions file
      * Zombie Damage and Support radius has been changed
      * Damage radius = 1
      * Support radius = 2
@@ -405,7 +402,6 @@ public class EntityMovementTest {
      * When some enemy is within the support radius of Vampire,
      * check if Vampire goes to help (given that battle is initiated).
      * 
-     * TODO: Update in assumptions file
      * Vampire Damage and Support radius has been changed
      * Damage radius = 2
      * Support radius = 3
