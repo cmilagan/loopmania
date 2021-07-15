@@ -6,82 +6,68 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
-import javafx.beans.property.SimpleIntegerProperty;
+import org.javatuples.Pair;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
-
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.items.Staff;
-import unsw.loopmania.items.Stake;
-import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.Zombie;
 
-class WeaponsTest {
+class MainCharacterTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-    @Test
     /**
-     *  Equiping a sword, and fighting enemy test
+     * Assumptions made:
+     *  - Main character spawns with health = 100
      */
-    void testBattleWithSwordEncounter() {
+    
+    /**
+     * When the character first spawns, he should have an initial health 100.
+     */
+    @Test
+    void testInitialHealth() {
         initializeWorld();
-        Sword sword = new Sword(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        // world.equip(sword);
-        // Spawn Enemy
 
-        // Fight Enemy
+        int initialHealth = 100;
+        assertEquals(newCharacter.getHealth(), initialHealth);
 
-        // Check health of enemy and character
+        // Health should remain the same as no battles should occur
+        testWorld.runTickMoves();
+        assertEquals(newCharacter.getHealth(), initialHealth);
+    }
 
-        // Check results
-        // world.unequip(sword);
+
+    /**
+     * When the character engages in battle with a Zombie, he should have less
+     * health than when he spawned.
+     */
+    @Test
+    void testHealthAfterBattle() {
+        initializeWorld();
+
+        PathPosition zombiePosition = new PathPosition(0, orderedPath);
+        Zombie newZombie = new Zombie(zombiePosition);
+        testWorld.addEntity(newZombie);
+        testWorld.runBattles();
+
+        int initialHealth = 100;
+
+        assertTrue(newCharacter.getHealth() < initialHealth);
     }
 
     @Test
-    /**
-     *  Equiping a staff, and fighting enemy test
-     */
-    void testBattleWithStaffEncounter() {
-        initializeWorld();
-        Staff staff = new Staff(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        // world.equip(armor);
-        // Spawn Enemy
-
-        // Fight Enemy
-
-        // Check health of enemy and character
-
-        // Check results
-        // world.unequip(armor);
-    }
-
-    @Test
-    /**
-     *  Equiping a stake, and fighting enemy test
-     */
-    void testBattleWithStakeEncounter() {
-        initializeWorld();
-        Stake stake = new Stake(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
-        // world.equip(stake);
-        // Spawn Enemy
-
-        // Fight Enemy
-
-        // Check health of enemy and character
-
-        // Check results
-        // world.unequip(stake);
+    void testCharacterDeath() {
+        // TODO: test game over when health < 0.
+        // Part of issue "Main Character Test"
     }
 
     // setup template world
     public void initializeWorld() {
         int LOOP_SIZE = 3;
         int characterPosition = 0;
-        
         // setting world path
         orderedPath.add(Pair.with(0, 0));
         orderedPath.add(Pair.with(1, 0));
@@ -97,5 +83,7 @@ class WeaponsTest {
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
+
+
     }
 }

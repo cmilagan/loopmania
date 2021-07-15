@@ -33,14 +33,14 @@ import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
-import unsw.loopmania.equipment.Armor;
-import unsw.loopmania.equipment.Helmet;
-import unsw.loopmania.equipment.Shield;
+import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
+import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Stake;
+import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
-import unsw.loopmania.weapons.Staff;
-import unsw.loopmania.weapons.Stake;
-import unsw.loopmania.weapons.Sword;
 
 import java.util.EnumMap;
 
