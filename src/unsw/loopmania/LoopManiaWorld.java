@@ -8,9 +8,13 @@ import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
+import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.buildings.VillageBuilding;
+import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
@@ -268,6 +272,92 @@ public class LoopManiaWorld {
     }
 
     /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public TrapCard loadTrapCard() {
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        cardEntities.add(trapCard);
+        return trapCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public ZombieGraveyardCard loadZombieGraveyardCard() {
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        ZombieGraveyardCard zombieGraveCard = new ZombieGraveyardCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        cardEntities.add(zombieGraveCard);
+        return zombieGraveCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public TowerCard loadTowerCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        TowerCard towerCard = new TowerCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(towerCard);
+        return towerCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public BarracksCard loadBarracksCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        BarracksCard barracksCard = new BarracksCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(barracksCard);
+        return barracksCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public CampfireCard loadCampfireCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        CampfireCard campfireCard = new CampfireCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(campfireCard);
+        return campfireCard;
+    }
+
+    /**
      * remove card at a particular index of cards (position in gridpane of unplayed
      * cards)
      * 
@@ -477,17 +567,15 @@ public class LoopManiaWorld {
         if (card instanceof VampireCastleCard) {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
-            // traps can only be placed on path tiles
             newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof VillageCard) {
-            // village can only be placed on path tiles
             newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
         } else if (card instanceof TowerCard) {
-
+            newBuilding = new TowerBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
         } else if (card instanceof ZombieGraveyardCard) {
-
+            newBuilding = new ZombieGraveyardBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
         } else if (card instanceof CampfireCard) {
-
+            newBuilding = new CampfireBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
         } else {
             try {
                 throw new Exception("Invalid Building Card Selected");

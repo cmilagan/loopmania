@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.StaticEntity;
 
-public abstract class Building extends StaticEntity {
+public class Building extends StaticEntity {
     // Parent Building Class Type
     private int expiry;
 
@@ -34,6 +34,5 @@ public abstract class Building extends StaticEntity {
      * @param y
      * @return boolean
      */
-    public abstract boolean determineValidPlacement(IntegerProperty x, IntegerProperty y);
     
 }
