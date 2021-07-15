@@ -1,12 +1,11 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.StaticEntity;
 
 /**
  * groups all Battle Items together
  */
-public class BattleItem extends StaticEntity {
+public class BattleItem extends Item {
     /**
      * every battle item must have these stats
      */
