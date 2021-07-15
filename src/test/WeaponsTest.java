@@ -18,7 +18,7 @@ import unsw.loopmania.weapons.Staff;
 import unsw.loopmania.weapons.Stake;
 import unsw.loopmania.weapons.Sword;
 
-class EquipmentTest {
+class WeaponsTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
