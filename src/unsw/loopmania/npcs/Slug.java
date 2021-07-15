@@ -2,13 +2,27 @@ package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
 
-public class Slug extends BasicEnemy implements EnemyMethods {
-    int battleRadius;
-    int supportRadius;
+public class Slug extends BasicEnemy implements Enemies {
+    private static int health = 3;
+    private static int damage = 5;
+    private static int experience = 50;
+    private static int battleRadius = 1;
+    private static int supportRadius = 1;
+
     public Slug(PathPosition position) {
         super(position);
-        this.battleRadius = 1;
-        this.supportRadius = 1;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getExperience() {
+        return experience;
     }
 
     public int getBattleRadius() {
