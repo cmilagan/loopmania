@@ -10,8 +10,10 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
@@ -236,14 +238,30 @@ public class LoopManiaWorld {
     public VampireCastleCard loadVampireCard() {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the
-            // oldest card
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
             removeCard(0);
         }
         VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(vampireCastleCard);
         return vampireCastleCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public VillageCard loadVillageCard() {
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        VillageCard villageCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        cardEntities.add(villageCard);
+        return villageCard;
     }
 
     /**
@@ -457,6 +475,8 @@ public class LoopManiaWorld {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
             newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+        } else if (card instanceof VillageCard) {
+            newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
         } else {
             try {
                 throw new Exception("Invalid Building Card Selected");
@@ -472,5 +492,19 @@ public class LoopManiaWorld {
         shiftCardsDownFromXCoordinate(cardNodeX);
 
         return newBuilding;
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                     Additional Methods                           //
+    //////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * 
+     * @return Return the list of ordered path tiles
+     */
+
+    public List<Pair<Integer, Integer>> getOrderedPath() {
+        return this.orderedPath;
     }
 }

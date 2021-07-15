@@ -55,6 +55,7 @@
     - Zombie Pit: 0, 5
 - You cannot place a building on an occupied tile (Occupied by another building)
 - Villages heal 10 health to character
+- You cannot move buildings once placed.
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
  
