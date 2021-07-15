@@ -15,7 +15,7 @@ import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
-public class EnemyMovementTest {
+public class EntityMovementTest {
     private int moveUp = -1;
     private int moveDown = 1;
     private int zombieReach = 2;
@@ -30,6 +30,7 @@ public class EnemyMovementTest {
      * When enemies are spawned, they will move x blocks up then return to spawning position 
      * then move x blocks down, then return back to the spawning position and so on. 
      * At each tick, the enemy will move 1 step towards their travelling direction. 
+     * 
      * The value of x varies according to the enemy type:
      * Slug: x = 1
      * Zombie: x = 2
@@ -52,7 +53,7 @@ public class EnemyMovementTest {
         // character should move clockwise
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(0, 1), Pair.with(posX, posY));
+        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
 
         // tick the world
         testWorld.runTickMoves();
@@ -60,7 +61,7 @@ public class EnemyMovementTest {
         // character should keep moving clockwise
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
 
         // tick the world
         testWorld.runTickMoves();
@@ -68,7 +69,7 @@ public class EnemyMovementTest {
         // character should change direction
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(1, 2), Pair.with(posX, posY));
+        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
     }
 
     @Test
@@ -133,6 +134,22 @@ public class EnemyMovementTest {
         posX = anotherSlug.getX();
         posY = anotherSlug.getY(); 
         assertEquals(Pair.with(0, 1), Pair.with(posX, posY));
+
+        // tick the world
+        testWorld.runTickMoves();
+
+        // return back to spawn
+        posX = anotherSlug.getX();
+        posY = anotherSlug.getY(); 
+        assertEquals(Pair.with(0, 0), Pair.with(posX, posY));
+
+        // tick the world
+        testWorld.runTickMoves();
+
+        // should move down now 
+        posX = anotherSlug.getX();
+        posY = anotherSlug.getY(); 
+        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
     }
 
     @Test
@@ -157,7 +174,8 @@ public class EnemyMovementTest {
 
         // should move up first
         posX = newZombie.getX();
-        posY = newZombie.getY(); 
+        posY = newZombie.getY();
+        System.out.println(zombiePosition + moveUp * zombieReach); 
         assertEquals(orderedPath.get(zombiePosition + moveUp * zombieReach), Pair.with(posX, posY));
 
         // tick the world
@@ -188,7 +206,7 @@ public class EnemyMovementTest {
         assertEquals(orderedPath.get(zombiePosition), Pair.with(posX, posY));
 
         // check edge case at P(0, 0)
-
+        
         // initializing another Zombie
         PathPosition newPathPosition = new PathPosition(0, orderedPath);
         Zombie anotherZombie = new Zombie(newPathPosition);

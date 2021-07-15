@@ -13,7 +13,7 @@ public class BasicEnemy extends MovingEntity {
     public BasicEnemy(PathPosition position) {
         super(position);
     }
-
+    
     /**
      * move the enemy
      */
