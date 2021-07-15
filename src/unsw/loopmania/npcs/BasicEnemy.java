@@ -8,7 +8,7 @@ import unsw.loopmania.PathPosition;
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity {
+public class BasicEnemy extends MovingEntity implements Enemies {
     // TODO = modify this, and add additional forms of enemy
     public BasicEnemy(PathPosition position) {
         super(position);
@@ -27,5 +27,25 @@ public class BasicEnemy extends MovingEntity {
         else if (directionChoice == 1){
             moveDownPath();
         }
+    }
+
+    public int getHealth() {
+        return 0;
+    }
+
+    public int getDamage() {
+        return 0;
+    }
+
+    public int getExperience() {
+        return 0;
+    }
+    
+    public int getBattleRadius() {
+        return 0;
+    }
+
+    public int getSupportRadius() {
+        return 0;
     }
 }

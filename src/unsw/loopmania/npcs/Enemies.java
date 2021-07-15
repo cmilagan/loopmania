@@ -9,4 +9,5 @@ public interface Enemies {
     public int getExperience();
     public int getBattleRadius();
     public int getSupportRadius();
+    public boolean rollCrit();
 }

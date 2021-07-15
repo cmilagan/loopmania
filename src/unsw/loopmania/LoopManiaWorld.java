@@ -14,6 +14,7 @@ import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.DefenceItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -70,6 +71,7 @@ public class LoopManiaWorld {
 
     // a list of battle items available at the Shop
     private List<BattleItem> battleItems;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
