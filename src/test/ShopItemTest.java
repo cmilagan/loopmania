@@ -34,9 +34,13 @@ public class ShopItemTest {
     private LoopManiaWorld testWorld;
     private List<BattleItem> battleItems;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+
+    public ShopItemTest() {
+        initializeWorld();
+    }
     
     @Test
-    void testArmorStats() {
+    public void testArmorStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Armor) {
@@ -52,7 +56,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testHealthPotionStats() {
+    public void testHealthPotionStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof HealthPotion) {
@@ -66,7 +70,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testHelmetStats() {
+    public void testHelmetStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Helmet) {
@@ -82,7 +86,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testOneRingStats() {
+    public void testOneRingStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof OneRing) {
@@ -96,7 +100,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testShieldStats() {
+    public void testShieldStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Shield) {
@@ -112,7 +116,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testStaffStats() {
+    public void testStaffStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Staff) {
@@ -127,7 +131,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testStakeStats() {
+    public void testStakeStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Stake) {
@@ -143,7 +147,7 @@ public class ShopItemTest {
     }
 
     @Test
-    void testSwordStats() {
+    public void testSwordStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Sword) {
