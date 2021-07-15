@@ -12,6 +12,15 @@ import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.HealthPotion;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Item;
+import unsw.loopmania.items.OneRing;
+import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 
@@ -59,6 +68,9 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
+    // a list of battle items available at the Shop
+    private List<BattleItem> battleItems;
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -83,6 +95,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        battleItems = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -91,6 +104,40 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    public List<BattleItem> getBattleItems() {
+        // organize items into their respective weapon styles
+        List<BattleItem> shopItems = new ArrayList<>();
+
+        // TODO: what should the values of x and y be? 
+        // Should we initialize a new pair for each item?
+        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        
+        // initializing defence items
+        Armor armor = new Armor(newX, newY);
+        Helmet helmet = new Helmet(newX, newY);
+        Shield shield = new Shield(newX, newY);
+        shopItems.add(armor);
+        shopItems.add(helmet);
+        shopItems.add(shield);
+
+        // initializing attack items
+        Staff staff = new Staff(newX, newY);
+        Stake stake = new Stake(newX, newY);
+        Sword sword = new Sword(newX, newY);
+        shopItems.add(staff);
+        shopItems.add(stake);
+        shopItems.add(sword);
+
+        // adding other items
+        OneRing oneRing = new OneRing(newX, newY);
+        HealthPotion healthPotion = new HealthPotion(newX, newY);
+        shopItems.add(oneRing);
+        shopItems.add(healthPotion);
+
+        return shopItems;
     }
 
     /**
@@ -114,6 +161,14 @@ public class LoopManiaWorld {
         // TODO = if more specialised types being added from main menu, add more methods
         // like this with specific input types...
         nonSpecifiedEntities.add(entity);
+    }
+
+    /**
+     * add a specified enemy in the enemies array
+     * @param enemy
+     */
+    public void addEnemy(BasicEnemy enemy) {
+        enemies.add(enemy);
     }
 
     /**
@@ -206,11 +261,11 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn a sword in the world and return the sword entity
+     * spawn an item in the world and returns the item entity
      * 
-     * @return a sword to be spawned in the controller as a JavaFX node
+     * @return an item to be spawned in the controller as a JavaFX node
      */
-    public Sword addUnequippedSword() {
+    public Item addUnequippedItem() {
         // TODO = expand this - we would like to be able to add multiple types of items,
         // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -223,12 +278,20 @@ public class LoopManiaWorld {
             firstAvailableSlot = getFirstAvailableSlotForItem();
         }
 
-        // now we insert the new sword, as we know we have at least made a slot
+        // now we insert an item, as we know we have at least made a slot
         // available...
-        Sword sword = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        unequippedInventoryItems.add(sword);
-        return sword;
+        Random rand = new Random();
+        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
+        Item addedItem = null;
+        if (choice > 0) {
+            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        } else {
+            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        }
+        unequippedInventoryItems.add(addedItem);
+        return addedItem;
     }
 
     /**
@@ -325,6 +388,8 @@ public class LoopManiaWorld {
 
     /**
      * move all enemies
+     * 
+     * TODO: Use observer pattern here
      */
     private void moveBasicEnemies() {
         // TODO = expand to more types of enemy
