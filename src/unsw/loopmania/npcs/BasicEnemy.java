@@ -32,7 +32,7 @@ public class BasicEnemy extends MovingEntity {
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
     }
-
+    
     /**
      * move the enemy
      */
