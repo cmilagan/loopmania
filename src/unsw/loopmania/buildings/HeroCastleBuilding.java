@@ -2,13 +2,14 @@ package unsw.loopmania.buildings;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.StaticEntity;
+import unsw.loopmania.buildings.Building;
 
 /**
- * a basic form of building in the world
+ * A building which never expires, stays at the start and contains the shop
+ * 
  */
-public class HeroCastleBuilding extends StaticEntity {
-    // TODO = add more types of building, and make sure buildings have effects on entities as required by the spec
-    public HeroCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y);
+public class HeroCastleBuilding extends Building {
+    public HeroCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
+        super(x, y, id);
     }
 }

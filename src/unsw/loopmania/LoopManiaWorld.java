@@ -7,11 +7,17 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.cards.BarracksCard;
+import unsw.loopmania.cards.CampfireCard;
+import unsw.loopmania.cards.TowerCard;
 import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
+import unsw.loopmania.cards.VillageCard;
+import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
@@ -164,6 +170,43 @@ public class LoopManiaWorld {
     }
 
     /**
+     * add a static entity
+     * 
+     * @param entity
+     */
+    public void addBuilding(Building building) {
+        // Add a static entity
+        buildingEntities.add(building);
+    }
+
+    /**
+     * remove building from the grid that has expired
+     * 
+     * @param id the id of the building, from 0 to inf
+     */
+    private void removeBuilding(int id) {
+        // Find the building corresponding to the id
+        for (Building b : buildingEntities) {
+            // When found, remove the building from the list
+            if (b.getId() == id) {
+                b.destroy();
+                buildingEntities.remove(b);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Get the list of buildings
+     * @return 
+     * 
+     */
+    public List<Building> getBuildings() {
+        // Return the buildings
+        return buildingEntities;
+    }
+
+    /**
      * add a specified enemy in the enemies array
      * @param enemy
      */
@@ -228,8 +271,12 @@ public class LoopManiaWorld {
         return defeatedEnemies;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //                                   CARDS                                           //
+    ///////////////////////////////////////////////////////////////////////////////////////
+
     /**
-     * spawn a card in the world and return the card entity
+     * spawn a vampire castle card in the world and return the card entity
      * 
      * @return a card to be spawned in the controller as a JavaFX node
      */
@@ -238,12 +285,127 @@ public class LoopManiaWorld {
         if (cardEntities.size() >= getWidth()) {
             // TODO = give some cash/experience/item rewards for the discarding of the
             // oldest card
+
             removeCard(0);
         }
         VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(vampireCastleCard);
         return vampireCastleCard;
+    }
+
+    /**
+     * spawn a trap card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public TrapCard loadTrapCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(trapCard);
+        return trapCard;
+    }
+
+    /**
+     * spawn a barracks card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public BarracksCard loadBarracksCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        BarracksCard barracksCard = new BarracksCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(barracksCard);
+        return barracksCard;
+    }
+
+    /**
+     * spawn a campfire card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public CampfireCard loadCampfireCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        CampfireCard campfireCard = new CampfireCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(campfireCard);
+        return campfireCard;
+    }
+
+    /**
+     * spawn a tower card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public TowerCard loadTowerCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        TowerCard towerCard = new TowerCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(towerCard);
+        return towerCard;
+    }
+
+    /**
+     * spawn a village card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public VillageCard loadVillageCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        VillageCard villageCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(villageCard);
+        return villageCard;
+    }
+
+    /**
+     * spawn a zombie card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public ZombieGraveyardCard loadZombieCard() {
+        // if adding more cards than have, remove the first card...
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the
+            // oldest card
+
+            removeCard(0);
+        }
+        ZombieGraveyardCard zombieGraveyardCard = new ZombieGraveyardCard(new SimpleIntegerProperty(cardEntities.size()),
+                new SimpleIntegerProperty(0));
+        cardEntities.add(zombieGraveyardCard);
+        return zombieGraveyardCard;
     }
 
     /**

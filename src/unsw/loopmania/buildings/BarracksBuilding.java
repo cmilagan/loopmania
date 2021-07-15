@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class BarracksBuilding extends Building {
     // TODO = add more types of building, and make sure buildings have effects on entities as required by the spec
-    public BarracksBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y);
+    public BarracksBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
+        super(x, y, id);
     }
 }

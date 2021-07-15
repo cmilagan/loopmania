@@ -34,10 +34,10 @@ public class CampfireTest {
         // Create world
         initializeWorld();
         // Place down campfire
-        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
+        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1), 0);
         testWorld.addBuilding(newCampfire);
         // Check it is in right location
-        assertEquals(Pair.with(1, 1), newCampfire.getPosition());
+        assertEquals(Pair.with(1, 1), newCampfire.getX(), newCampfire.getY());
         System.out.println("--- Passed ---\n");
     }
     
@@ -46,7 +46,7 @@ public class CampfireTest {
         System.out.println("TEST - Checking tower damage");
         initializeWorld();
         // Place down the campfire
-        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
+        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1), 0);
         testWorld.addBuilding(newCampfire);
         // Make Character loop through map
         testWorld.runTickMoves();
@@ -61,7 +61,7 @@ public class CampfireTest {
         // Create world
         initializeWorld();
         // Place down campfire
-        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
+        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1), 0);
         testWorld.addBuilding(newCampfire);
         // Check if the campfire is gone
         testWorld.runTickMoves();
