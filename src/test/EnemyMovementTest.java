@@ -36,7 +36,7 @@ public class EnemyMovementTest {
      * Vampire: x = 3
      * 
      * Note: multiple enemies can momentarily exist on one tile
-     * when their paths are crossing each other
+     * when their paths are crossing each other.
      */
     @Test
     void testCharacterMovement() {
@@ -280,16 +280,16 @@ public class EnemyMovementTest {
 
     /**
      * When some enemy is within the support radius of Slug,
-     * check if Slug helps
+     * check if Slug helps.
      * 
      * TODO: Add assumption to assumptions file
      * Checks Assumption:
      * 
      * When some enemy X is within the support radius of another
      * enemy Y, the enemy Y teleports to X's position + 1 and the
-     * battle state should calculate the the total damage dealt on MC
+     * battle state should calculate the the total damage dealt on MC.
      * 
-     * Note: such teleportation only occurs when the enemy is in battle
+     * Note: such teleportation only occurs when the enemy is in battle.
      */
     @Test
     void testSlugSupportRadius() {
@@ -325,7 +325,7 @@ public class EnemyMovementTest {
 
     /**
      * When some enemy is within the support radius of Zombie,
-     * check if Zombie goes to help (given that battle is initiated)
+     * check if Zombie goes to help (given that battle is initiated).
      * 
      * TODO: Update in assumptions file
      * Zombie Damage and Support radius has been changed
@@ -385,7 +385,7 @@ public class EnemyMovementTest {
 
     /**
      * When some enemy is within the support radius of Vampire,
-     * check if Vampire goes to help (given that battle is initiated)
+     * check if Vampire goes to help (given that battle is initiated).
      * 
      * TODO: Update in assumptions file
      * Vampire Damage and Support radius has been changed
