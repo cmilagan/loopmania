@@ -32,7 +32,7 @@ public class TowerTest {
         initializeWorld();
         // Place down the tower
         TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
-        testWorld.addEntity(newTower);
+        testWorld.addBuilding(newTower);
         assertEquals(newTower.getDamage(), towerDamage);
         // Check if the tower is in the right location
         assertEquals(Pair.with(1, 1), newTower.getPosition());
@@ -46,7 +46,7 @@ public class TowerTest {
         initializeWorld();
         // Place the tower down
         TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
-        testWorld.addEntity(newTower);
+        testWorld.addBuilding(newTower);
         // Make Character loop through map
         testWorld.runTickMoves();
         // Check if the tower is gone
@@ -59,7 +59,7 @@ public class TowerTest {
         System.out.println("TEST - Check the tower radius");
         initializeWorld();
         TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
-        testWorld.addEntity(newTower);
+        testWorld.addBuilding(newTower);
         // Check if the tower engaged in battle when in range
 
         // Check if the tower engaged in battle when out of range

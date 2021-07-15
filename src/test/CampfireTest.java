@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.StaticEntity;
 import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
@@ -33,7 +35,7 @@ public class CampfireTest {
         initializeWorld();
         // Place down campfire
         CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
-        testWorld.addEntity(newCampfire);
+        testWorld.addBuilding(newCampfire);
         // Check it is in right location
         assertEquals(Pair.with(1, 1), newCampfire.getPosition());
         System.out.println("--- Passed ---\n");
@@ -45,7 +47,7 @@ public class CampfireTest {
         initializeWorld();
         // Place down the campfire
         CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
-        testWorld.addEntity(newCampfire);
+        testWorld.addBuilding(newCampfire);
         // Make Character loop through map
         testWorld.runTickMoves();
         // Check if the character damage increases when they go near the campfire
@@ -60,8 +62,10 @@ public class CampfireTest {
         initializeWorld();
         // Place down campfire
         CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
-        testWorld.addEntity(newCampfire);
+        testWorld.addBuilding(newCampfire);
         // Check if the campfire is gone
+        testWorld.runTickMoves();
+        assertTrue(testWorld.getBuildings().isEmpty());
         System.out.println("--- Passed ---\n");
     }
 

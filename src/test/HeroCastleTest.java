@@ -29,7 +29,7 @@ public class HeroCastleTest {
         System.out.println("TEST - Player start in Hero Castle");
         // Create world
         initializeWorld();
-        testWorld.addEntity(heroCastle);
+        testWorld.addBuilding(heroCastle);
         // Check player location is at Hero Castle
         int characterPosition = 0;
         assertEquals(orderedPath.get(characterPosition), heroCastle.getPosition());
@@ -40,7 +40,7 @@ public class HeroCastleTest {
     public void checkLoopCountTest(){
         System.out.println("TEST - Loop count after doing a loop");
         initializeWorld();
-        testWorld.addEntity(heroCastle);
+        testWorld.addBuilding(heroCastle);
         // Make Character loop through map
         testWorld.runTickMoves();
         // Check if the loop counter goes up by 1

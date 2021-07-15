@@ -53,7 +53,7 @@ public class LoopManiaWorld {
     private List<Entity> unequippedInventoryItems;
 
     // TODO = expand the range of buildings
-    private List<VampireCastleBuilding> buildingEntities;
+    private List<StaticEntity> buildingEntities;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse them
