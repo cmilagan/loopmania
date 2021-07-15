@@ -417,10 +417,14 @@ public class LoopManiaWorldController {
 
 
         // TODO: add RNG
+
+        // 50/50 either item or card
         Random rd = new Random();
         if (rd.nextDouble() < 0) {
+            // TODO: RNG for item drops
             loadLoot();
         } else {
+            // RNG for card drops
             double rgen = rd.nextDouble();
             if (rgen > 0.99) {
                 // rare
@@ -862,6 +866,7 @@ public class LoopManiaWorldController {
             }
         };
 
+        // TODO: Fix bug where cards are removed if incorrectly placed
         // if need to remove items from the equipped inventory, add code to remove from equipped inventory gridpane in the .onDetach part
         ListenerHandle handleX = ListenerHandles.createFor(entity.x(), node)
                                                .onAttach((o, l) -> o.addListener(xListener))

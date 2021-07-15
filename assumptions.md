@@ -38,13 +38,13 @@
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
 - Each card has its own rarity: Common (60%), Uncommon (30%), Epic (9%), Rare (1%)
     - Vampire Castle: Rare
-    - Zombie Pit: Common
+    - Zombie Pit: Uncommon
     - Tower: Rare
     - Village: Epic
     - Barracks: Epic
     - Trap: Common
     - Campfire: Epic 
-    - Rare Item Type: Legendary
+    - Rare Item Type: Rare
 - The Initial Values of damage/expiry(/rounds) for building items:
     - Tower: 4, 5
     - Trap: 8, 1
