@@ -7,14 +7,14 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class CampfireBuilding extends Building {
 
-    private int reach;
+    private int range;
     // TODO = add more types of building, and make sure buildings have effects on entities as required by the spec
-    public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y);
-        this.reach = 2;
+    public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
+        super(x, y, id);
+        this.range = 2;
     }
 
-    public int getReach() {
-        return this.reach;
+    public int getRange() {
+        return this.range;
     }
 }

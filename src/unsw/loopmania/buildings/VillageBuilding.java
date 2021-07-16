@@ -9,8 +9,8 @@ public class VillageBuilding extends Building {
     // TODO = add more types of building, and make sure buildings have effects on entities as required by the spec
     private int heal;
     
-    public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y);
+    public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
+        super(x, y, id);
         this.heal = 10;
     }
 
