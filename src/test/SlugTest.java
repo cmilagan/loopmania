@@ -61,6 +61,18 @@ public class SlugTest {
     }
 
     /**
+     * Test if the Slug gives 50 XP on defeat
+     */
+    @Test
+    public void testSlugXP() {
+        int currentXP = newCharacter.getXP();
+        int expectedXP = currentXP + 50;
+
+        testWorld.runBattles();
+        assertEquals(expectedXP, newCharacter.getXP());
+    }
+
+    /**
      * When the character engages in battle with a Slug, he should have less
      * health than when he spawned.
      */

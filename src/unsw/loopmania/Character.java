@@ -32,9 +32,9 @@ public class Character extends MovingEntity {
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
         if (enemyCrit) {
-            damageDealt = 3 * enemyDamage * this.getTotalDefence() * this.getTotalCritDefence();
+            damageDealt = 3 * (enemyDamage - this.getTotalDefence() - this.getTotalCritDefence());
         } else {
-            damageDealt = enemyDamage * this.getTotalDefence();
+            damageDealt = enemyDamage - this.getTotalDefence();
         }
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
