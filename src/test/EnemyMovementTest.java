@@ -25,7 +25,7 @@ public class EnemyMovementTest {
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-    /** TODO: add assumption to assumptions file
+    /**
      * Checks Made Assumption:
      * When enemies are spawned, they will move x blocks up then return to spawning position 
      * then move x blocks down, then return back to the spawning position and so on. 
@@ -52,7 +52,7 @@ public class EnemyMovementTest {
         // character should move clockwise
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(0, 1), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + 1), Pair.with(posX, posY));
 
         // tick the world
         testWorld.runTickMoves();
@@ -60,7 +60,7 @@ public class EnemyMovementTest {
         // character should keep moving clockwise
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + 2), Pair.with(posX, posY));
 
         // tick the world
         testWorld.runTickMoves();
@@ -68,7 +68,7 @@ public class EnemyMovementTest {
         // character should change direction
         posX = newCharacter.getX();
         posY = newCharacter.getY(); 
-        assertEquals(Pair.with(1, 2), Pair.with(posX, posY));
+        assertEquals(orderedPath.get(characterPosition + 3), Pair.with(posX, posY));
     }
 
     @Test
@@ -208,7 +208,7 @@ public class EnemyMovementTest {
     void testVampireMovement() {
         initializeWorld();
 
-        int vampirePosition = 6;
+        int vampirePosition = 4;
 
         // initialize vampire
         PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
@@ -282,7 +282,6 @@ public class EnemyMovementTest {
      * When some enemy is within the support radius of Slug,
      * check if Slug helps.
      * 
-     * TODO: Add assumption to assumptions file
      * Checks Assumption:
      * 
      * When some enemy X is within the support radius of another
@@ -327,7 +326,6 @@ public class EnemyMovementTest {
      * When some enemy is within the support radius of Zombie,
      * check if Zombie goes to help (given that battle is initiated).
      * 
-     * TODO: Update in assumptions file
      * Zombie Damage and Support radius has been changed
      * Damage radius = 1
      * Support radius = 2
@@ -387,7 +385,7 @@ public class EnemyMovementTest {
      * When some enemy is within the support radius of Vampire,
      * check if Vampire goes to help (given that battle is initiated).
      * 
-     * TODO: Update in assumptions file
+     *
      * Vampire Damage and Support radius has been changed
      * Damage radius = 2
      * Support radius = 3

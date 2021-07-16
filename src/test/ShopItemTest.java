@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import org.javatuples.Pair;
 import org.junit.Test;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.items.Armor;
@@ -29,14 +31,37 @@ import unsw.loopmania.items.Sword;
  * Note: this array is used to display the items in the Shop menu
  */
 public class ShopItemTest {
+    private int armorID = 0;
+    private int helmetID = 1;
+    private int shieldID = 2;
+    private int staffID = 3;
+    private int stakeID = 4;
+    private int swordID = 5;
+    private int oneRingID = 6;
+    private int healthPotionID = 7;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<BattleItem> battleItems;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
-    
+
+    public ShopItemTest() {
+        initializeWorld();
+    }
+
+    /**
+     * Item Mapping:
+     * 0 - Armor
+     * 1 - Helmet
+     * 2 - Shield
+     * 3 - Staff
+     * 4 - Stake
+     * 5 - Sword
+     * 6 - One Ring
+     * 7 - Health Potion
+     */
     @Test
-    void testArmorStats() {
+    public void testArmorStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Armor) {
@@ -46,13 +71,31 @@ public class ShopItemTest {
                 assertEquals(40, armor.getDefence());
                 assertEquals(0, armor.getCritDefence());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(armor.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(armorID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Armor) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(armorID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testHealthPotionStats() {
+    public void testHealthPotionStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof HealthPotion) {
@@ -60,13 +103,31 @@ public class ShopItemTest {
                 assertEquals(20, healthPotion.getItemCost());
                 assertEquals(1, healthPotion.getItemDurability());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(healthPotion.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(healthPotionID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof HealthPotion) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(healthPotionID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testHelmetStats() {
+    public void testHelmetStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Helmet) {
@@ -76,13 +137,31 @@ public class ShopItemTest {
                 assertEquals(10, helmet.getDefence());
                 assertEquals(0, helmet.getCritDefence());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(helmet.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(helmetID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Helmet) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(helmetID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testOneRingStats() {
+    public void testOneRingStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof OneRing) {
@@ -90,13 +169,31 @@ public class ShopItemTest {
                 assertEquals(500, ring.getItemCost());
                 assertEquals(1, ring.getItemDurability());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(ring.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(oneRingID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof OneRing) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(oneRingID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testShieldStats() {
+    public void testShieldStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Shield) {
@@ -106,13 +203,31 @@ public class ShopItemTest {
                 assertEquals(20, shield.getDefence());
                 assertEquals(60, shield.getCritDefence());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(shield.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(shieldID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Shield) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(shieldID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testStaffStats() {
+    public void testStaffStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Staff) {
@@ -121,13 +236,31 @@ public class ShopItemTest {
                 assertEquals(8, staff.getItemDurability());
                 assertEquals(3, staff.getDamage());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(staff.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(staffID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Staff) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(staffID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testStakeStats() {
+    public void testStakeStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Stake) {
@@ -137,13 +270,31 @@ public class ShopItemTest {
                 assertEquals(4, stake.getDamage());
                 assertEquals(12, stake.getSpecialDamage());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(stake.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(stakeID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Stake) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(stakeID));
             }
         }
         assertTrue(itemPresent);
     }
 
     @Test
-    void testSwordStats() {
+    public void testSwordStats() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Sword) {
@@ -152,6 +303,24 @@ public class ShopItemTest {
                 assertEquals(10, sword.getItemDurability());
                 assertEquals(8, sword.getDamage());
                 itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(sword.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(swordID));
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Sword) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(swordID));
             }
         }
         assertTrue(itemPresent);
