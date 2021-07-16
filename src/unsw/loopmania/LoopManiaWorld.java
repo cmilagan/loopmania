@@ -625,6 +625,17 @@ public class LoopManiaWorld {
             }
         }
 
+        // checking that tile is not occupied
+        boolean occupied = false;
+        for(Building b : buildingEntities) {
+            Pair<Integer, Integer> target = new Pair<Integer, Integer>(buildingNodeX, buildingNodeY);
+            Pair<Integer, Integer> buildLoc = new Pair<Integer, Integer>(b.getX(),b.getY());
+            if (target.equals(buildLoc)) {
+                occupied = true;
+            }
+        }
+
+        // checking conditions
         if (card instanceof VampireCastleCard || card instanceof TowerCard || card instanceof ZombieGraveyardCard) {
             if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
                 if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX - 1, buildingNodeY)) ||
@@ -633,17 +644,17 @@ public class LoopManiaWorld {
                     orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY)) ||
                     orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX, buildingNodeY + 1)) ||
                     orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY + 1))) {
-                        return true;
+                        if (!occupied) return true;
                     }
             }
-        } else if (card instanceof VillageCard || card instanceof TrapCard) {
+        } else if (card instanceof VillageCard || card instanceof TrapCard || card instanceof BarracksCard) {
             // can only be placed on path tiles
             if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
-                return true;
+                if (!occupied) return true;
             }
         } else if (card instanceof CampfireCard) {
             if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
-                return true;
+                if (!occupied) return true;
             }
         } else {
             try {

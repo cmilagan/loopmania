@@ -37,6 +37,7 @@ import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
@@ -607,17 +608,14 @@ public class LoopManiaWorldController {
 
                         switch (draggableType){
                             case CARD:
-                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
                                 // TODO occupied tiles
+                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 boolean canPlace = world.checkValidPlacement(nodeX, nodeY, x, y);
                                 if (canPlace) {
                                     Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                     onLoad(newBuilding);    
-                                } else {
-                                    x = nodeX;
-                                    y = nodeY;
-                                }
+                                } 
                                 break;
                             case ITEM:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
