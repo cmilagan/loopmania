@@ -35,6 +35,8 @@ import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.buildings.BarracksBuilding;
+import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
@@ -471,6 +473,12 @@ public class LoopManiaWorldController {
             view = new ImageView(trapCardImage);
         } else if (card instanceof ZombieGraveyardCard) {
             view = new ImageView(zombiePitCardImage);
+        } else if (card instanceof CampfireCard) {
+            view = new ImageView(campfireCardImage);
+        } else if (card instanceof TowerCard) {
+            view = new ImageView(towerCardImage);
+        } else if (card instanceof BarracksCard) {
+            view = new ImageView(barracksCardImage);
         } else {
             try {
                 throw new Exception("Invalid Building");
@@ -541,6 +549,12 @@ public class LoopManiaWorldController {
             view = new ImageView(trapBuildingImage);
         } else if (building instanceof ZombieGraveyardBuilding) {
             view = new ImageView(zombiePitBuildingImage);
+        } else if (building instanceof CampfireBuilding) {
+            view = new ImageView(campfireBuildingImage);
+        } else if (building instanceof TowerBuilding) {
+            view = new ImageView(towerBuildingImage);
+        } else if (building instanceof BarracksBuilding) {
+            view = new ImageView(barracksBuildingImage);
         } else {
             try {
                 throw new Exception("Invalid Building");
@@ -590,14 +604,19 @@ public class LoopManiaWorldController {
 
                         int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
                         int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+
                         switch (draggableType){
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
+                                // TODO occupied tiles
                                 boolean canPlace = world.checkValidPlacement(nodeX, nodeY, x, y);
                                 if (canPlace) {
                                     Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                     onLoad(newBuilding);    
+                                } else {
+                                    x = nodeX;
+                                    y = nodeY;
                                 }
                                 break;
                             case ITEM:
