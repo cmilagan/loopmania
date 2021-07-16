@@ -49,6 +49,11 @@ public class LoopManiaWorld {
     public static final int unequippedInventoryHeight = 4;
 
     /**
+     * Counter for the loops completed
+     */
+    public static int loopCount;
+
+    /**
      * width of the world in GridPane cells
      */
     private int width;
@@ -104,6 +109,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        loopCount = 0;
     }
 
     public int getWidth() {
@@ -112,6 +118,14 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getLoopCount() {
+        return loopCount;
+    }
+
+    public void setLoopCount(int num) {
+        loopCount = num;
     }
 
     /**
