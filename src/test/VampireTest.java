@@ -72,6 +72,24 @@ public class VampireTest {
         testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }
+
+    /**
+     * When the character engages in battle with a Vampire, he should have less
+     * health than when he spawned.
+     */
+    @Test
+    public void testVampireDealsDamage() {
+        initializeWorld();
+
+        // get initial character health
+        int mainCharacterHealth = newCharacter.getHealth();
+
+        // run battle
+        testWorld.runBattles();
+
+        // check if health is less by 5
+        assertEquals(mainCharacterHealth - newVampire.getDamage(), newCharacter.getHealth());
+    }
     
     /**
      * Setup template world
