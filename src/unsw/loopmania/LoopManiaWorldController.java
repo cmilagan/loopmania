@@ -440,12 +440,11 @@ public class LoopManiaWorldController {
             } else if (rgen > 0.90 && rgen <= 0.99) {
                 // epic
                 rgen = rd.nextDouble();
-                loadVillageCard();
                 if (rgen <= (1/3)) {
                     loadVillageCard();
-                } else if (rgen <= (2/3)) {
+                } else if (rgen <= (2/3) && rgen > (1/3)) {
                     loadCampfireCard();
-                } else if (rgen <= 1) {
+                } else if (rgen <= 1 && rgen > (2/3)) {
                     loadBarracksCard();
                 }
             } else if (rgen > 0.6 && rgen <= 0.90) { 
@@ -581,10 +580,12 @@ public class LoopManiaWorldController {
         gridPaneSetOnDragDropped.put(draggableType, new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 // TODO = for being more selective about where something can be dropped, consider applying additional if-statement logic
+                // TODO return card to slot if invalid placement is handled.
                 /*
                  *you might want to design the application so dropping at an invalid location drops at the most recent valid location hovered over,
                  * or simply allow the card/item to return to its slot (the latter is easier, as you won't have to store the last valid drop location!)
                  */
+
                 if (currentlyDraggedType == draggableType){
                     // problem = event is drop completed is false when should be true...
                     // https://bugs.openjdk.java.net/browse/JDK-8117019
@@ -596,30 +597,26 @@ public class LoopManiaWorldController {
                     Node node = event.getPickResult().getIntersectedNode();
                     if(node != targetGridPane && db.hasImage()){
 
+                        //Places at 0,0 - will need to take coordinates once that is implemented
                         Integer cIndex = GridPane.getColumnIndex(node);
                         Integer rIndex = GridPane.getRowIndex(node);
                         int x = cIndex == null ? 0 : cIndex;
                         int y = rIndex == null ? 0 : rIndex;
-                        //Places at 0,0 - will need to take coordinates once that is implemented
+
                         ImageView image = new ImageView(db.getImage());
 
                         int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
                         int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
-
                         switch (draggableType){
                             case CARD:
-                                // TODO = spawn a building here of different types done in LoopManiaWorld.java
-                                // TODO occupied tiles
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                boolean canPlace = world.checkValidPlacement(nodeX, nodeY, x, y);
-                                if (canPlace) {
-                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                    onLoad(newBuilding);    
-                                } 
+                                // TODO = spawn a building here of different types done in LoopManiaWorld.java
+                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                onLoad(newBuilding);    
                                 break;
                             case ITEM:
-                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
+                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 break;
@@ -731,6 +728,7 @@ public class LoopManiaWorldController {
                 view.setVisible(false);
 
                 buildNonEntityDragHandlers(draggableType, sourceGridPane, targetGridPane);
+
 
                 draggedEntity.relocateToPoint(new Point2D(event.getSceneX(), event.getSceneY()));
                 switch (draggableType){

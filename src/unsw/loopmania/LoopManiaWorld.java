@@ -615,7 +615,7 @@ public class LoopManiaWorld {
      * @param buildingNodeY
      * @return boolean
      */
-    public boolean checkValidPlacement(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+    public boolean checkValidCardPlacement(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         // start by getting card
         Card card = null;
         for (Card c: cardEntities){
