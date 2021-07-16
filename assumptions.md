@@ -35,6 +35,7 @@
     4. Main Character
 - When some enemy X is within the support radius of another enemy Y, the enemy Y teleports to X's position + 1 and the battle state should calculate the the total damage dealt on MC
     - Note: such teleportation only occurs when the enemy is in battle
+- Critical Hits deal 3x Damage
 
 ## Movement Related Assumptions:
 - When enemies are spawned, they will move x blocks up then return to spawning position then move x blocks down, then return back to the spawning position and so on. At each tick, the enemy will move 1 step towards their travelling direction. The value of x varies according to the enemy type:
