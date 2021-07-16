@@ -213,7 +213,7 @@ public class LoopManiaWorld {
         // Checking If there is an enemy inside battle radii
         for (BasicEnemy e : enemies) {
             // Checking if enemy is inside battle radii
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getBattleRadius()) {
+            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
                 conductFight = true;
                 System.out.println("starting battle encounter");
                 break;
@@ -224,7 +224,7 @@ public class LoopManiaWorld {
             List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
             for (BasicEnemy e : enemies) {
                 // Checking if enemy is inside support radii
-                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < e.getSupportRadius()) {
+                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
                     battleEnemies.add(e);
                     System.out.println("adding enemy");
                 }
