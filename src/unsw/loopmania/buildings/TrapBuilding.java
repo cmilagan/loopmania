@@ -8,8 +8,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class TrapBuilding extends Building {
     private int damage = 8;
 
-    public TrapBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
-        super(x, y, id);
+    public TrapBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
+        this.setExpiry(1);
     }
 
     public int getDamage() {

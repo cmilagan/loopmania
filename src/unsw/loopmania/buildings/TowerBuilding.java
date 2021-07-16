@@ -10,10 +10,11 @@ public class TowerBuilding extends Building {
     private int damage;
     private int range;
 
-    public TowerBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
-        super(x, y, id);
+    public TowerBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
         this.damage = 4;
         this.range = 2;
+        this.setExpiry(5);
     }
 
     public int getDamage() {

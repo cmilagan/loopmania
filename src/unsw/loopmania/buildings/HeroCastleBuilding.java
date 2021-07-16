@@ -9,7 +9,9 @@ import unsw.loopmania.buildings.Building;
  * 
  */
 public class HeroCastleBuilding extends Building {
-    public HeroCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
-        super(x, y, id);
+    public HeroCastleBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
+        // TODO change number later
+        this.setExpiry(100);
     }
 }
