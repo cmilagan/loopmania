@@ -33,6 +33,7 @@
     2. Allied soldiers
     3. Enemies (remaining enemies will attack allied soldiers first (if applicable) then main character)
     4. Main Character
+- Critical Hits deal 3x Damage
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop

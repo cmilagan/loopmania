@@ -23,6 +23,7 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
@@ -33,6 +34,7 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Slug;
 
 /**
  * A backend world.
@@ -80,6 +82,7 @@ public class LoopManiaWorld {
 
     // a list of battle items available at the Shop
     private List<BattleItem> battleItems;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
@@ -229,7 +232,7 @@ public class LoopManiaWorld {
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
-            BasicEnemy enemy = new BasicEnemy(new PathPosition(indexInPath, orderedPath));
+            Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
@@ -241,7 +244,7 @@ public class LoopManiaWorld {
      * 
      * @param enemy enemy to be killed
      */
-    private void killEnemy(BasicEnemy enemy) {
+    public void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -252,19 +255,55 @@ public class LoopManiaWorld {
      * @return list of enemies which have been killed
      */
     public List<BasicEnemy> runBattles() {
-        // TODO = modify this - currently the character automatically wins all battles
-        // without any damage!
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
+        boolean conductFight = false;
+        // Checking If there is an enemy inside battle radii
         for (BasicEnemy e : enemies) {
-            // Pythagoras: a^2+b^2 < radius^2 to see if within radius
-            // TODO = you should implement different RHS on this inequality, based on
-            // influence radii and battle radii
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) < 4) {
-                // fight...
-                defeatedEnemies.add(e);
+            // Checking if enemy is inside battle radii
+            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
+                conductFight = true;
+                System.out.println("starting battle encounter");
+                break;
             }
         }
+        if (conductFight) {
+            // Collecting all enemies inside support radii
+            List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
+            for (BasicEnemy e : enemies) {
+                // Checking if enemy is inside support radii
+                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
+                    battleEnemies.add(e);
+                    System.out.println("adding enemy");
+                }
+            }
+            int numberOfEnemies = battleEnemies.size();
+            // Conduct Fights with Valid Enemies
+            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
+                System.out.println("initiating battle phase");
+                // Continuously fight until character loses or all enemies are defeated
+                for (BasicEnemy e : battleEnemies) {
+                    // Ignore Dead Enemies
+                    if (e.getHealth() <= 0) {
+                        continue;
+                    }
+                    // Calculate Character
+                    int characterHealth = character.applyEnemyDamage(e);
+                    if (characterHealth == 0) {
+                        System.out.println("character killed");
+                        break;
+                    }
+                    // Calculate Enemy
+                    int enemyHealth = e.applyCharacterDamage(character);
+                    if (enemyHealth == 0) {
+                        defeatedEnemies.add(e);
+                        System.out.println("enemy killed");
+                    }
+                }
+            }
+            System.out.println("battle encounter finished");
+        }
         for (BasicEnemy e : defeatedEnemies) {
+            System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
             // the enemies list
             // if we killEnemy in prior loop, we get
@@ -459,6 +498,24 @@ public class LoopManiaWorld {
     }
 
     /**
+     * remove an equipped item by x,y coordinates
+     * 
+     * @param x x coordinate from 0 to width-1
+     * @param y y coordinate from 0 to height-1
+     */
+    public void removeEquippedInventoryItemByCoordinates(int x, int y) {
+        // TODO: Inventory Frontend Code
+        Entity item = getEquippedInventoryItembyCoordinates(x, y);
+        // Setting Character Equipment Slot
+        if (item instanceof AttackItem) character.setWeapon(null);
+        else if (item instanceof Helmet) character.setHelmet(null);
+        else if (item instanceof Armor) character.setArmor(null);
+        else if (item instanceof Shield) character.setShield(null);
+        // Destroying Entity
+        item.destroy();
+    }
+
+    /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
      */
@@ -491,6 +548,22 @@ public class LoopManiaWorld {
                 return e;
             }
         }
+        return null;
+    }
+
+    /**
+     * return an equipped inventory item by x and y coordinates assumes that no 2
+     * equipped inventory items share x and y coordinates
+     * 
+     * @param x x index from 0 to width-1
+     * @param y y index from 0 to height-1
+     * @return unequipped inventory item at the input position
+     */
+    private Entity getEquippedInventoryItembyCoordinates(int x, int y) {
+        if (x == 0) return character.getWeapon();
+        if (x == 1) return character.getHelmet();
+        if (x == 2) return character.getArmor();
+        if (x == 3) return character.getShield();
         return null;
     }
 
