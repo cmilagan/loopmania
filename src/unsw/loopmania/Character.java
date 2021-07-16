@@ -10,12 +10,13 @@ import unsw.loopmania.npcs.BasicEnemy;
  * represents the main character in the backend of the game world
  */
 public class Character extends MovingEntity {
+    // TODO = potentially implement relationships between this class and other classes
     private int health = 100;
-    // a list of items that are equipped by the user
-    private AttackItem equippedWeapon;
+    private AttackItem equippedWeapon;            // a list of items that are equipped by the user
     private Helmet equippedHelmet;
     private Armor equippedArmor;
     private Shield equippedShield;
+    private int xp = 0;
 
     public Character(PathPosition position) {
         super(position);
@@ -86,6 +87,7 @@ public class Character extends MovingEntity {
         return totalDefence;
     }
     
+
     private int getTotalCritDefence() {
         int totalCritDefence = 0;
         if (this.equippedArmor != null) totalCritDefence += this.equippedArmor.getCritDefence();
@@ -97,5 +99,13 @@ public class Character extends MovingEntity {
     public int getDamage() {
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.getDamage();
+    }
+    
+     public int getXP() {
+        return this.xp;
+    }
+
+    public void setXP(int xp) {
+        this.xp = xp;
     }
 }
