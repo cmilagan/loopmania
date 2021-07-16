@@ -240,7 +240,7 @@ public class LoopManiaWorld {
      * 
      * @param enemy enemy to be killed
      */
-    public void killEnemy(BasicEnemy enemy) {
+    private void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
     }
