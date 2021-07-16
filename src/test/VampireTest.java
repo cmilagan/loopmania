@@ -69,7 +69,7 @@ public class VampireTest {
         initializeWorld();
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 200;
-        testWorld.killEnemy(newVampire);
+        testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }
     
@@ -95,7 +95,7 @@ public class VampireTest {
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
 
-        // initializing slug
+        // initializing Vampire
         PathPosition vampirePathPosition = new PathPosition(zombiePosition, orderedPath);
         newVampire = new Vampire(vampirePathPosition);
         testWorld.addEnemy(newVampire);
