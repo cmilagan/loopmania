@@ -20,12 +20,19 @@ public class SlugTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
+
+    /**
+     * Initialize world state.
+     */
+    public SlugTest() {
+        initializeWorld();
+    }
     
     /**
      * Check that the slug has expected health.
      */
     @Test
-    void slugExpectedHealth() {
+    public void testExpectedHealth() {
         assertEquals(3, newSlug.getHealth());
     }
 
@@ -33,7 +40,7 @@ public class SlugTest {
      * Check that the slug has expected damage.
      */
     @Test
-    void slugExpectedDamage() {
+    public void testExpectedDamage() {
         assertEquals(5, newSlug.getDamage());
     }
 
@@ -41,7 +48,7 @@ public class SlugTest {
      * Check that the slug has expected battle radius.
      */
     @Test
-    void slugExpectedBattleRadius() {
+    public void testExpectedBattleRadius() {
         assertEquals(1, newSlug.getBattleRadius());
     }
 
@@ -49,7 +56,7 @@ public class SlugTest {
      * Check that the slug has expected support radius.
      */
     @Test
-    void slugExpectedSupportRadius() {
+    public void testExpectedSupportRadius() {
         assertEquals(1, newSlug.getSupportRadius());
     }
 
@@ -58,7 +65,7 @@ public class SlugTest {
      * health than when he spawned.
      */
     @Test
-    void slugDealsDamage() {
+    public void testSlugDealsDamage() {
         // get initial character health
         int mainCharacterHealth = newCharacter.getHealth();
 
