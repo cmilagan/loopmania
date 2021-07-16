@@ -1,5 +1,7 @@
 package unsw.loopmania;
 
+import org.javatuples.Pair;
+
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.Helmet;
@@ -29,11 +31,8 @@ public class Character extends MovingEntity {
         int enemyDamage = enemy.getDamage();
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
-        if (enemyCrit) {
-            damageDealt = 3 * enemyDamage * this.getTotalDefence() * this.getTotalCritDefence();
-        } else {
-            damageDealt = enemyDamage * this.getTotalDefence();
-        }
+        if (enemyCrit) damageDealt = 3 * enemyDamage * this.getTotalDefence() * this.getTotalCritDefence();
+        else damageDealt = enemyDamage * this.getTotalDefence();
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
     }
@@ -97,5 +96,9 @@ public class Character extends MovingEntity {
     public int getDamage() {
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.getDamage();
+    }
+
+    public Pair getCoordinatePair() {
+        return new Pair<Integer, Integer>(this.getX(), this.getY());
     }
 }
