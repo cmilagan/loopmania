@@ -5,6 +5,7 @@ package unsw.loopmania;
  */
 public class Character extends MovingEntity {
     private int health = 100;
+    private int xp = 0;
     // TODO = potentially implement relationships between this class and other classes
     public Character(PathPosition position) {
         super(position);
@@ -18,4 +19,11 @@ public class Character extends MovingEntity {
         health = newHealth;
     }
     
+    public int getXP() {
+        return this.xp;
+    }
+
+    public void setXP(int xp) {
+        this.xp = xp;
+    }
 }
