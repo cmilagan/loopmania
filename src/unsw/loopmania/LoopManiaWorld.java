@@ -250,12 +250,12 @@ public class LoopManiaWorld {
     }
 
     /**
-     * add a static entity
+     * add a building entity
      * 
      * @param entity
      */
     public void addBuilding(Building building) {
-        // Add a static entity
+        // Add a building entity
         buildingEntities.add(building);
     }
 
@@ -264,22 +264,21 @@ public class LoopManiaWorld {
      * 
      * @param id the id of the building, from 0 to inf
      */
-    private void removeBuilding(int id) {
-        // Find the building corresponding to the id
+    private void removeBuilding() {
+        // Loop through all the buildings and find buildings that are expired
         for (Building b : buildingEntities) {
             // When found, remove the building from the list
-            if (b.getId() == id) {
+            if (b.getExpiry() == 0) {
                 b.destroy();
                 buildingEntities.remove(b);
-                break;
             }
         }
     }
 
     /**
      * Get the list of buildings
-     * @return 
      * 
+     * @return a list of buildings
      */
     public List<Building> getBuildings() {
         // Return the buildings
