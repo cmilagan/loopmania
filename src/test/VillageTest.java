@@ -47,7 +47,7 @@ public class VillageTest {
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         testWorld.runTickMoves();
-        assertEquals(newCharacter.getHealth(), 50 + villageHeal);
+        assertEquals(50 + villageHeal, newCharacter.getHealth());
     }
 
 
@@ -61,7 +61,7 @@ public class VillageTest {
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should not gain extra health for passing through village
-        assertEquals(newCharacter.getHealth(), 100);
+        assertEquals(100, newCharacter.getHealth());
     }
     @Test
     void testVillageExpiry() {
