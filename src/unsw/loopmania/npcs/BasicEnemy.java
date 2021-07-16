@@ -1,5 +1,6 @@
 package unsw.loopmania.npcs;
 
+import java.util.List;
 import java.util.Random;
 
 import unsw.loopmania.MovingEntity;
@@ -55,8 +56,11 @@ public class BasicEnemy extends MovingEntity implements EnemyInterface {
         return 0;
     }
 
-    public int applyCharacterDamage(Character character) {
+    public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
         int damageDealt = character.getDamage();
+        for (AlliedSoldier s: alliedSoldiers) {
+            
+        }
         return Math.min(0, this.health - damageDealt);
     }
 

@@ -23,6 +23,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
 
@@ -73,6 +74,9 @@ public class LoopManiaWorld {
     // a list of battle items available at the Shop
     private List<BattleItem> battleItems;
 
+    // a list of allied soldiers
+    private List<AlliedSoldier> alliedSoldiers;
+
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
@@ -99,6 +103,7 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         battleItems = new ArrayList<>();
+        alliedSoldiers = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -239,6 +244,9 @@ public class LoopManiaWorld {
                     if (e.getHealth() <= 0) {
                         continue;
                     }
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+
+                    }
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
@@ -246,7 +254,7 @@ public class LoopManiaWorld {
                         break;
                     }
                     // Calculate Enemy
-                    int enemyHealth = e.applyCharacterDamage(character);
+                    int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
                     if (enemyHealth == 0) {
                         defeatedEnemies.add(e);
                         System.out.println("enemy killed");
