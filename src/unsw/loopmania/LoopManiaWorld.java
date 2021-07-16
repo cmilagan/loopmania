@@ -390,6 +390,7 @@ public class LoopManiaWorld {
 
     /**
      * Collects all the possible item drops from a card that is destroyed
+     * (If new items are added, place them here)
      * 
      * @return a list of items
      */
@@ -420,18 +421,6 @@ public class LoopManiaWorld {
         return itemRewards;
     }
 
-    /**
-     * Randomises the item reward given based 
-     * 
-     * @return the item reward
-     */
-    public Item itemReward() {
-        Random rand = new Random(); 
-        ArrayList<Item> itemRewards = getPosCardRewards();
-        int upperbound = itemRewards.size();
-        return itemRewards.get(rand.nextInt(upperbound));
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////
     //                                   CARDS                                           //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -449,7 +438,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -471,7 +460,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -487,8 +476,13 @@ public class LoopManiaWorld {
      */
     public TrapCard loadTrapCard() {
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = addUnequippedItem();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
@@ -508,7 +502,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -530,7 +524,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -553,7 +547,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -576,7 +570,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = itemReward();
+            Item loot = addUnequippedItem();
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -606,32 +600,24 @@ public class LoopManiaWorld {
      * @return an item to be spawned in the controller as a JavaFX node
      */
     public Item addUnequippedItem() {
-        // TODO = expand this - we would like to be able to add multiple types of items,
-        // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
             // eject the oldest unequipped item and replace it... oldest item is that at
             // beginning of items
-            // TODO = give some cash/experience rewards for the discarding of the oldest
-            // sword
             removeItemByPositionInUnequippedInventoryItems(0);
             firstAvailableSlot = getFirstAvailableSlotForItem();
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
         }
 
         // now we insert an item, as we know we have at least made a slot
         // available...
-        Random rand = new Random();
-        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
-        Item addedItem = null;
-        if (choice > 0) {
-            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        } else {
-            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-        }
-        unequippedInventoryItems.add(addedItem);
-        return addedItem;
+        Random rand = new Random(); 
+        ArrayList<Item> itemRewards = getPosCardRewards();
+        int upperbound = itemRewards.size();
+        return itemRewards.get(rand.nextInt(upperbound));
     }
 
     /**
