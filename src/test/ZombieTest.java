@@ -95,7 +95,7 @@ public class ZombieTest {
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
 
-        // initializing slug
+        // initializing Zombie
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
         newZombie = new Zombie(zombiePathPosition);
         testWorld.addEnemy(newZombie);
