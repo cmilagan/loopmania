@@ -11,6 +11,7 @@ import org.javatuples.Pair;
 import org.junit.Test;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.items.Armor;
@@ -78,15 +79,19 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(armorID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(armor));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Armor) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(armorID));
             }
         }
         assertTrue(itemPresent);
-
-
     }
 
     @Test
@@ -106,7 +111,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(healthPotionID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(healthPotion));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof HealthPotion) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(healthPotionID));
@@ -134,7 +145,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(helmetID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(helmet));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Helmet) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(helmetID));
@@ -160,7 +177,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(oneRingID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(ring));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof OneRing) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(oneRingID));
@@ -188,7 +211,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(shieldID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(shield));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Shield) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(shieldID));
@@ -215,7 +244,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(staffID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(staff));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Staff) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(staffID));
@@ -243,7 +278,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(stakeID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(stake));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Stake) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(stakeID));
@@ -270,7 +311,13 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(swordID));
 
                 // item should appear in character's inventory
-                assertTrue(testWorld.getCharacterInventory().contains(sword));
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Sword) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(swordID));
