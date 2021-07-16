@@ -240,7 +240,7 @@ public class LoopManiaWorld {
      * 
      * @param enemy enemy to be killed
      */
-    public void killEnemy(BasicEnemy enemy) {
+    private void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -306,6 +306,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;
     }
