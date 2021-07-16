@@ -314,6 +314,64 @@ public class LoopManiaWorld {
         return defeatedEnemies;
     }
 
+    /**
+     * Calculates the gold reward for having too many cards or items or defeating an
+     * enemy
+     * 
+     * @return the amount of gold rewarded
+     */
+    public int goldReward() {
+        Random rand = new Random(); 
+        int upperbound = 10;
+        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 1000);
+        int giveGold = character.getGold() + goldGained;
+        return giveGold;
+    }
+
+    /**
+     * Collects all the possible item drops from a card that is destroyed
+     * 
+     * @return a list of items
+     */
+    public ArrayList<Item> getPosCardRewards() {
+        // Organise the possible items that drop from a card being destroyed
+        ArrayList<Item> itemRewards = new ArrayList<>();
+
+        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        
+        // Initialising all possible items (add more if we add more items)
+        Armor armor = new Armor(newX, newY);
+        Helmet helmet = new Helmet(newX, newY);
+        Shield shield = new Shield(newX, newY);
+        HealthPotion healthPotion = new HealthPotion(newX, newY);
+        Staff staff = new Staff(newX, newY);
+        Stake stake = new Stake(newX, newY);
+        Sword sword = new Sword(newX, newY);
+        // Append the items to the list
+        itemRewards.add(armor);
+        itemRewards.add(helmet);
+        itemRewards.add(shield);
+        itemRewards.add(staff);
+        itemRewards.add(stake);
+        itemRewards.add(sword);
+        itemRewards.add(healthPotion);
+
+        return itemRewards;
+    }
+
+    /**
+     * Randomises the item reward given based 
+     * 
+     * @return the item reward
+     */
+    public Item itemReward() {
+        Random rand = new Random(); 
+        ArrayList<Item> itemRewards = getPosCardRewards();
+        int upperbound = itemRewards.size();
+        return itemRewards.get(rand.nextInt(upperbound));
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////
     //                                   CARDS                                           //
     ///////////////////////////////////////////////////////////////////////////////////////
@@ -326,8 +384,13 @@ public class LoopManiaWorld {
     public VampireCastleCard loadVampireCard() {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()),
@@ -343,8 +406,13 @@ public class LoopManiaWorld {
      */
     public VillageCard loadVillageCard() {
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         VillageCard villageCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
@@ -375,8 +443,13 @@ public class LoopManiaWorld {
      */
     public ZombieGraveyardCard loadZombieGraveyardCard() {
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         ZombieGraveyardCard zombieGraveCard = new ZombieGraveyardCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
@@ -392,8 +465,13 @@ public class LoopManiaWorld {
     public TowerCard loadTowerCard() {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         TowerCard towerCard = new TowerCard(new SimpleIntegerProperty(cardEntities.size()),
@@ -410,8 +488,13 @@ public class LoopManiaWorld {
     public BarracksCard loadBarracksCard() {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         BarracksCard barracksCard = new BarracksCard(new SimpleIntegerProperty(cardEntities.size()),
@@ -428,8 +511,13 @@ public class LoopManiaWorld {
     public CampfireCard loadCampfireCard() {
         // if adding more cards than have, remove the first card...
         if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the card
-
+            // Assign XP (amount in the assumptions)
+            character.setXP(character.getXP() + 200);
+            // Assign gold randomly (formula in assumptions)
+            character.setGold(goldReward());
+            // Assign an item reward
+            Item loot = itemReward();
+            unequippedInventoryItems.add(loot);
             removeCard(0);
         }
         CampfireCard campfireCard = new CampfireCard(new SimpleIntegerProperty(cardEntities.size()),
@@ -680,17 +768,17 @@ public class LoopManiaWorld {
         Building newBuilding = null;
         // TODO: Adding other Card Types
         if (card instanceof VampireCastleCard) {
-            newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+            newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);
         } else if (card instanceof TrapCard) {
-            newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+            newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);
         } else if (card instanceof VillageCard) {
-            newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+            newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);        
         } else if (card instanceof TowerCard) {
-            newBuilding = new TowerBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+            newBuilding = new TowerBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);        
         } else if (card instanceof ZombieGraveyardCard) {
-            newBuilding = new ZombieGraveyardBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+            newBuilding = new ZombieGraveyardBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);        
         } else if (card instanceof CampfireCard) {
-            newBuilding = new CampfireBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+            newBuilding = new CampfireBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY), 0);        
         } else {
             try {
                 throw new Exception("Invalid Building Card Selected");
