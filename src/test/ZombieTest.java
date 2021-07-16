@@ -69,8 +69,8 @@ public class ZombieTest {
         initializeWorld();
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 100;
-        testWorld.killEnemy(newZombie);
-        assertEquals(expectedXP, currentXP);
+        testWorld.runBattles();
+        assertEquals(expectedXP, newCharacter.getXP());
     }
     
     /**
