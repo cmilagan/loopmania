@@ -10,15 +10,29 @@ import unsw.loopmania.Character;
 /**
  * a basic form of enemy in the world
  */
-public class BasicEnemy extends MovingEntity implements EnemyInterface {
-    private int health = 1;
-    private static int damage = 1;
-    private static int experience = 1;
-    private static int battleRadius = 1;
-    private static int supportRadius = 1;
+public class BasicEnemy extends MovingEntity {
+    private int damage;
+    private int health;
+    private int experience;
+    private int battleRadius;
+    private int supportRadius;
 
-    public BasicEnemy(PathPosition position) {
+    /**
+     * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
+     * @param position
+     * @param damage
+     * @param health
+     * @param experience
+     * @param battleRadius
+     * @param supportRadius
+     */
+    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius) {
         super(position);
+        this.damage = damage;
+        this.health = health;
+        this.experience = experience;
+        this.battleRadius = battleRadius;
+        this.supportRadius = supportRadius;
     }
 
     /**
@@ -37,23 +51,23 @@ public class BasicEnemy extends MovingEntity implements EnemyInterface {
     }
 
     public int getHealth() {
-        return 0;
+        return health;
     }
 
     public int getDamage() {
-        return 0;
+        return damage;
     }
 
     public int getExperience() {
-        return 0;
+        return experience;
     }
-    
+
     public int getBattleRadius() {
-        return 0;
+        return battleRadius;
     }
 
     public int getSupportRadius() {
-        return 0;
+        return supportRadius;
     }
 
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
