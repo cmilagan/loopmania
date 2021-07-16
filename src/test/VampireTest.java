@@ -11,64 +11,64 @@ import org.junit.jupiter.api.Test;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.npcs.Zombie;
+import unsw.loopmania.npcs.Vampire;
 
-public class ZombieTest {
+public class VampireTest {
     private int zombiePosition = 1;
     private int characterPosition = 0;
-    private Zombie newZombie;
+    private Vampire newVampire;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
     /**
-     * Test if the zombie spawns with an initial health of 10
+     * Test if the Vampire spawns with an initial health of 20
      */
     @Test
     void testInitialHealth() {
         initializeWorld();
-        int initialZombieHealth = 10;
-        assertEquals(initialZombieHealth, newZombie.getHealth());
+        int initialVampireHealth = 20;
+        assertEquals(initialVampireHealth, newVampire.getHealth());
     }
 
     /**
-     * Test if the zombie spawns with damage of 8
+     * Test if the Vampire spawns with damage of 20
      */
     @Test
-    void testZombieDamage() {
+    void testVampireDamage() {
         initializeWorld();
-        int initialDamage = 8;
-        assertEquals(initialDamage, newZombie.getDamage());
+        int initialDamage = 20;
+        assertEquals(initialDamage, newVampire.getDamage());
     }
 
     /**
-     * Test if the zombie spawns with a battle radius of 1
+     * Test if the Vampire spawns with a battle radius of 3
      */
     @Test
-    void testZombieBattleRadius() {
+    void testVampireBattleRadius() {
         initializeWorld();
-        int initialBattleRadius = 1;
-        assertEquals(initialBattleRadius, newZombie.getBattleRadius());
+        int initialBattleRadius = 3;
+        assertEquals(initialBattleRadius, newVampire.getBattleRadius());
     }
 
     /**
-     * Test if the zombie spawns with a support radius of 2
+     * Test if the Vampire spawns with a support radius of 4
      */
     @Test
-    void testZombieSupportRadius() {
+    void testVampireSupportRadius() {
         initializeWorld();
-        int initialSupportRadius = 2;
-        assertEquals(initialSupportRadius, newZombie.getSupportRadius());
+        int initialSupportRadius = 4;
+        assertEquals(initialSupportRadius, newVampire.getSupportRadius());
     }
 
     /**
-     * Test if a zombie gives 100 XP on defeat
+     * Test if the Vampire gives 200 XP on defeat
      */
     @Test
-    void testZombieXP() {
+    void testVampireXP() {
         initializeWorld();
         int currentXP = newCharacter.getXP();
-        int expectedXP = currentXP + 100;
+        int expectedXP = currentXP + 200;
         testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }
@@ -95,9 +95,9 @@ public class ZombieTest {
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
 
-        // initializing Zombie
-        PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
-        newZombie = new Zombie(zombiePathPosition);
-        testWorld.addEnemy(newZombie);
+        // initializing Vampire
+        PathPosition vampirePathPosition = new PathPosition(zombiePosition, orderedPath);
+        newVampire = new Vampire(vampirePathPosition);
+        testWorld.addEnemy(newVampire);
     }
 }
