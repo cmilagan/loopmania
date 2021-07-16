@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -78,6 +79,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(armor));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(armorID));
             }
         }
         assertTrue(itemPresent);
@@ -103,6 +107,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(healthPotion));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(healthPotionID));
             }
         }
         assertTrue(itemPresent);
@@ -128,6 +135,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(helmet));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(helmetID));
             }
         }
         assertTrue(itemPresent);
@@ -151,6 +161,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(ring));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(oneRingID));
             }
         }
         assertTrue(itemPresent);
@@ -176,6 +189,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(shield));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(shieldID));
             }
         }
         assertTrue(itemPresent);
@@ -200,6 +216,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(staff));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(staffID));
             }
         }
         assertTrue(itemPresent);
@@ -225,6 +244,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(stake));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(stakeID));
             }
         }
         assertTrue(itemPresent);
@@ -249,6 +271,9 @@ public class ShopItemTest {
 
                 // item should appear in character's inventory
                 assertTrue(testWorld.getCharacterInventory().contains(sword));
+
+                // cant buy another item
+                assertFalse(testWorld.buyItemByID(swordID));
             }
         }
         assertTrue(itemPresent);
