@@ -80,10 +80,6 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
-    // a list of battle items available at the Shop
-    private List<BattleItem> battleItems;
-
-
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -108,7 +104,6 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
-        battleItems = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -117,6 +112,70 @@ public class LoopManiaWorld {
 
     public int getHeight() {
         return height;
+    }
+
+    /**
+     * Given an ID that maps to an item in the shop, add the 
+     * respective item to the MC's unquipped inventory given 
+     * that the MC has sufficient gold to buy the item.
+     * 
+     * If MC does not have sufficient gold to buy item, return false.
+     * 
+     * Item Mapping:
+     * 0 - Armor
+     * 1 - Helmet
+     * 2 - Shield
+     * 3 - Staff
+     * 4 - Stake
+     * 5 - Sword
+     * 6 - One Ring
+     * 7 - Health Potion
+     */
+    public boolean buyItemByID(int itemID) {
+        List<BattleItem> battleItems = getBattleItems();
+        BattleItem itemBought = new BattleItem(null, null, 0, 0);
+        // TODO: what should the values of X and Y be?
+        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+
+        // get character's total gold and item cost
+        int itemCost = battleItems.get(itemID).getItemCost();
+        int characterGold = character.getGold();
+        // add item to character's inventory and return true 
+        if (characterGold >= itemCost) {
+            character.setGold(characterGold - itemCost);
+
+            if (itemID == 0) {
+                itemBought = new Armor(newX, newY);
+            } else if (itemID == 1) {
+                itemBought = new Helmet(newX, newY);
+            } else if (itemID == 2) {
+                itemBought = new Shield(newX, newY);
+            } else if (itemID == 3) {
+                itemBought = new Staff(newX, newY);
+            } else if (itemID == 4) {
+                itemBought = new Stake(newX, newY);
+            } else if (itemID == 5) {
+                itemBought = new Sword(newX, newY);
+            } else if (itemID == 6) {
+                itemBought = new OneRing(newX, newY);
+            } else if (itemID == 7) {
+                itemBought = new HealthPotion(newX, newY);
+            }
+
+            unequippedInventoryItems.add(itemBought);
+            return true;
+        }
+
+        // not enough gold to buy
+        return false;
+    }
+
+    /**
+     * Used for testing ShopItemTest.
+     */
+    public List<Entity> getCharacterInventory() {
+        return unequippedInventoryItems;
     }
 
     public List<BattleItem> getBattleItems() {
@@ -244,7 +303,7 @@ public class LoopManiaWorld {
      * 
      * @param enemy enemy to be killed
      */
-    public void killEnemy(BasicEnemy enemy) {
+    private void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -310,6 +369,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;
     }

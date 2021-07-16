@@ -11,6 +11,7 @@ import unsw.loopmania.npcs.BasicEnemy;
  */
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
+    private int gold = 0;
     private int health = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
     private Helmet equippedHelmet;
@@ -31,16 +32,24 @@ public class Character extends MovingEntity {
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
         if (enemyCrit) {
-            damageDealt = 3 * enemyDamage * this.getTotalDefence() * this.getTotalCritDefence();
+            damageDealt = 3 * (enemyDamage - this.getTotalDefence() - this.getTotalCritDefence());
         } else {
-            damageDealt = enemyDamage * this.getTotalDefence();
+            damageDealt = enemyDamage - this.getTotalDefence();
         }
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
     }
 
+    public int getGold() {
+        return gold;
+    }
+
     public int getHealth() {
         return health;
+    }
+
+    public void setGold(int newGold) {
+        gold = newGold;
     }
 
     public void setHealth(int newHealth) {

@@ -2,10 +2,10 @@
 - Battle and support (if applicable) radii values for each Enemy, Tower and Campfire:
     - Slug Battle Radius: 1
     - Slug Support Radius: 1
-    - Zombies Battle Radius: 2
+    - Zombies Battle Radius: 1
     - Zombies Support Radius: 2
-    - Vampire Battle Radius: 3
-    - Vampire Support Radius: 4
+    - Vampire Battle Radius: 2
+    - Vampire Support Radius: 3
     - Tower Support Radius: 2
     - Campfire Support Radius: 2
     - Circular Support Radius calculation done by starter code
@@ -33,6 +33,8 @@
     2. Allied soldiers
     3. Enemies (remaining enemies will attack allied soldiers first (if applicable) then main character)
     4. Main Character
+- When some enemy X is within the support radius of another enemy Y, the enemy Y teleports to X's position + 1 and the battle state should calculate the the total damage dealt on MC
+    - Note: such teleportation only occurs when the enemy is in battle
 - Critical Hits deal 3x Damage
  
 ## Building Related Assumptions:
