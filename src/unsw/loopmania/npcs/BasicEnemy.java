@@ -67,4 +67,8 @@ public class BasicEnemy extends MovingEntity {
     public int getSupportRadius() {
         return supportRadius;
     }
+
+    public boolean rollCrit() {
+        return false;
+    }
 }
