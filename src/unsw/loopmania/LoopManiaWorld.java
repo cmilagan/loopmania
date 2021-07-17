@@ -986,6 +986,7 @@ public class LoopManiaWorld {
 
                 } else if (b instanceof TowerBuilding) {
                     // TODO add building effects of tower:
+                    
                 } else if (b instanceof BarracksBuilding) {
 
                 } else if (b instanceof HeroCastleBuilding) {

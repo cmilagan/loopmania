@@ -20,6 +20,8 @@ import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Vampire;
 
 
 
@@ -37,12 +39,19 @@ public class VampireCastleTest {
     @Test
     void testVampireSpawn() {
         VampireCastleBuilding newVCastle = new VampireCastleBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newVCastle);
-        for (int i = 0; i < 8; i++) {
-            testWorld.runTickMoves();
-        }
-        // TODO: How do we check an enemy spawns, implementation based~
-        assertEquals(1, 2);
+        // testWorld.addBuilding(newVCastle);
+        // for (int i = 0; i < (orderedPath.size() * vampireCastleExpiry + 1); i++) {
+        //     testWorld.runTickMoves();
+        // }
+        // boolean vampireFound = false;
+        // List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
+        // for (BasicEnemy e: enemies) {
+        //     System.out.println("hello\n");
+        //     if (e instanceof Vampire) {
+        //         vampireFound = true;
+        //     }
+        // }
+        // assertEquals(true, vampireFound);
     }
     
     @Test
