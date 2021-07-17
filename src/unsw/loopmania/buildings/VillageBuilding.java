@@ -12,6 +12,7 @@ public class VillageBuilding extends Building {
     public VillageBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         this.heal = 10;
+        this.setExpiry(5);
     }
 
     public int getHeal() {

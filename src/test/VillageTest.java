@@ -20,6 +20,7 @@ import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.buildings.VillageBuilding;
+import unsw.loopmania.buildings.Building;
 
 
 
@@ -43,6 +44,8 @@ public class VillageTest {
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
         testWorld.addBuilding(newVillage);
+        assertEquals(villageHeal, newVillage.getHeal());
+        assertEquals(villageExpiry, newVillage.getExpiry());
         newCharacter.setHealth(50);
         testWorld.runTickMoves();
         testWorld.runTickMoves();
@@ -69,10 +72,13 @@ public class VillageTest {
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
         testWorld.addBuilding(newVillage);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
         for (int i = 0; i < 8 * villageExpiry; i++) {
             testWorld.runTickMoves();
         }
-        assertEquals(newVillage, null);
+        assertEquals(0, newVillage.getExpiry());
+        assertEquals(0, testWorldBuildings.size());
     }
     
     
