@@ -19,7 +19,9 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.npcs.Zombie;
 
 
 
@@ -28,7 +30,7 @@ import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 public class ZombieGraveyardTest {
 
     // building properties;
-    private int zombiePitExpiry = 5;
+    private int zombieGraveyardExpiry = 5;
     // world related fields
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -37,22 +39,32 @@ public class ZombieGraveyardTest {
     @Test
     void testZombieSpawn() {
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newGraveyard);
-        for (int i = 0; i < 8; i++) {
+        testWorld.addBuilding(newGraveyard);
+        for (int i = 0; i < orderedPath.size(); i++) {
             testWorld.runTickMoves();
         }
-        // TODO: How do we check an enemy spawns, implementation based~
-        assertEquals(1, 2);
+        boolean zombieFound = false;
+        List<Enemy> enemies = testWorld.getEnemies();
+        for (Enemy e: enemies) {
+            if (e instanceof Zombie) {
+                zombieFound = true;
+            }
+        }
+        assertEquals(true, zombieFound);
+
     }
     
     @Test
     void testZombieGraveyardExpiry() {
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newGraveyard);
-        for (int i = 0; i < 8 * zombiePitExpiry; i++) {
+        testWorld.addBuilding(newGraveyard);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
+        for (int i = 0; i < orderedPath.size() * zombieGraveyardExpiry; i++) {
             testWorld.runTickMoves();
         }
-        assertEquals(newGraveyard, null);
+        assertEquals(0, newGraveyard.getExpiry());
+        assertEquals(0, testWorldBuildings.size());
     }
     
 

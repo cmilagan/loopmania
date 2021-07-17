@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
@@ -624,10 +625,7 @@ public class LoopManiaWorld {
      * immediately
      */
     public void runTickMoves() {
-        character.moveDownPath();
-        applyBuildingEffects();
-        moveBasicEnemies();
-
+        
         // add to tick counter
         this.tickCounter += 1;
         // if loop completed increment
@@ -635,9 +633,15 @@ public class LoopManiaWorld {
             this.loopCounter += 1;
             // update building expiries
             buildingUpdateExpiry();
-        }        
+        }
+
+        character.moveDownPath();
+        applyBuildingEffects();
+        moveBasicEnemies();
         
         removeExpiredBuildings();
+
+        //e.g if loopCounter = 20 win game
 
     }
 
@@ -843,7 +847,6 @@ public class LoopManiaWorld {
             Pair<Integer, Integer> buildingPos = new Pair<Integer, Integer>(bX, bY);
             if (buildingPos.equals(characterPos)) {
                 // if character is on a village building, heal the character for 10
-                // TODO: check if this works
                 if (b instanceof VillageBuilding) {
                     System.out.println("building found\n");
                     VillageBuilding village = (VillageBuilding) b;
@@ -854,12 +857,32 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
+                } else if (b instanceof ZombieGraveyardBuilding) {
+                    // TODO Add building effects for zombie pit
+                    // spawn a zombie every loop
+                    // if (b.getExpiry())
+                } else if (b instanceof VampireCastleBuilding) {
+                    // TODO Add building effects for vampire castle
+                    // if (b.getExpiry == 0) spawn 1 vampire
+                } else if (b instanceof CampfireBuilding) {
+                    // TODO Add building effects for Campfire:
+
+                } else if (b instanceof TrapBuilding) {
+                    // TODO Add building effects for Trap:
+
+                } else if (b instanceof TowerBuilding) {
+                    // TODO add building effects of tower:
+                } else if (b instanceof BarracksBuilding) {
+
+                } else if (b instanceof HeroCastleBuilding) {
+                    // TODO add building effects of hero castle
+                    // open shop pause the game
                 }
+
+
+
             }
         }
-        // TODO Add building effects for Campfire:
-
-        // TODO Add building effects for Trap:
 
     }
 
