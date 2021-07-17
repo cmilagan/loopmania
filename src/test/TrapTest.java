@@ -60,7 +60,7 @@ class TrapTest {
                 // enemy steps on trap
                 assertEquals(e.getHealth() - trapDamage, e.getHealth() - newTrap.getDamage());
                 assertTrue(e.getHealth() < 0);
-                assertTrue(newTrap == null);
+                assertTrue(newTrap == null); //
             }
         }
     }
