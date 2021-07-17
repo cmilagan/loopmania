@@ -341,6 +341,11 @@ public class LoopManiaWorld {
                     Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
                     enemies.add(newZombie);
                     spawningEnemies.add(newZombie);
+                    if (b.getExpiry() == 0) {
+                        b.destroy();
+                        buildingEntities.remove(b);
+                        break;
+                    }
                 }
             } else if (b instanceof VampireCastleBuilding) {
                 if (b.getExpiry() == 0) {
@@ -351,7 +356,7 @@ public class LoopManiaWorld {
                     buildingEntities.remove(b);
                     break;
                 }
-            }
+            } 
         }
         return spawningEnemies;
     }
@@ -447,6 +452,7 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
+                        character.destroy();
                         break;
                     }
                 } else {
@@ -731,7 +737,7 @@ public class LoopManiaWorld {
     public void removeExpiredBuildings() {
         List<Building> expired = new ArrayList<Building>();
         for (Building b: buildingEntities) {
-            if (b.getExpiry() == 0 && ! (b instanceof VampireCastleBuilding)) {
+            if (b.getExpiry() == 0 && ! (b instanceof VampireCastleBuilding) && ! (b instanceof ZombieGraveyardBuilding)) {
                 b.destroy();
                 expired.add(b);
             }

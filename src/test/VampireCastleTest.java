@@ -19,6 +19,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Vampire;
@@ -38,30 +39,37 @@ public class VampireCastleTest {
     
     @Test
     void testVampireSpawn() {
+        initializeWorld();
         VampireCastleBuilding newVCastle = new VampireCastleBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        // testWorld.addBuilding(newVCastle);
-        // for (int i = 0; i < (orderedPath.size() * vampireCastleExpiry + 1); i++) {
-        //     testWorld.runTickMoves();
-        // }
-        // boolean vampireFound = false;
-        // List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
-        // for (BasicEnemy e: enemies) {
-        //     System.out.println("hello\n");
-        //     if (e instanceof Vampire) {
-        //         vampireFound = true;
-        //     }
-        // }
-        // assertEquals(true, vampireFound);
+        testWorld.addBuilding(newVCastle);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
+        for (int i = 0; i < (orderedPath.size() * vampireCastleExpiry); i++) {
+            testWorld.runTickMoves();
+        }
+        boolean vampireFound = false;
+        List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
+        for (BasicEnemy e: enemies) {
+            if (e instanceof Vampire) {
+                vampireFound = true;
+            }
+        }
+        assertEquals(true, vampireFound);
     }
     
     @Test
     void testVampireCastleExpiry() {
+        initializeWorld();
         VampireCastleBuilding newVCastle = new VampireCastleBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newVCastle);
-        for (int i = 0; i < 8 * vampireCastleExpiry; i++) {
+        testWorld.addBuilding(newVCastle);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
+        for (int i = 0; i < orderedPath.size() * vampireCastleExpiry; i++) {
             testWorld.runTickMoves();
+            testWorld.possiblySpawnEnemies();
         }
-        assertEquals(newVCastle, null);
+        assertEquals(0, newVCastle.getExpiry());
+        assertEquals(0, testWorldBuildings.size());
     }
     
 

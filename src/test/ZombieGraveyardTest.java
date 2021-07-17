@@ -72,6 +72,28 @@ public class ZombieGraveyardTest {
         assertEquals(0, newGraveyard.getExpiry());
         assertEquals(0, testWorldBuildings.size());
     }
+
+    @Test
+    void testZombieSpawnMax() {
+        // one singular zombie pit should spawn 5 zombies
+        initializeWorld();
+
+        ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        testWorld.addBuilding(newGraveyard);
+        List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
+        for (int i = 0; i < (orderedPath.size() * zombieGraveyardExpiry); i++) {
+            testWorld.runTickMoves();
+            enemies.addAll(testWorld.possiblySpawnEnemies());
+        }
+        int zombieCount = 0;
+        for (BasicEnemy e: enemies) {
+            if (e instanceof Zombie) {
+                zombieCount += 1;
+            }
+        }
+
+        assertEquals(zombieGraveyardExpiry, zombieCount);
+    }
     
 
     public void initializeWorld() {
