@@ -21,6 +21,7 @@ import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Zombie;
 
 
@@ -44,8 +45,8 @@ public class ZombieGraveyardTest {
             testWorld.runTickMoves();
         }
         boolean zombieFound = false;
-        List<Enemy> enemies = testWorld.getEnemies();
-        for (Enemy e: enemies) {
+        List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
+        for (BasicEnemy e: enemies) {
             if (e instanceof Zombie) {
                 zombieFound = true;
             }

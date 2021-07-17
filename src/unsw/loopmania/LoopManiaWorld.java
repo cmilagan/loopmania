@@ -36,6 +36,8 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
 
 /**
  * A backend world.
@@ -65,6 +67,10 @@ public class LoopManiaWorld {
      */
     private int loopCounter;
 
+    /**
+     * Previous loop count
+     */
+    private int prevLoop;
     /**
      * 
      * Current number of ticks;
@@ -279,19 +285,56 @@ public class LoopManiaWorld {
     }
 
     /**
+     * 
+     * @param x
+     * @param y
+     * @return the closest path tile
+     */
+    public Pair<Integer, Integer> closestPathTile(int x, int y) {
+        // finding the closest path
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Pair<Integer, Integer> tile = new Pair<Integer, Integer>((x - i), (y - j));
+                if (orderedPath.contains(tile)) {
+                    return tile;
+                }
+            }
+        }   
+        return null;
+    }
+
+    /**
      * spawns enemies if the conditions warrant it, adds to world
      * 
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
-        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
+
+        // spawning slugs
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
+
+        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
+        }
+
+        // spawning zombies and vampires
+        for (Building b: buildingEntities) {
+            Pair<Integer, Integer> buildSpawnPos = closestPathTile(b.getX(), b.getY());
+            if (b instanceof ZombieGraveyardBuilding) {
+                int indexInPath = orderedPath.indexOf(buildSpawnPos);
+                if (prevLoop != loopCounter) {
+                    Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
+                    enemies.add(newZombie);
+                    spawningEnemies.add(newZombie);
+                }
+            } else if (b instanceof VampireCastleBuilding) {
+
+            }
         }
         return spawningEnemies;
     }
@@ -629,6 +672,7 @@ public class LoopManiaWorld {
         // add to tick counter
         this.tickCounter += 1;
         // if loop completed increment
+        this.prevLoop = this.loopCounter;
         if (this.tickCounter % orderedPath.size() == 0) {
             this.loopCounter += 1;
             // update building expiries
@@ -857,13 +901,6 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
-                } else if (b instanceof ZombieGraveyardBuilding) {
-                    // TODO Add building effects for zombie pit
-                    // spawn a zombie every loop
-                    // if (b.getExpiry())
-                } else if (b instanceof VampireCastleBuilding) {
-                    // TODO Add building effects for vampire castle
-                    // if (b.getExpiry == 0) spawn 1 vampire
                 } else if (b instanceof CampfireBuilding) {
                     // TODO Add building effects for Campfire:
 

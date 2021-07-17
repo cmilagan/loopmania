@@ -54,6 +54,10 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
+import unsw.loopmania.npcs.AlliedSoldier;
 
 import java.util.EnumMap;
 
@@ -160,8 +164,12 @@ public class LoopManiaWorldController {
     private Image barracksBuildingImage;
     private Image herosCastleImage;
 
-    private Image basicEnemyImage;
     private Image swordImage;
+
+    // enemy images
+    private Image slugImage;
+    private Image zombieImage;
+    private Image vampireImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -229,8 +237,10 @@ public class LoopManiaWorldController {
         herosCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
 
         // Enemy images
-        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
-        
+        slugImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+
         // Item images
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         
@@ -423,7 +433,7 @@ public class LoopManiaWorldController {
 
 
         // TODO: add RNG
-
+        System.out.println("Rewarding user\n");
         // 50/50 either item or card
         Random rd = new Random();
         if (rd.nextDouble() < 0) {
@@ -532,7 +542,21 @@ public class LoopManiaWorldController {
      * @param enemy
      */
     private void onLoad(BasicEnemy enemy) {
-        ImageView view = new ImageView(basicEnemyImage);
+        ImageView view = null;
+        if (enemy instanceof Slug) {    
+            view = new ImageView(slugImage);
+        } else if (enemy instanceof Zombie) {
+            view = new ImageView(zombieImage);
+        } else if (enemy instanceof Vampire) {
+            view = new ImageView(vampireImage);
+        } else {
+            try {
+                throw new Exception("Invalid Enemy");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         addEntity(enemy, view);
         squares.getChildren().add(view);
     }
