@@ -78,8 +78,6 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
-<<<<<<< HEAD
-=======
     // a list of battle items available at the Shop
     private List<BattleItem> battleItems;
 
@@ -87,7 +85,6 @@ public class LoopManiaWorld {
     private List<AlliedSoldier> alliedSoldiers;
 
 
->>>>>>> allied-soldier-implementation
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
