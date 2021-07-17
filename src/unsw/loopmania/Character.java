@@ -1,5 +1,7 @@
 package unsw.loopmania;
 
+import org.javatuples.Pair;
+
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.Helmet;
@@ -31,11 +33,8 @@ public class Character extends MovingEntity {
         int enemyDamage = enemy.getDamage();
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
-        if (enemyCrit) {
-            damageDealt = 3 * (enemyDamage - this.getTotalDefence() - this.getTotalCritDefence());
-        } else {
-            damageDealt = enemyDamage - this.getTotalDefence();
-        }
+        if (enemyCrit) damageDealt = (int)(3 * enemyDamage * this.getTotalDefenceMultiplier() * this.getTotalCritDefenceMultiplier());
+        else damageDealt = (int)(enemyDamage * this.getTotalDefenceMultiplier());
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
     }
@@ -48,12 +47,20 @@ public class Character extends MovingEntity {
         return health;
     }
 
+    public int getXP() {
+        return xp;
+    }
+
     public void setGold(int newGold) {
         gold = newGold;
     }
 
     public void setHealth(int newHealth) {
         health = newHealth;
+    }
+
+    public void setXP(int newXP) {
+        xp = newXP;
     }
 
     public Helmet getHelmet() {
@@ -88,33 +95,29 @@ public class Character extends MovingEntity {
         this.equippedShield = shield;
     }
 
-    private int getTotalDefence() {
-        int totalDefence = 0;
-        if (this.equippedArmor != null) totalDefence += this.equippedArmor.getDefence();
-        if (this.equippedHelmet != null) totalDefence += this.equippedHelmet.getDefence();
-        if (this.equippedShield != null) totalDefence += this.equippedShield.getDefence();
-        return totalDefence;
+    private double getTotalDefenceMultiplier() {
+        double multiplier = 1;
+        if (this.equippedArmor != null) multiplier -= this.equippedArmor.getDefence();
+        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.getDefence();
+        if (this.equippedShield != null) multiplier -= this.equippedShield.getDefence();
+        return multiplier;
     }
     
 
-    private int getTotalCritDefence() {
-        int totalCritDefence = 0;
-        if (this.equippedArmor != null) totalCritDefence += this.equippedArmor.getCritDefence();
-        if (this.equippedHelmet != null) totalCritDefence += this.equippedHelmet.getCritDefence();
-        if (this.equippedShield != null) totalCritDefence += this.equippedShield.getCritDefence();
-        return totalCritDefence;
+    private double getTotalCritDefenceMultiplier() {
+        double multiplier = 1;
+        if (this.equippedArmor != null) multiplier -= this.equippedArmor.getCritDefence();
+        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.getCritDefence();
+        if (this.equippedShield != null) multiplier -= this.equippedShield.getCritDefence();
+        return multiplier;
     }
 
     public int getDamage() {
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.getDamage();
     }
-    
-     public int getXP() {
-        return this.xp;
-    }
 
-    public void setXP(int xp) {
-        this.xp = xp;
+    public Pair getCoordinatePair() {
+        return new Pair<Integer, Integer>(this.getX(), this.getY());
     }
 }

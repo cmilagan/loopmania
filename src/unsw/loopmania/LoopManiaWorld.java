@@ -33,8 +33,10 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Zombie;
 
 /**
  * A backend world.
@@ -85,6 +87,13 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
+    // a list of battle items available at the Shop
+    private List<BattleItem> battleItems;
+
+    // a list of allied soldiers
+    private List<AlliedSoldier> alliedSoldiers;
+
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -110,6 +119,8 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         loopCount = 0;
+        battleItems = new ArrayList<>();
+        alliedSoldiers = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -348,26 +359,39 @@ public class LoopManiaWorld {
                     System.out.println("adding enemy");
                 }
             }
-            int numberOfEnemies = battleEnemies.size();
             // Conduct Fights with Valid Enemies
-            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
+            while (character.getHealth() > 0 && battleEnemies.size() > 0) {
                 System.out.println("initiating battle phase");
                 // Continuously fight until character loses or all enemies are defeated
-                for (BasicEnemy e : battleEnemies) {
-                    // Ignore Dead Enemies
-                    if (e.getHealth() <= 0) {
-                        continue;
-                    }
-                    // Calculate Character
-                    int characterHealth = character.applyEnemyDamage(e);
-                    if (characterHealth == 0) {
-                        System.out.println("character killed");
-                        break;
+                List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
+                // Newly added zombies can't attack until next phase
+                for (BasicEnemy e : currentBattleEnemies) {
+                    if (alliedSoldiers.size() == 0) {
+                        // Calculate Character
+                        int characterHealth = character.applyEnemyDamage(e);
+                        if (characterHealth == 0) {
+                            System.out.println("character killed");
+                            break;
+                        }
+                    } else {
+                        for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+                            int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                            if (alliedSoldierHealth == 0) {
+                                // Remove Allied Soldier
+                                alliedSoldiers.remove(alliedSoldier);
+                            } else if (alliedSoldierHealth == -1) {
+                                // Spawn Zombie
+                                alliedSoldiers.remove(alliedSoldier);
+                                int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
+                                battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
+                            }
+                        }
                     }
                     // Calculate Enemy
-                    int enemyHealth = e.applyCharacterDamage(character);
+                    int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
                     if (enemyHealth == 0) {
                         defeatedEnemies.add(e);
+                        battleEnemies.remove(e);
                         System.out.println("enemy killed");
                     }
                 }
