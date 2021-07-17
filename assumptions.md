@@ -60,6 +60,10 @@
 - Villages heal 10 health to character
 - You cannot move buildings once placed.
 - Killing an enemy grants either an item drop or a building but not both.
+- ZombiePits spawn 1 zombie every loop
+- Vampire castles spawn vampires every 5 loops
+- Zombies/vampires spawn on their respective buildings
+
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
  
