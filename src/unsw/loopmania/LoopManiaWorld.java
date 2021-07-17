@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
@@ -36,6 +37,7 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
 /**
@@ -65,6 +67,16 @@ public class LoopManiaWorld {
      * Current number of loops completed;
      */
     private int loopCounter;
+
+    /**
+     * Previous loop count
+     */
+    private int prevLoop;
+    /**
+     * 
+     * Current number of ticks;
+     */
+    private int tickCounter;
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -283,19 +295,56 @@ public class LoopManiaWorld {
     }
 
     /**
+     * 
+     * @param x
+     * @param y
+     * @return the closest path tile
+     */
+    public Pair<Integer, Integer> closestPathTile(int x, int y) {
+        // finding the closest path
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Pair<Integer, Integer> tile = new Pair<Integer, Integer>((x - i), (y - j));
+                if (orderedPath.contains(tile)) {
+                    return tile;
+                }
+            }
+        }   
+        return null;
+    }
+
+    /**
      * spawns enemies if the conditions warrant it, adds to world
      * 
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
-        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
+
+        // spawning slugs
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
+
+        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
+        }
+
+        // spawning zombies and vampires
+        for (Building b: buildingEntities) {
+            Pair<Integer, Integer> buildSpawnPos = closestPathTile(b.getX(), b.getY());
+            if (b instanceof ZombieGraveyardBuilding) {
+                int indexInPath = orderedPath.indexOf(buildSpawnPos);
+                if (prevLoop != loopCounter) {
+                    Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
+                    enemies.add(newZombie);
+                    spawningEnemies.add(newZombie);
+                }
+            } else if (b instanceof VampireCastleBuilding) {
+
+            }
         }
         return spawningEnemies;
     }
@@ -659,20 +708,53 @@ public class LoopManiaWorld {
         item.destroy();
     }
 
+
+    /**
+     * Update building expiries when a loop is completed
+     */
+
+    public void buildingUpdateExpiry() {
+        for (Building b: buildingEntities) {
+            b.setExpiry(b.getExpiry() - 1);
+        }
+    }
+    /**
+     * Remove all buildings which have expired
+     */
+    public void removeExpiredBuildings() {
+        List<Building> expired = new ArrayList<Building>();
+        for (Building b: buildingEntities) {
+            if (b.getExpiry() == 0) {
+                expired.add(b);
+            }
+        }
+        buildingEntities.removeAll(expired);
+    }
+
+    
     /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
      */
     public void runTickMoves() {
-        applyBuildingEffects();
+        
+        // add to tick counter
+        this.tickCounter += 1;
+        // if loop completed increment
+        this.prevLoop = this.loopCounter;
+        if (this.tickCounter % orderedPath.size() == 0) {
+            this.loopCounter += 1;
+            // update building expiries
+            buildingUpdateExpiry();
+        }
+
         character.moveDownPath();
+        applyBuildingEffects();
         moveBasicEnemies();
         
-        // increment the loop counter when possible
-        int cX = character.getX();
-        int cY = character.getY();
-        Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
-        
+        removeExpiredBuildings();
+
+        //e.g if loopCounter = 20 win game
 
     }
 
@@ -815,18 +897,6 @@ public class LoopManiaWorld {
     //////////////////////////////////////////////////////////////////////
 
     /**
-     * remove building from the grid that has expired
-     * 
-     * @param id the id of the building, from 0 to inf
-     */
-    private void removeBuilding(int index) {
-        // Find the building corresponding to the id
-        Building b = buildingEntities.get(index);
-        b.destroy();
-        buildingEntities.remove(index);
-    }
-
-    /**
      * remove a card by its x, y coordinates
      * @param cardNodeX x index from 0 to width-1 of card to be removed
      * @param cardNodeY y index from 0 to height-1 of card to be removed
@@ -883,16 +953,13 @@ public class LoopManiaWorld {
         // TODO Add building effects for village:
         int cX = character.getX();
         int cY = character.getY();
-        System.out.println("function call\n");
         Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
         for (Building b: buildingEntities) {
-            System.out.println("in the loop\n");
             int bX = b.getX();
             int bY = b.getY();
             Pair<Integer, Integer> buildingPos = new Pair<Integer, Integer>(bX, bY);
             if (buildingPos.equals(characterPos)) {
                 // if character is on a village building, heal the character for 10
-                // TODO: check if this works
                 if (b instanceof VillageBuilding) {
                     System.out.println("building found\n");
                     VillageBuilding village = (VillageBuilding) b;
@@ -903,12 +970,25 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
+                } else if (b instanceof CampfireBuilding) {
+                    // TODO Add building effects for Campfire:
+
+                } else if (b instanceof TrapBuilding) {
+                    // TODO Add building effects for Trap:
+
+                } else if (b instanceof TowerBuilding) {
+                    // TODO add building effects of tower:
+                } else if (b instanceof BarracksBuilding) {
+
+                } else if (b instanceof HeroCastleBuilding) {
+                    // TODO add building effects of hero castle
+                    // open shop pause the game
                 }
+
+
+
             }
         }
-        // TODO Add building effects for Campfire:
-
-        // TODO Add building effects for Trap:
 
     }
 

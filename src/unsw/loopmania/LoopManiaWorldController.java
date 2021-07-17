@@ -37,6 +37,7 @@ import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
@@ -53,6 +54,10 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
+import unsw.loopmania.npcs.AlliedSoldier;
 
 import java.util.EnumMap;
 
@@ -169,9 +174,14 @@ public class LoopManiaWorldController {
     private Image campfireBuildingImage;
     private Image towerBuildingImage;
     private Image barracksBuildingImage;
+    private Image herosCastleImage;
 
-    private Image basicEnemyImage;
     private Image swordImage;
+
+    // enemy images
+    private Image slugImage;
+    private Image zombieImage;
+    private Image vampireImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -236,10 +246,13 @@ public class LoopManiaWorldController {
         towerBuildingImage = new Image((new File("src/images/tower.png")).toURI().toString());
         barracksBuildingImage = new Image((new File("src/images/barracks.png")).toURI().toString());
         campfireCardImage = new Image((new File("src/images/campfire.png")).toURI().toString());
+        herosCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
 
         // Enemy images
-        basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
-        
+        slugImage = new Image((new File("src/images/slug.png")).toURI().toString());
+        zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
+        vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+
         // Item images
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         
@@ -440,7 +453,7 @@ public class LoopManiaWorldController {
 
 
         // TODO: add RNG
-
+        System.out.println("Rewarding user\n");
         // 50/50 either item or card
         Random rd = new Random();
         if (rd.nextDouble() < 0) {
@@ -549,7 +562,21 @@ public class LoopManiaWorldController {
      * @param enemy
      */
     private void onLoad(BasicEnemy enemy) {
-        ImageView view = new ImageView(basicEnemyImage);
+        ImageView view = null;
+        if (enemy instanceof Slug) {    
+            view = new ImageView(slugImage);
+        } else if (enemy instanceof Zombie) {
+            view = new ImageView(zombieImage);
+        } else if (enemy instanceof Vampire) {
+            view = new ImageView(vampireImage);
+        } else {
+            try {
+                throw new Exception("Invalid Enemy");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         addEntity(enemy, view);
         squares.getChildren().add(view);
     }
@@ -563,7 +590,6 @@ public class LoopManiaWorldController {
         if (building instanceof VampireCastleBuilding) {
             view = new ImageView(vampireBuildingImage);
         } else if (building instanceof VillageBuilding) {
-            // TODO: Add village Building Image
             view = new ImageView(villageBuildingImage);
         } else if (building instanceof TrapBuilding) {
             view = new ImageView(trapBuildingImage);
@@ -575,6 +601,8 @@ public class LoopManiaWorldController {
             view = new ImageView(towerBuildingImage);
         } else if (building instanceof BarracksBuilding) {
             view = new ImageView(barracksBuildingImage);
+        } else if (building instanceof HeroCastleBuilding) {
+            view = new ImageView(herosCastleImage);
         } else {
             try {
                 throw new Exception("Invalid Building");
@@ -596,16 +624,14 @@ public class LoopManiaWorldController {
     private void buildNonEntityDragHandlers(DRAGGABLE_TYPE draggableType, GridPane sourceGridPane, GridPane targetGridPane){
         // TODO = be more selective about where something can be dropped
         // for example, in the specification, villages can only be dropped on path, whilst vampire castles cannot go on the path
-
+        
         gridPaneSetOnDragDropped.put(draggableType, new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 // TODO = for being more selective about where something can be dropped, consider applying additional if-statement logic
-                // TODO return card to slot if invalid placement is handled.
                 /*
                  *you might want to design the application so dropping at an invalid location drops at the most recent valid location hovered over,
                  * or simply allow the card/item to return to its slot (the latter is easier, as you won't have to store the last valid drop location!)
                  */
-
                 if (currentlyDraggedType == draggableType){
                     // problem = event is drop completed is false when should be true...
                     // https://bugs.openjdk.java.net/browse/JDK-8117019
@@ -627,12 +653,16 @@ public class LoopManiaWorldController {
 
                         int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
                         int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+
                         switch (draggableType){
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
-                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                onLoad(newBuilding);    
+                                boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                if (canPlace) {
+                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                    onLoad(newBuilding);
+                                }
                                 break;
                             case ITEM:
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
@@ -652,11 +682,12 @@ public class LoopManiaWorldController {
                         printThreadingNotes("DRAG DROPPED ON GRIDPANE HANDLED");
                     }
                 }
+
                 event.setDropCompleted(true);
                 // consuming prevents the propagation of the event to the anchorPaneRoot (as a sub-node of anchorPaneRoot, GridPane is prioritized)
                 // https://openjfx.io/javadoc/11/javafx.base/javafx/event/Event.html#consume()
                 // to understand this in full detail, ask your tutor or read https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm
-                event.consume();
+                event.consume();    
             }
         });
 
