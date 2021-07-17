@@ -679,13 +679,47 @@ public class LoopManiaWorld {
         // now we insert an item, as we know we have at least made a slot
         // available...
         Random rand = new Random();
-        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
+        double choice = rand.nextDouble();
         Item addedItem = null;
-        if (choice > 0) {
-            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+        if (choice < 0.95) {
+            System.out.println("basic item");
+            Random nrand = new Random();
+            int nextChoice = nrand.nextInt(6);
+            switch (nextChoice) {
+                case 0:
+                    System.out.println("basic item");
+                    addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                     new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 1:
+                    addedItem = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 2:
+                    addedItem = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 3:
+                    addedItem = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 4:
+                    addedItem = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 5:
+                    addedItem = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                case 7:
+                    addedItem = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                    break;
+                default:
+                    break;
+            }
         } else {
-            addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+            addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                     new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
         }
         unequippedInventoryItems.add(addedItem);
