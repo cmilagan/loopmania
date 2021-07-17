@@ -680,43 +680,36 @@ public class LoopManiaWorld {
         // available...
         Random rand = new Random();
         double choice = rand.nextDouble();
+        System.out.println(choice);
         Item addedItem = null;
         if (choice < 0.95) {
             System.out.println("basic item");
             Random nrand = new Random();
             int nextChoice = nrand.nextInt(6);
-            switch (nextChoice) {
-                case 0:
-                    System.out.println("basic item");
-                    addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 1:
-                    addedItem = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 2:
-                    addedItem = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 3:
-                    addedItem = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 4:
-                    addedItem = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 5:
-                    addedItem = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                case 7:
-                    addedItem = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
-                    break;
-                default:
-                    break;
+            System.out.println(nextChoice);
+
+            if (nextChoice == 0) {
+                System.out.println("sword dropped");
+                addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 1) {
+                addedItem = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 2) {
+                addedItem = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 3) {
+                addedItem = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 4) {
+                addedItem = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 5) {
+                addedItem = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 6) {
+                addedItem = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
         } else {
             addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
