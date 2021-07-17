@@ -47,8 +47,10 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
+import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
@@ -177,6 +179,14 @@ public class LoopManiaWorldController {
     private Image herosCastleImage;
 
     private Image swordImage;
+    private Image shieldImage;
+    private Image armourImage;
+    private Image helmetImage;
+    private Image potionImage;
+    private Image stakeImage;
+    private Image staffImage;
+    private Image ringImage;
+    
 
     // enemy images
     private Image slugImage;
@@ -255,6 +265,13 @@ public class LoopManiaWorldController {
 
         // Item images
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        shieldImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        armourImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        ringImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        staffImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        stakeImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        helmetImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        potionImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
@@ -457,7 +474,7 @@ public class LoopManiaWorldController {
         // 50/50 either item or card
         
         Random rd = new Random();
-        if (rd.nextDouble() < 0) {
+        if (rd.nextDouble() > 0) {
             // TODO: RNG for item drops
             loadLoot();
         } else {
@@ -540,10 +557,19 @@ public class LoopManiaWorldController {
         if (item instanceof Sword) {
             view = new ImageView(swordImage);
         } else if (item instanceof Armor) {
+            view = new ImageView(armourImage);
         } else if (item instanceof Helmet) {
+            view = new ImageView(helmetImage);
         } else if (item instanceof Shield) {
+            view = new ImageView(shieldImage);
         } else if (item instanceof Staff) {
+            view = new ImageView(staffImage);
         } else if (item instanceof Stake) {
+            view = new ImageView(stakeImage);
+        } else if (item instanceof HealthPotion) {
+            view = new ImageView(potionImage);
+        } else if (item instanceof OneRing) {
+            view = new ImageView(ringImage);
         } else {
             try {
                 throw new Exception("Invalid Item");
