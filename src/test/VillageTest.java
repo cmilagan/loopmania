@@ -20,6 +20,7 @@ import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.buildings.VillageBuilding;
+import unsw.loopmania.buildings.Building;
 
 
 
@@ -42,7 +43,9 @@ public class VillageTest {
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
+        assertEquals(villageHeal, newVillage.getHeal());
+        assertEquals(villageExpiry, newVillage.getExpiry());
         newCharacter.setHealth(50);
         testWorld.runTickMoves();
         testWorld.runTickMoves();
@@ -50,29 +53,32 @@ public class VillageTest {
         assertEquals(50 + villageHeal, newCharacter.getHealth());
     }
 
-
+    @Test
     void testVillageHealMax() {
         // heals character on full health
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should not gain extra health for passing through village
-        assertEquals(100, newCharacter.getHealth());
+        assertEquals(newCharacter.getMaxHealth(), newCharacter.getHealth());
     }
     @Test
     void testVillageExpiry() {
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
         for (int i = 0; i < 8 * villageExpiry; i++) {
             testWorld.runTickMoves();
         }
-        assertEquals(newVillage, null);
+        assertEquals(0, newVillage.getExpiry());
+        assertEquals(0, testWorldBuildings.size());
     }
     
     

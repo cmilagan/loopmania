@@ -27,12 +27,5 @@ public class Building extends StaticEntity {
     public void setExpiry(int newExpiry) {
         this.expiry = newExpiry;
     }
-
-    /**
-     * determine if the placement of the building type is valid
-     * @param x
-     * @param y
-     * @return boolean
-     */
     
 }

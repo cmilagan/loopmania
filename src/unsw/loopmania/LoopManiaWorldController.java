@@ -37,6 +37,8 @@ import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HeroCastleBuilding;
+import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
@@ -168,6 +170,7 @@ public class LoopManiaWorldController {
     private Image campfireBuildingImage;
     private Image towerBuildingImage;
     private Image barracksBuildingImage;
+    private Image herosCastleImage;
 
     private Image basicEnemyImage;
     private Image swordImage;
@@ -235,6 +238,7 @@ public class LoopManiaWorldController {
         towerBuildingImage = new Image((new File("src/images/tower.png")).toURI().toString());
         barracksBuildingImage = new Image((new File("src/images/barracks.png")).toURI().toString());
         campfireCardImage = new Image((new File("src/images/campfire.png")).toURI().toString());
+        herosCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
 
         // Enemy images
         basicEnemyImage = new Image((new File("src/images/slug.png")).toURI().toString());
@@ -459,12 +463,11 @@ public class LoopManiaWorldController {
             } else if (rgen > 0.90 && rgen <= 0.99) {
                 // epic
                 rgen = rd.nextDouble();
-                loadVillageCard();
                 if (rgen <= (1/3)) {
                     loadVillageCard();
-                } else if (rgen <= (2/3)) {
+                } else if (rgen <= (2/3) && rgen > (1/3)) {
                     loadCampfireCard();
-                } else if (rgen <= 1) {
+                } else if (rgen <= 1 && rgen > (2/3)) {
                     loadBarracksCard();
                 }
             } else if (rgen > 0.6 && rgen <= 0.90) { 
@@ -563,7 +566,6 @@ public class LoopManiaWorldController {
         if (building instanceof VampireCastleBuilding) {
             view = new ImageView(vampireBuildingImage);
         } else if (building instanceof VillageBuilding) {
-            // TODO: Add village Building Image
             view = new ImageView(villageBuildingImage);
         } else if (building instanceof TrapBuilding) {
             view = new ImageView(trapBuildingImage);
@@ -575,6 +577,8 @@ public class LoopManiaWorldController {
             view = new ImageView(towerBuildingImage);
         } else if (building instanceof BarracksBuilding) {
             view = new ImageView(barracksBuildingImage);
+        } else if (building instanceof HeroCastleBuilding) {
+            view = new ImageView(herosCastleImage);
         } else {
             try {
                 throw new Exception("Invalid Building");
@@ -596,7 +600,7 @@ public class LoopManiaWorldController {
     private void buildNonEntityDragHandlers(DRAGGABLE_TYPE draggableType, GridPane sourceGridPane, GridPane targetGridPane){
         // TODO = be more selective about where something can be dropped
         // for example, in the specification, villages can only be dropped on path, whilst vampire castles cannot go on the path
-
+        
         gridPaneSetOnDragDropped.put(draggableType, new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
                 // TODO = for being more selective about where something can be dropped, consider applying additional if-statement logic
@@ -615,11 +619,12 @@ public class LoopManiaWorldController {
                     Node node = event.getPickResult().getIntersectedNode();
                     if(node != targetGridPane && db.hasImage()){
 
+                        //Places at 0,0 - will need to take coordinates once that is implemented
                         Integer cIndex = GridPane.getColumnIndex(node);
                         Integer rIndex = GridPane.getRowIndex(node);
                         int x = cIndex == null ? 0 : cIndex;
                         int y = rIndex == null ? 0 : rIndex;
-                        //Places at 0,0 - will need to take coordinates once that is implemented
+
                         ImageView image = new ImageView(db.getImage());
 
                         int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
@@ -629,19 +634,15 @@ public class LoopManiaWorldController {
                             case CARD:
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
-                                // TODO occupied tiles
-                                boolean canPlace = world.checkValidPlacement(nodeX, nodeY, x, y);
+                                boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
                                 if (canPlace) {
                                     Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                    onLoad(newBuilding);    
-                                } else {
-                                    x = nodeX;
-                                    y = nodeY;
+                                    onLoad(newBuilding);
                                 }
                                 break;
                             case ITEM:
-                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
+                                removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 break;
@@ -657,11 +658,12 @@ public class LoopManiaWorldController {
                         printThreadingNotes("DRAG DROPPED ON GRIDPANE HANDLED");
                     }
                 }
+
                 event.setDropCompleted(true);
                 // consuming prevents the propagation of the event to the anchorPaneRoot (as a sub-node of anchorPaneRoot, GridPane is prioritized)
                 // https://openjfx.io/javadoc/11/javafx.base/javafx/event/Event.html#consume()
                 // to understand this in full detail, ask your tutor or read https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm
-                event.consume();
+                event.consume();    
             }
         });
 
@@ -753,6 +755,7 @@ public class LoopManiaWorldController {
                 view.setVisible(false);
 
                 buildNonEntityDragHandlers(draggableType, sourceGridPane, targetGridPane);
+
 
                 draggedEntity.relocateToPoint(new Point2D(event.getSceneX(), event.getSceneY()));
                 switch (draggableType){
