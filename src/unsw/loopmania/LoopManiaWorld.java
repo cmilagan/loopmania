@@ -69,7 +69,7 @@ public class LoopManiaWorld {
      * Current number of ticks;
      */
     private int tickCounter;
-    
+
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -950,10 +950,31 @@ public class LoopManiaWorld {
                     }
                 }
             }
+            // Check if there is a campfire
+            if (b instanceof CampfireBuilding) {
+                // Check if the character is in range of the campfire
+                CampfireBuilding campfire = (CampfireBuilding) b;
+                if (Math.pow((character.getX() - campfire.getX()), 2) + Math.pow((character.getY() - campfire.getY()), 2) <= campfire.getRange()) {
+                    // Buff the damage of the character
+                    character.setDamage(character.getDamage() * 2);
+                } else {
+                    // If not in the radius, make sure the damage goes back to normal
+                    character.setDamage(character.getDamage());
+                }
+            }
+            // Check if an enemy stepped into a trap
+            if (b instanceof TrapBuilding) {
+                TrapBuilding trap = (TrapBuilding) b;
+                // Loop through all the enemies and find their position and if it is on the trap
+                for (BasicEnemy e : enemies) {
+                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
+                    if (buildingPos == enemyPos) {
+                        // Deal damage to the enemy
+                        e.applyTrapDamage(trap.getDamage());
+                    }
+                }
+            }
         }
-        // TODO Add building effects for Campfire:
-
-        // TODO Add building effects for Trap:
 
     }
 
