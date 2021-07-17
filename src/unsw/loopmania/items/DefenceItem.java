@@ -18,6 +18,9 @@ public class DefenceItem extends BattleItem {
         this.critDefencePercentage = critDefencePercentage;
     }
 
+    /**
+     * getDefence() and getCritDefence() is for testing purposes only
+     */
     public int getDefence() {
         return defencePercentage;
     }
@@ -25,4 +28,8 @@ public class DefenceItem extends BattleItem {
     public int getCritDefence() {
         return critDefencePercentage;
     }
+
+    public int useDefence() { return 0; }
+
+    public int useCritDefence() { return 0; }
 }

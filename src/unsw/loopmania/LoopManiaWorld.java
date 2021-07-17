@@ -26,6 +26,8 @@ import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.DefenceItem;
+import unsw.loopmania.items.ExpirableItems;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -163,9 +165,8 @@ public class LoopManiaWorld {
     public boolean buyItemByID(int itemID) {
         List<BattleItem> battleItems = getBattleItems();
         BattleItem itemBought = new BattleItem(null, null, 0, 0);
-        // TODO: what should the values of X and Y be?
-        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
-        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newX = new SimpleIntegerProperty();
+        SimpleIntegerProperty newY = new SimpleIntegerProperty();
 
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
@@ -731,6 +732,36 @@ public class LoopManiaWorld {
         buildingEntities.removeAll(expired);
     }
 
+    /**
+     * Remove all expired items from character's equipped and unequipped inventory
+     */
+    public void removeExpiredItems() {
+        List<BattleItem> expirableItems = new ArrayList<BattleItem>();
+        for (Entity entities : unequippedInventoryItems) {
+            if (entities instanceof BattleItem) {
+                expirableItems.add((BattleItem) entities);
+            }
+        }
+
+        /**
+         * Check if item is expired, if it is remove from unequipped inventory and
+         * remove from character's equipped inventory
+         */
+        for (BattleItem item : expirableItems) {
+            if (item.getUsage() == item.getItemDurability()) {
+                unequippedInventoryItems.remove(item);
+                if (item instanceof AttackItem) {
+                    character.setWeapon(null);
+                } else if (item instanceof Helmet) {
+                    character.setHelmet(null);
+                } else if (item instanceof Shield) {
+                    character.setShield(null);
+                } else if (item instanceof Armor) {
+                    character.setArmor(null);
+                }
+            }
+        }
+    }
     
     /**
      * run moves which occur with every tick without needing to spawn anything
@@ -753,6 +784,7 @@ public class LoopManiaWorld {
         moveBasicEnemies();
         
         removeExpiredBuildings();
+        removeExpiredItems();
 
         //e.g if loopCounter = 20 win game
 
