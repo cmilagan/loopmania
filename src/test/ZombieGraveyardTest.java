@@ -39,6 +39,9 @@ public class ZombieGraveyardTest {
     
     @Test
     void testZombieSpawn() {
+        
+        initializeWorld();
+
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
         testWorld.addBuilding(newGraveyard);
         for (int i = 0; i < orderedPath.size(); i++) {
@@ -57,6 +60,8 @@ public class ZombieGraveyardTest {
     
     @Test
     void testZombieGraveyardExpiry() {
+        initializeWorld();
+
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
         testWorld.addBuilding(newGraveyard);
         List<Building> testWorldBuildings = testWorld.getBuildings();
