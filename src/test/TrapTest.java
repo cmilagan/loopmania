@@ -14,7 +14,10 @@ import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
+import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Zombie;
 
 class TrapTest {
     private Character newCharacter;
@@ -31,7 +34,7 @@ class TrapTest {
         int initialDamage = 8;
         TrapBuilding newTrap = new TrapBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
 
-        testWorld.addEntity(newTrap);
+        testWorld.addBuilding(newTrap);
 
         assertEquals(newTrap.getDamage(), initialDamage);
     }
@@ -46,8 +49,20 @@ class TrapTest {
         int initialCharacterHealth = this.newCharacter.getHealth();
         TrapBuilding newTrap = new TrapBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(0));
         // Triggering Trap
-        testWorld.runTickMoves();
-        assertEquals(this.newCharacter.getHealth(), initialCharacterHealth - trapDamage);
+        Pair<Integer, Integer> trapPos = new Pair<Integer, Integer>(1,1);
+        List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
+        for (BasicEnemy e: enemies) {
+            testWorld.runTickMoves();
+            int eX = e.getX();
+            int eY = e.getY();
+            Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX,eY);
+            if (enemyPos.equals(trapPos)) {
+                // enemy steps on trap
+                assertEquals(e.getHealth() - trapDamage, e.getHealth() - newTrap.getDamage());
+                assertTrue(e.getHealth() < 0);
+                assertTrue(newTrap == null);
+            }
+        }
     }
 
     // setup template world
