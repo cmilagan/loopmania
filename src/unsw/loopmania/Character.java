@@ -13,13 +13,13 @@ import unsw.loopmania.npcs.BasicEnemy;
  */
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
+    private int xp = 0;
     private int gold = 0;
     private int health = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
     private Helmet equippedHelmet;
     private Armor equippedArmor;
     private Shield equippedShield;
-    private int xp = 0;
 
     public Character(PathPosition position) {
         super(position);
@@ -39,12 +39,20 @@ public class Character extends MovingEntity {
         return health;
     }
 
+    public int getXP() {
+        return xp;
+    }
+
     public int getGold() {
         return gold;
     }
 
     public int getHealth() {
         return health;
+    }
+
+    public void setXP(int newXP) {
+        xp = newXP;
     }
 
     public void setGold(int newGold) {

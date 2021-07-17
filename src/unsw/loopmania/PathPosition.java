@@ -52,10 +52,20 @@ public class PathPosition{
     }
 
     /**
+     * Move enemy to specified location 
+     * 
+     * Note: Used for helping enemies within support radius (by moving)
+     */
+    public void setNewPosition(int newPositionIndex) {
+        currentPositionInPath = newPositionIndex;
+        resetCoordinatesBasedOnPositionInPath();
+    }
+
+    /**
      * change the x and y SimpleIntegerProperties to reflect the current values of
      * the current position in the path, and the ordered path.
      */
-    private void resetCoordinatesBasedOnPositionInPath(){
+    public void resetCoordinatesBasedOnPositionInPath(){
         x.set(orderedPath.get(currentPositionInPath).getValue0());
         y.set(orderedPath.get(currentPositionInPath).getValue1());
     }
@@ -66,5 +76,14 @@ public class PathPosition{
 
     public SimpleIntegerProperty getY(){
         return y;
+    }
+
+    /**
+     * get int currentPositionInPath
+     * 
+     * Note: used for supporting enemies (by moving next to) within support radius
+     */
+    public int getPositionIndex() {
+        return currentPositionInPath;
     }
 }
