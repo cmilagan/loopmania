@@ -32,7 +32,7 @@ public class Character extends MovingEntity {
         int enemyDamage = enemy.getDamage();
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
-        if (enemyCrit) damageDealt = 3 * enemyDamage * this.getTotalDefence() * this.getTotalCritDefence();
+        if (enemyCrit) damageDealt = 3 * enemyDamage * (1-this.getTotalDefence()) * (1-this.getTotalCritDefence());
         else damageDealt = enemyDamage * this.getTotalDefence();
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
@@ -78,8 +78,8 @@ public class Character extends MovingEntity {
         this.equippedShield = shield;
     }
 
-    private int getTotalDefence() {
-        int totalDefence = 0;
+    private double getTotalDefence() {
+        double totalDefence = 0;
         if (this.equippedArmor != null) totalDefence += this.equippedArmor.getDefence();
         if (this.equippedHelmet != null) totalDefence += this.equippedHelmet.getDefence();
         if (this.equippedShield != null) totalDefence += this.equippedShield.getDefence();
@@ -87,8 +87,8 @@ public class Character extends MovingEntity {
     }
     
 
-    private int getTotalCritDefence() {
-        int totalCritDefence = 0;
+    private double getTotalCritDefence() {
+        double totalCritDefence = 0;
         if (this.equippedArmor != null) totalCritDefence += this.equippedArmor.getCritDefence();
         if (this.equippedHelmet != null) totalCritDefence += this.equippedHelmet.getCritDefence();
         if (this.equippedShield != null) totalCritDefence += this.equippedShield.getCritDefence();
