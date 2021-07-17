@@ -109,11 +109,8 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
-<<<<<<< HEAD
-=======
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
->>>>>>> allied-soldier-implementation
     }
 
     public int getWidth() {
