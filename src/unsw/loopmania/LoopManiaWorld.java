@@ -1007,15 +1007,18 @@ public class LoopManiaWorld {
                     // TODO add building effects of hero castle
                     // open shop pause the game
                 }
-            } if (b instanceof TrapBuilding) {
+            } 
+            if (b instanceof TrapBuilding) {
                 TrapBuilding trap = (TrapBuilding) b;
 
+                boolean triggered = false;
                 for (BasicEnemy e: enemies) {
                     int eX = e.getX();
                     int eY = e.getY();
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX, eY);
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
+                        triggered = true;
                         e.setHealth(e.getHealth() - trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
@@ -1024,8 +1027,10 @@ public class LoopManiaWorld {
                         }
                     }
                 }
-                removeBuilding(trap);
-                break;
+                if (triggered) {
+                    removeBuilding(trap);
+                    break;
+                }
             }
         }
 
