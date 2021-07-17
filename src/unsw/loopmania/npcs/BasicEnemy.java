@@ -70,6 +70,10 @@ public class BasicEnemy extends MovingEntity {
         return supportRadius;
     }
 
+    public void setHealth(int newHealth) {
+        this.health = newHealth;
+    }
+
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
         int damageDealt = character.getDamage();
         for (AlliedSoldier s: alliedSoldiers) {

@@ -335,28 +335,16 @@ public class LoopManiaWorld {
         // spawning zombies and vampires
         for (Building b: buildingEntities) {
             Pair<Integer, Integer> buildSpawnPos = closestPathTile(b.getX(), b.getY());
-            int indexInPath = orderedPath.indexOf(buildSpawnPos);
             if (b instanceof ZombieGraveyardBuilding) {
+                int indexInPath = orderedPath.indexOf(buildSpawnPos);
                 if (prevLoop != loopCounter) {
                     Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
                     enemies.add(newZombie);
                     spawningEnemies.add(newZombie);
-                    if (b.getExpiry() == 0) {
-                        b.destroy();
-                        buildingEntities.remove(b);
-                        break;
-                    }
                 }
             } else if (b instanceof VampireCastleBuilding) {
-                if (b.getExpiry() == 0) {
-                    Vampire newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
-                    enemies.add(newVampire);
-                    spawningEnemies.add(newVampire);
-                    b.destroy();
-                    buildingEntities.remove(b);
-                    break;
-                }
-            } 
+
+            }
         }
         return spawningEnemies;
     }
@@ -369,6 +357,16 @@ public class LoopManiaWorld {
     private void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
+    }
+
+    /**
+     * remove a building
+     * 
+     * @param enemy enemy to be killed
+     */
+    private void removeBuilding(Building building) {
+        building.destroy();
+        buildingEntities.remove(building);
     }
 
     /**
@@ -452,7 +450,6 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
-                        character.destroy();
                         break;
                     }
                 } else {
@@ -737,8 +734,7 @@ public class LoopManiaWorld {
     public void removeExpiredBuildings() {
         List<Building> expired = new ArrayList<Building>();
         for (Building b: buildingEntities) {
-            if (b.getExpiry() == 0 && ! (b instanceof VampireCastleBuilding) && ! (b instanceof ZombieGraveyardBuilding)) {
-                b.destroy();
+            if (b.getExpiry() == 0) {
                 expired.add(b);
             }
         }
@@ -984,24 +980,39 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
-                } else if (b instanceof CampfireBuilding) {
+                 /*} else if (b instanceof CampfireBuilding) {
                     // TODO Add building effects for Campfire:
 
                 } else if (b instanceof TrapBuilding) {
                     // TODO Add building effects for Trap:
 
                 } else if (b instanceof TowerBuilding) {
-                    // TODO add building effects of tower:
-                    
+                    // TODO add building effects of tower:*/
                 } else if (b instanceof BarracksBuilding) {
 
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
                     // open shop pause the game
                 }
+            } if (b instanceof TrapBuilding) {
+                TrapBuilding trap = (TrapBuilding) b;
 
-
-
+                for (BasicEnemy e: enemies) {
+                    int eX = e.getX();
+                    int eY = e.getY();
+                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX, eY);
+                    if (enemyPos.equals(buildingPos)) {
+                        // enemy steps on trap
+                        e.setHealth(e.getHealth() - trap.getDamage());
+                        if (e.getHealth() <= 0) {
+                            // enemy killed
+                            killEnemy(e);
+                            break;
+                        }
+                    }
+                }
+                removeBuilding(trap);
+                break;
             }
         }
 
