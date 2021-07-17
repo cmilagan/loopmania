@@ -335,16 +335,28 @@ public class LoopManiaWorld {
         // spawning zombies and vampires
         for (Building b: buildingEntities) {
             Pair<Integer, Integer> buildSpawnPos = closestPathTile(b.getX(), b.getY());
+            int indexInPath = orderedPath.indexOf(buildSpawnPos);
             if (b instanceof ZombieGraveyardBuilding) {
-                int indexInPath = orderedPath.indexOf(buildSpawnPos);
                 if (prevLoop != loopCounter) {
                     Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
                     enemies.add(newZombie);
                     spawningEnemies.add(newZombie);
+                    if (b.getExpiry() == 0) {
+                        b.destroy();
+                        buildingEntities.remove(b);
+                        break;
+                    }
                 }
             } else if (b instanceof VampireCastleBuilding) {
-
-            }
+                if (b.getExpiry() == 0) {
+                    Vampire newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
+                    enemies.add(newVampire);
+                    spawningEnemies.add(newVampire);
+                    b.destroy();
+                    buildingEntities.remove(b);
+                    break;
+                }
+            } 
         }
         return spawningEnemies;
     }
@@ -440,6 +452,7 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
+                        character.destroy();
                         break;
                     }
                 } else {
@@ -724,7 +737,8 @@ public class LoopManiaWorld {
     public void removeExpiredBuildings() {
         List<Building> expired = new ArrayList<Building>();
         for (Building b: buildingEntities) {
-            if (b.getExpiry() == 0) {
+            if (b.getExpiry() == 0 && ! (b instanceof VampireCastleBuilding) && ! (b instanceof ZombieGraveyardBuilding)) {
+                b.destroy();
                 expired.add(b);
             }
         }
@@ -978,6 +992,7 @@ public class LoopManiaWorld {
 
                 } else if (b instanceof TowerBuilding) {
                     // TODO add building effects of tower:
+                    
                 } else if (b instanceof BarracksBuilding) {
 
                 } else if (b instanceof HeroCastleBuilding) {

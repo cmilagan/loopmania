@@ -36,6 +36,11 @@
 - When some enemy X is within the support radius of another enemy Y, the enemy Y teleports to X's position + 1 and the battle state should calculate the the total damage dealt on MC
     - Note: such teleportation only occurs when the enemy is in battle
 - Critical Hits deal 3x Damage
+- Defeating an enemy drops either a item or a card. (50/50)
+- Defeating harder enemies has a better chance of dropping greater rewards
+    - Defeating slug: Common-Uncommon drops
+    - Defeating zombie: Uncommon-Epic drops
+    - Defeating Vampire: Epic-Rare drops
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
@@ -63,6 +68,7 @@
 - ZombiePits spawn 1 zombie every loop
 - Vampire castles spawn vampires every 5 loops
 - Zombies/vampires spawn on their respective buildings
+- Heros castle is at 0,0:
 
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
