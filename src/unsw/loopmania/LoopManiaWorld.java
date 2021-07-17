@@ -33,8 +33,10 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Zombie;
 
 /**
  * A backend world.
@@ -85,6 +87,13 @@ public class LoopManiaWorld {
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
+    // a list of battle items available at the Shop
+    private List<BattleItem> battleItems;
+
+    // a list of allied soldiers
+    private List<AlliedSoldier> alliedSoldiers;
+
+
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
      * them
@@ -110,6 +119,8 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
+        battleItems = new ArrayList<>();
+        alliedSoldiers = new ArrayList<>();
     }
 
     public int getWidth() {
@@ -306,6 +317,7 @@ public class LoopManiaWorld {
      */
     public List<BasicEnemy> runBattles() {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
+        /*
         boolean conductFight = false;
         // Checking If there is an enemy inside battle radii
         for (BasicEnemy e : enemies) {
@@ -332,22 +344,80 @@ public class LoopManiaWorld {
                     // Ignore Dead Enemies
                     if (e.getHealth() <= 0) {
                         continue;
+        */
+        // Collecting all enemies which the character must fight (character within battle radius of an enemy)
+        List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
+        List<BasicEnemy> supportEnemies = new ArrayList<BasicEnemy>();
+        for (BasicEnemy e : enemies) {
+            // Checking if enemy is inside battle radii
+            if (Math.sqrt(Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2)) <= e.getBattleRadius()) {
+                battleEnemies.add(e);
+                System.out.println("adding enemy");
+            }
+        }
+        /**
+         * Given that we have found some enemies X to fight, get enemies Y such that enemy X
+         * is within the support radius of enemies Y (according to spec they should come join battle)
+        */
+        for (BasicEnemy supportingEnemy : enemies) {
+            // checking if enemy X is within the support radius of enemy Y
+            for (BasicEnemy attackingEnemy : battleEnemies) {
+                // ensure that we are not fighting the same enemy twice (i.e., supportingEnemy != attackingEnemy)
+                if (!supportingEnemy.equals(attackingEnemy)) {
+                    if (Math.sqrt(Math.pow((attackingEnemy.getX() - supportingEnemy.getX()), 2) + Math.pow((attackingEnemy.getY() - supportingEnemy.getY()), 2)) <= supportingEnemy.getSupportRadius()) {
+                        supportEnemies.add(supportingEnemy);
+                        System.out.println("adding support enemy");
+                        /**
+                         * According to our assumption, we must move supporting enemies next to (position + 1) the 
+                         * battle enemies to show that the supporting enemies have joined the battle too
+                         */
+                        int moveToIndex = attackingEnemy.getCurrentPositionIndex() + 1;
+                        supportingEnemy.moveTo(moveToIndex);
+                        System.out.println("moving support enemy next to battle enemy");
                     }
+                }
+            }
+        }
+        // Adding supportEnemies to battleEnemies as we have to fight them too
+        battleEnemies.addAll(supportEnemies);
+        // Conduct Fights with Valid Enemies
+        while (character.getHealth() > 0 && battleEnemies.size() > 0) {
+            System.out.println("initiating battle phase");
+            // Continuously fight until character loses or all enemies are defeated
+            List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
+            // Newly added zombies can't attack until next phase
+            for (BasicEnemy e : currentBattleEnemies) {
+                if (alliedSoldiers.size() == 0) {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
                         break;
                     }
-                    // Calculate Enemy
-                    int enemyHealth = e.applyCharacterDamage(character);
-                    if (enemyHealth == 0) {
-                        defeatedEnemies.add(e);
-                        System.out.println("enemy killed");
+                } else {
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                        if (alliedSoldierHealth == 0) {
+                            // Remove Allied Soldier
+                            alliedSoldiers.remove(alliedSoldier);
+                        } else if (alliedSoldierHealth == -1) {
+                            // Spawn Zombie
+                            alliedSoldiers.remove(alliedSoldier);
+                            int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
+                            battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
+                        }
                     }
                 }
+                // Calculate Enemy
+                int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
+                if (enemyHealth == 0) {
+                    defeatedEnemies.add(e);
+                    battleEnemies.remove(e);
+                    System.out.println("enemy killed");
+                }
             }
-            System.out.println("battle encounter finished");
         }
+        System.out.println("battle encounter finished");
+        // }
         for (BasicEnemy e : defeatedEnemies) {
             System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
