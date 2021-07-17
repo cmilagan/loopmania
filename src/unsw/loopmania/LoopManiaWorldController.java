@@ -98,6 +98,18 @@ enum DRAGGABLE_TYPE{
 public class LoopManiaWorldController {
 
     /**
+     * stats gridpane includes money, exp
+     */
+    @FXML
+    private GridPane stats;
+
+    /**
+     * soldiers
+     */
+    @FXML
+    private GridPane soldiers;
+
+    /**
      * squares gridpane includes path images, enemies, character, empty grass, buildings
      */
     @FXML
@@ -250,8 +262,16 @@ public class LoopManiaWorldController {
         // TODO = load more images/entities during initialization
         
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
+        Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
+
+        // Add soldiers bar
+        for (int x = 0; x < world.getWidth(); x++) {
+            ImageView groundView = new ImageView(imageJustBlack);
+            groundView.setViewport(imagePart);
+            soldiers.add(groundView, x, 0);
+        }
 
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {

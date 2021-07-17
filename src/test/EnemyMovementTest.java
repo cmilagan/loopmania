@@ -40,7 +40,7 @@ public class EnemyMovementTest {
      */
     @Test
     void testCharacterMovement() {
-        initializeWorld();
+        initializeWorldOne();
 
         int posX = newCharacter.getX();
         int posY = newCharacter.getY(); 
@@ -73,7 +73,7 @@ public class EnemyMovementTest {
 
     @Test
     void testSlugMovement() {
-        initializeWorld();
+        initializeWorldOne();
 
         int slugPosition = 2;
 
@@ -132,12 +132,12 @@ public class EnemyMovementTest {
         // position should wrap around the array when moving up
         posX = anotherSlug.getX();
         posY = anotherSlug.getY(); 
-        assertEquals(Pair.with(0, 1), Pair.with(posX, posY));
+        assertEquals(Pair.with(1, 0), Pair.with(posX, posY));
     }
 
     @Test
     void testZombieMovement() {
-        initializeWorld();
+        initializeWorldOne();
 
         int zombiePosition = 4;
 
@@ -201,12 +201,12 @@ public class EnemyMovementTest {
         // position should wrap around the array when moving up
         posX = anotherZombie.getX();
         posY = anotherZombie.getY(); 
-        assertEquals(Pair.with(0, 2), Pair.with(posX, posY));
+        assertEquals(Pair.with(2, 0), Pair.with(posX, posY));
     }
 
     @Test
     void testVampireMovement() {
-        initializeWorld();
+        initializeWorldOne();
 
         int vampirePosition = 4;
 
@@ -275,7 +275,7 @@ public class EnemyMovementTest {
         // position should wrap around the array when moving up
         posX = anotherVampire.getX();
         posY = anotherVampire.getY(); 
-        assertEquals(Pair.with(1, 2), Pair.with(posX, posY));
+        assertEquals(Pair.with(2, 1), Pair.with(posX, posY));
     }
 
     /**
@@ -292,7 +292,7 @@ public class EnemyMovementTest {
      */
     @Test
     void testSlugSupportRadius() {
-        initializeWorld();
+        initializeWorldOne();
 
         int slugPosition = 2;
         int anotherSlugPosition = slugPosition + 1;
@@ -332,12 +332,12 @@ public class EnemyMovementTest {
      */
     @Test
     void testZombieSupportRadius() {
-        initializeWorld();
+        initializeWorldOne();
 
-        int mcPosition = 6;
-        int expectedPosition = 4;
-        int slugPosition = mcPosition - 1;
-        int zombiePosition = slugPosition - 2;
+        int mcExpectedPosition = 2;
+        int slugPosition = mcExpectedPosition + 1;
+        int zombiePosition = slugPosition + 2;
+        int expectedPosition = slugPosition + 1;
 
         // tick the world to place character in position
         testWorld.runTickMoves();
@@ -346,7 +346,7 @@ public class EnemyMovementTest {
         // ensure that MC is at expected location
         int locX = newCharacter.getX();
         int locY = newCharacter.getY();
-        assertEquals(orderedPath.get(mcPosition), Pair.with(locX, locY));
+        assertEquals(orderedPath.get(mcExpectedPosition), Pair.with(locX, locY));
 
         // initialize an enemy Slug next to the character
         PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
@@ -392,21 +392,22 @@ public class EnemyMovementTest {
      */
     @Test
     void testVampireSupportRadius() {
-        initializeWorld();
+        initializeWorldTwo();
 
-        int mcPosition = 6;
-        int expectedPosition = 4;
-        int zombiePosition = mcPosition - 1;
-        int vampirePosition = zombiePosition - 3;
+        int mcExpectedPosition = 3;
+        int zombiePosition = mcExpectedPosition + 1;
+        int vampirePosition = zombiePosition + 2;
+        int expectedPosition = zombiePosition + 1;
 
         // tick the current world to ensure character is in position
+        testWorld.runTickMoves();
         testWorld.runTickMoves();
         testWorld.runTickMoves();
 
         // ensure that MC is at expected location
         int locX = newCharacter.getX();
         int locY = newCharacter.getY();
-        assertEquals(orderedPath.get(mcPosition), Pair.with(locX, locY));
+        assertEquals(orderedPath.get(mcExpectedPosition), Pair.with(locX, locY));
 
         // initialize an enemy Zombie next to the main character
         PathPosition zombiePathPosition = new PathPosition(zombiePosition, orderedPath);
@@ -441,19 +442,44 @@ public class EnemyMovementTest {
         assertEquals(orderedPath.get(expectedPosition), Pair.with(locX, locY));
     }
 
-    // setup template world
-    public void initializeWorld() {
+    // setup template world one 
+    public void initializeWorldOne() {
         int LOOP_SIZE = 3;
 
         // setting world path
         orderedPath.add(Pair.with(0, 0));
-        orderedPath.add(Pair.with(1, 0));
-        orderedPath.add(Pair.with(2, 0));
-        orderedPath.add(Pair.with(2, 1));
-        orderedPath.add(Pair.with(2, 2));
-        orderedPath.add(Pair.with(1, 2));
-        orderedPath.add(Pair.with(0, 2));
         orderedPath.add(Pair.with(0, 1));
+        orderedPath.add(Pair.with(0, 2));
+        orderedPath.add(Pair.with(1, 2));
+        orderedPath.add(Pair.with(2, 2));
+        orderedPath.add(Pair.with(2, 1));
+        orderedPath.add(Pair.with(2, 0));
+        orderedPath.add(Pair.with(1, 0));
+        testWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
+        
+        // initializing and adding the character
+        PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
+        newCharacter = new Character(characterPathPosition);
+        testWorld.setCharacter(newCharacter);
+    }
+
+    // setup template world two
+    public void initializeWorldTwo() {
+        int LOOP_SIZE = 4;
+
+        // setting world path
+        orderedPath.add(Pair.with(0, 0));
+        orderedPath.add(Pair.with(0, 1));
+        orderedPath.add(Pair.with(0, 2));
+        orderedPath.add(Pair.with(0, 3));
+        orderedPath.add(Pair.with(1, 3));
+        orderedPath.add(Pair.with(2, 3));
+        orderedPath.add(Pair.with(3, 3));
+        orderedPath.add(Pair.with(3, 2));
+        orderedPath.add(Pair.with(3, 1));
+        orderedPath.add(Pair.with(3, 0));
+        orderedPath.add(Pair.with(2, 0));
+        orderedPath.add(Pair.with(1, 0));
         testWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
         
         // initializing and adding the character
