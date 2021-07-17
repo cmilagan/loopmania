@@ -9,8 +9,8 @@ public class CampfireBuilding extends Building {
 
     private int range;
     // TODO = add more types of building, and make sure buildings have effects on entities as required by the spec
-    public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y, int id) {
-        super(x, y, id);
+    public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
+        super(x, y);
         this.range = 2;
     }
 

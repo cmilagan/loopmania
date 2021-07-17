@@ -7,10 +7,14 @@ import java.util.Random;
 import org.javatuples.Pair;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.Building;
+import unsw.loopmania.buildings.BarracksBuilding;
+import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
+import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.buildings.VillageBuilding;
 import unsw.loopmania.cards.BarracksCard;
 import unsw.loopmania.cards.CampfireCard;
 import unsw.loopmania.cards.TowerCard;
@@ -56,6 +60,11 @@ public class LoopManiaWorld {
      */
     private int height;
 
+    /**
+     * 
+     * Current number of loops completed;
+     */
+    private int loopCounter;
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -109,6 +118,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
+        this.loopCounter = 0;
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
     }
@@ -252,22 +262,7 @@ public class LoopManiaWorld {
         buildingEntities.add(building);
     }
 
-    /**
-     * remove building from the grid that has expired
-     * 
-     * @param id the id of the building, from 0 to inf
-     */
-    private void removeBuilding(int id) {
-        // Find the building corresponding to the id
-        for (Building b : buildingEntities) {
-            // When found, remove the building from the list
-            if (b.getId() == id) {
-                b.destroy();
-                buildingEntities.remove(b);
-                break;
-            }
-        }
-    }
+    
 
     /**
      * Get the list of buildings
@@ -329,7 +324,6 @@ public class LoopManiaWorld {
             // Checking if enemy is inside battle radii
             if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
                 conductFight = true;
-                System.out.println("starting battle encounter");
                 break;
             }
         }
@@ -340,9 +334,16 @@ public class LoopManiaWorld {
                 // Checking if enemy is inside support radii
                 if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
                     battleEnemies.add(e);
-                    System.out.println("adding enemy");
                 }
             }
+            int numberOfEnemies = battleEnemies.size();
+            // Conduct Fights with Valid Enemies
+            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
+                // Continuously fight until character loses or all enemies are defeated
+                for (BasicEnemy e : battleEnemies) {
+                    // Ignore Dead Enemies
+                    if (e.getHealth() <= 0) {
+                        continue;
         */
         // Collecting all enemies which the character must fight (character within battle radius of an enemy)
         List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
@@ -390,7 +391,6 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
-                        System.out.println("character killed");
                         break;
                     }
                 } else {
@@ -454,24 +454,6 @@ public class LoopManiaWorld {
         return vampireCastleCard;
     }
 
-    /**
-     * spawn a trap card in the world and return the card entity
-     * 
-     * @return a card to be spawned in the controller as a JavaFX node
-     */
-    public TrapCard loadTrapCard() {
-        // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()) {
-            // TODO = give some cash/experience/item rewards for the discarding of the
-            // oldest card
-
-            removeCard(0);
-        }
-        TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()),
-                new SimpleIntegerProperty(0));
-        cardEntities.add(trapCard);
-        return trapCard;
-    }
 
     /**
      * spawn a barracks card in the world and return the card entity
@@ -512,7 +494,39 @@ public class LoopManiaWorld {
     }
 
     /**
-     * spawn a tower card in the world and return the card entity
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public TrapCard loadTrapCard() {
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        cardEntities.add(trapCard);
+        return trapCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
+     * 
+     * @return a card to be spawned in the controller as a JavaFX node
+     */
+    public ZombieGraveyardCard loadZombieGraveyardCard() {
+        if (cardEntities.size() >= getWidth()) {
+            // TODO = give some cash/experience/item rewards for the discarding of the card
+
+            removeCard(0);
+        }
+        ZombieGraveyardCard zombieGraveCard = new ZombieGraveyardCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
+        cardEntities.add(zombieGraveCard);
+        return zombieGraveCard;
+    }
+
+    /**
+     * spawn a card in the world and return the card entity
      * 
      * @return a card to be spawned in the controller as a JavaFX node
      */
@@ -650,8 +664,16 @@ public class LoopManiaWorld {
      * immediately
      */
     public void runTickMoves() {
+        applyBuildingEffects();
         character.moveDownPath();
         moveBasicEnemies();
+        
+        // increment the loop counter when possible
+        int cX = character.getX();
+        int cY = character.getY();
+        Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
+        
+
     }
 
     /**
@@ -788,6 +810,22 @@ public class LoopManiaWorld {
         return null;
     }
 
+    //////////////////////////////////////////////////////////////////////
+    //                         Buildings                                //
+    //////////////////////////////////////////////////////////////////////
+
+    /**
+     * remove building from the grid that has expired
+     * 
+     * @param id the id of the building, from 0 to inf
+     */
+    private void removeBuilding(int index) {
+        // Find the building corresponding to the id
+        Building b = buildingEntities.get(index);
+        b.destroy();
+        buildingEntities.remove(index);
+    }
+
     /**
      * remove a card by its x, y coordinates
      * @param cardNodeX x index from 0 to width-1 of card to be removed
@@ -813,6 +851,16 @@ public class LoopManiaWorld {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
             newBuilding = new TrapBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
+        } else if (card instanceof VillageCard) {
+            newBuilding = new VillageBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+        } else if (card instanceof TowerCard) {
+            newBuilding = new TowerBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+        } else if (card instanceof ZombieGraveyardCard) {
+            newBuilding = new ZombieGraveyardBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+        } else if (card instanceof CampfireCard) {
+            newBuilding = new CampfireBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));        
+        } else if (card instanceof BarracksCard) {
+            newBuilding = new BarracksBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));                    
         } else {
             try {
                 throw new Exception("Invalid Building Card Selected");
@@ -820,13 +868,122 @@ public class LoopManiaWorld {
                 e.printStackTrace();
             }
         }
+        
         buildingEntities.add(newBuilding);
-
-        // destroy the card
         card.destroy();
         cardEntities.remove(card);
         shiftCardsDownFromXCoordinate(cardNodeX);
+    
 
         return newBuilding;
+    }
+
+    // 
+    public void applyBuildingEffects() {
+        // TODO Add building effects for village:
+        int cX = character.getX();
+        int cY = character.getY();
+        System.out.println("function call\n");
+        Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
+        for (Building b: buildingEntities) {
+            System.out.println("in the loop\n");
+            int bX = b.getX();
+            int bY = b.getY();
+            Pair<Integer, Integer> buildingPos = new Pair<Integer, Integer>(bX, bY);
+            if (buildingPos.equals(characterPos)) {
+                // if character is on a village building, heal the character for 10
+                // TODO: check if this works
+                if (b instanceof VillageBuilding) {
+                    System.out.println("building found\n");
+                    VillageBuilding village = (VillageBuilding) b;
+                    if (character.getHealth() < (character.getMaxHealth() - village.getHeal())) {
+                        System.out.println("heal\n");
+                        character.setHealth(character.getHealth() + village.getHeal());
+                    } else {
+                        // if the healing that can be done is < village.getHeal
+                        character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
+                    }
+                }
+            }
+        }
+        // TODO Add building effects for Campfire:
+
+        // TODO Add building effects for Trap:
+
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                     Additional Methods                           //
+    //////////////////////////////////////////////////////////////////////
+
+
+    /**
+     * 
+     * @return Return the list of ordered path tiles
+     */
+
+    public List<Pair<Integer, Integer>> getOrderedPath() {
+        return this.orderedPath;
+    }
+
+    /***
+     * checks the conversion of card to building is valid.
+     * @param cardNodeX
+     * @param cardNodeY
+     * @param buildingNodeX
+     * @param buildingNodeY
+     * @return boolean
+     */
+    public boolean checkValidCardPlacement(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
+        // start by getting card
+        Card card = null;
+        for (Card c: cardEntities){
+            if ((c.getX() == cardNodeX) && (c.getY() == cardNodeY)){
+                card = c;
+                break;
+            }
+        }
+
+        // checking that tile is not occupied
+        boolean occupied = false;
+        for(Building b : buildingEntities) {
+            Pair<Integer, Integer> target = new Pair<Integer, Integer>(buildingNodeX, buildingNodeY);
+            Pair<Integer, Integer> buildLoc = new Pair<Integer, Integer>(b.getX(),b.getY());
+            if (target.equals(buildLoc)) {
+                occupied = true;
+            }
+        }
+
+        // checking conditions
+        if (card instanceof VampireCastleCard || card instanceof TowerCard || card instanceof ZombieGraveyardCard) {
+            if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX - 1, buildingNodeY)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX, buildingNodeY - 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX - 1, buildingNodeY - 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX, buildingNodeY + 1)) ||
+                    orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX + 1, buildingNodeY + 1))) {
+                        if (!occupied) return true;
+                    }
+            }
+        } else if (card instanceof VillageCard || card instanceof TrapCard || card instanceof BarracksCard) {
+            // can only be placed on path tiles
+            if (orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                if (!occupied) return true;
+            }
+        } else if (card instanceof CampfireCard) {
+            if (!orderedPath.contains(new Pair<Integer, Integer>(buildingNodeX,buildingNodeY))) {
+                if (!occupied) return true;
+            }
+        } else {
+            try {
+                throw new Exception("Invalid Building Card Selected");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        return false;
+        
     }
 }

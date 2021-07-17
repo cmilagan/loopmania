@@ -19,6 +19,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.buildings.BarracksBuilding;
+import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
 import unsw.loopmania.buildings.VillageBuilding;
@@ -31,19 +32,19 @@ import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 public class BuildingPlacementTest {
 
     // building properties;
-    private int towerDamage = 4;
-    private int trapDamage = 8;
-    private int towerReach = 2;
-    private int campfireReach = 2;
+    // private int towerDamage = 4;
+    // private int trapDamage = 8;
+    // private int towerReach = 2;
+    // private int campfireReach = 2;
 
-    private int towerExpiry = 5;
-    private int villageHeal = 10;
-    private int trapExpiry = 1;
-    private int vampireCastleExpiry = 5;
-    private int campfireExpiry = 5;
-    private int villageExpiry = 5;
-    private int zombiePitExpiry = 5;
-    private int barracksExpiry = 5;
+    // private int towerExpiry = 5;
+    // private int villageHeal = 10;
+    // private int trapExpiry = 1;
+    // private int vampireCastleExpiry = 5;
+    // private int campfireExpiry = 5;
+    // private int villageExpiry = 5;
+    // private int zombiePitExpiry = 5;
+    // private int barracksExpiry = 5;
 
 
 
@@ -60,26 +61,30 @@ public class BuildingPlacementTest {
 
         // Vampire castle -- Adjacent to path tiles (non path tile)
         VampireCastleBuilding newVCastle = new VampireCastleBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newVCastle);
+        testWorld.addBuilding(newVCastle);
         assertEquals(newVCastle.getX(), 1);
         assertEquals(newVCastle.getY(), 1);
-        assertEquals(newVCastle.getExpiry(), vampireCastleExpiry);
 
         // Zombie castle -- Adjacent to path tiles (non path tile)
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(3), new SimpleIntegerProperty(3));
-        testWorld.addEntity(newGraveyard);
+        testWorld.addBuilding(newGraveyard);
         assertEquals(newGraveyard.getX(), 3);
         assertEquals(newGraveyard.getY(), 3);
-        assertEquals(newGraveyard.getExpiry(), zombiePitExpiry);
 
         // Tower -- Adjacent to path tiles (non path tile)
         TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(3), new SimpleIntegerProperty(2));
-        testWorld.addEntity(newTower);
+        testWorld.addBuilding(newTower);
         assertEquals(newTower.getX(), 3);
         assertEquals(newTower.getY(), 2);
-        assertEquals(newTower.getDamage(), towerDamage);
-        assertEquals(newTower.getReach(), towerReach);
-        assertEquals(newTower.getExpiry(), towerExpiry);
+
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        int count = 0;
+        for (Building b: testWorldBuildings) {
+            if (b instanceof TowerBuilding || b instanceof VampireCastleBuilding || b instanceof ZombieGraveyardBuilding) {
+                count++;
+            }
+        }
+        assertEquals(testWorldBuildings.size(), count);
         
     }
 
@@ -90,26 +95,31 @@ public class BuildingPlacementTest {
 
         // Village -- Path tile
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
         assertEquals(newVillage.getX(), 1);
         assertEquals(newVillage.getY(), 0);
-        assertEquals(newVillage.getHeal(), villageHeal);
-        assertEquals(newVillage.getExpiry(), villageExpiry);
+
 
         // Barracks -- Path tile
         BarracksBuilding newBarracks = new BarracksBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newBarracks);
+        testWorld.addBuilding(newBarracks);
         assertEquals(newBarracks.getX(), 2);
         assertEquals(newBarracks.getY(), 0);
-        assertEquals(newBarracks.getExpiry(), barracksExpiry);
 
         // Trap -- Path tile
         TrapBuilding newTrap = new TrapBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newTrap);
+        testWorld.addBuilding(newTrap);
         assertEquals(newTrap.getX(), 2);
         assertEquals(newTrap.getY(), 1);
-        assertEquals(newTrap.getExpiry(), trapExpiry);
-        assertEquals(newTrap.getDamage(), trapDamage);
+
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        int count = 0;
+        for (Building b: testWorldBuildings) {
+            if (b instanceof TrapBuilding || b instanceof VillageBuilding || b instanceof BarracksBuilding) {
+                count++;
+            }
+        }
+        assertEquals(testWorldBuildings.size(), count);
         
     }
 
@@ -119,11 +129,14 @@ public class BuildingPlacementTest {
         initializeWorld();
         // Campfire -- Any non-path tile
         CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(4), new SimpleIntegerProperty(4));
-        testWorld.addEntity(newCampfire);
-        assertEquals(newCampfire.getX(), 2);
-        assertEquals(newCampfire.getY(), 1);
-        assertEquals(newCampfire.getExpiry(), campfireExpiry);
-        assertEquals(newCampfire.getReach(), campfireReach);
+        testWorld.addBuilding(newCampfire);
+        assertEquals(newCampfire.getX(), 4);
+        assertEquals(newCampfire.getY(), 4);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        for (Building b: testWorldBuildings) {
+            assertTrue(b instanceof CampfireBuilding);
+        }
+
     }
     @Test
     void testInvalidPathPlacement() {

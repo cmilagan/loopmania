@@ -42,33 +42,33 @@ public class VillageTest {
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
         newCharacter.setHealth(50);
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         testWorld.runTickMoves();
-        assertEquals(newCharacter.getHealth(), 50 + villageHeal);
+        assertEquals(50 + villageHeal, newCharacter.getHealth());
     }
 
-
+    @Test
     void testVillageHealMax() {
         // heals character on full health
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         testWorld.runTickMoves();
         // should not gain extra health for passing through village
-        assertEquals(newCharacter.getHealth(), 100);
+        assertEquals(newCharacter.getMaxHealth(), newCharacter.getHealth());
     }
     @Test
     void testVillageExpiry() {
         initializeWorld();
 
         VillageBuilding newVillage = new VillageBuilding(new SimpleIntegerProperty(2), new SimpleIntegerProperty(0));
-        testWorld.addEntity(newVillage);
+        testWorld.addBuilding(newVillage);
         for (int i = 0; i < 8 * villageExpiry; i++) {
             testWorld.runTickMoves();
         }

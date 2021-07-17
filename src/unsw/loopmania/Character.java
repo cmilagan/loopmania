@@ -16,6 +16,7 @@ public class Character extends MovingEntity {
     private int xp = 0;
     private int gold = 0;
     private int health = 100;
+    private int maxHealth = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
     private Helmet equippedHelmet;
     private Armor equippedArmor;
@@ -39,6 +40,11 @@ public class Character extends MovingEntity {
         return health;
     }
 
+    public int getMaxHealth() {
+        return maxHealth;
+
+    }
+    
     public int getXP() {
         return xp;
     }
@@ -57,6 +63,10 @@ public class Character extends MovingEntity {
 
     public void setGold(int newGold) {
         gold = newGold;
+    }
+
+    public void setMaxHealth(int newMaxHealth) {
+        this.maxHealth = newMaxHealth;
     }
 
     public void setHealth(int newHealth) {
