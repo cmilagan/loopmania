@@ -455,6 +455,8 @@ public class LoopManiaWorldController {
         // TODO: add RNG
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
+        
+        loadVampireCard();
         Random rd = new Random();
         if (rd.nextDouble() < 0) {
             // TODO: RNG for item drops
