@@ -43,7 +43,9 @@ public class BarracksTest {
         initializeWorld();
         assertTrue(testWorld.getBuildings().contains(newBarracks));
 
-        for (int i = 0; i <= 5; i++) {
+        int sizeOfMap = 8;
+        int barracksExpiry = 5;
+        for (int i = 0; i <= sizeOfMap * barracksExpiry; i++) {
             testWorld.runTickMoves();
         }
 
