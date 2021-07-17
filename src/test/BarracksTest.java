@@ -49,13 +49,28 @@ public class BarracksTest {
 
         assertFalse(testWorld.getBuildings().contains(newBarracks));
     }
+
+    @Test
+    /**
+     * Test if the Barracks building spawns an Allied Soldier when Main character
+     * walks past it.
+     */
+    void testBarracksSoldier() {
+        initializeWorld();
+        assertTrue(testWorld.getBuildings().contains(newBarracks));
+        
+        testWorld.runTickMoves(); // character now on Barracks
+        testWorld.runTickMoves(); // character now passed Barracks
+
+        // TODO: get alliedsoldiers and check length.
+        assertTrue(true);
+    }
     
     /**
      * Initialize the test world.
      */
     public void initializeWorld() {
         int LOOP_SIZE = 3;
-        int characterPosition = 0;
         // setting world path
         orderedPath.add(Pair.with(0, 0));
         orderedPath.add(Pair.with(1, 0));
@@ -68,6 +83,7 @@ public class BarracksTest {
         testWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
 
         // initializing and adding the character
+        int characterPosition = 0;
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
