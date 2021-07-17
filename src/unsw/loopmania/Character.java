@@ -127,7 +127,7 @@ public class Character extends MovingEntity {
         else return equippedWeapon.getDamage();
     }
 
-    public Pair getCoordinatePair() {
+    public Pair<Integer, Integer> getCoordinatePair() {
         return new Pair<Integer, Integer>(this.getX(), this.getY());
     }
 }
