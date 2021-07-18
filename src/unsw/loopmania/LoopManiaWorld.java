@@ -1222,7 +1222,6 @@ public class LoopManiaWorld {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
-                        removeBuilding(trap);
                         e.applyBuildingDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
@@ -1232,6 +1231,7 @@ public class LoopManiaWorld {
                     }
                 }
                 if (triggered) {
+                    trap.destroy();
                     removeBuilding(trap);
                     break;
                 }
