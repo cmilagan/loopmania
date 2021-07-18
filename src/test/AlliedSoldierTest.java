@@ -65,7 +65,7 @@ class AlliedSoldierTest {
         for (int i = 1; i <= 5; i++) {
             PathPosition pos = new PathPosition(i, orderedPath);
             AlliedSoldier soldier = new AlliedSoldier(pos);
-            testWorld.addEntity(soldier);
+            testWorld.addAlliedSoldier(soldier);
         }
 
         PathPosition pos6 = new PathPosition(3, orderedPath);
@@ -117,14 +117,16 @@ class AlliedSoldierTest {
         
         int healthAfterSlugBattle = newCharacter.getHealth();
         
-        // Reset character health, now run battle with Slug and Allied Soldier.
-        // Allied Soldier should turn into zombie and damage main character.
-        // Main character health after battle should be less than previous battle.
+        /* Reset character health, now run battle with Slug and Allied Soldier.
+         * Allied Soldier should turn into zombie and damage main character.
+         * Main character health after battle should be less than previous battle.
+         */
         newCharacter.setHealth(100);
         assertEquals(100, newCharacter.getHealth());
         
         AlliedSoldier s = new AlliedSoldier(pos);
         s.setHealth(-1);
+
         testWorld.addAlliedSoldier(s);
         testWorld.addEnemy(slug);
 

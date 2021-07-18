@@ -51,4 +51,16 @@ public class Zombie extends BasicEnemy {
 
         distanceTravelled++;
     }
+
+    @Override
+    /**
+     * A Zombie has a 20% chance of critical attack.
+     */
+    public boolean rollCrit() {
+        int seed = 100;
+        Random random = new Random(seed);
+        int value = random.nextInt(seed);
+        return value < 21;
+    }
+
 }

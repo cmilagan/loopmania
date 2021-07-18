@@ -157,6 +157,10 @@ public class LoopManiaWorld {
         return this.alliedSoldiers.size();
     }
 
+    public void addAlliedSoldier(AlliedSoldier s) {
+        if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -481,18 +485,28 @@ public class LoopManiaWorld {
                         break;
                     }
                 } else {
+                    ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {
-                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                        int alliedSoldierHealth = alliedSoldier.getHealth();
+                        
+                        /**
+                         * If statement for testing purposes only. The health of Allied Soldier should never initially
+                         * be -1 unless specifically set to be.
+                         */
+                        if (alliedSoldierHealth != -1) alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
-                            alliedSoldiers.remove(alliedSoldier);
-                        } else if (alliedSoldierHealth == -1) {
-                            // Spawn Zombie
-                            alliedSoldiers.remove(alliedSoldier);
+                            toRemove.add(alliedSoldier);
+                        } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
+                            // Remove Soldier and spawn Zombie
+                            toRemove.add(alliedSoldier);
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
                     }
+
+                    alliedSoldiers.removeAll(toRemove);
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
