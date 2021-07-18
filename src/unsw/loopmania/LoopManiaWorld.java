@@ -451,18 +451,21 @@ public class LoopManiaWorld {
                         break;
                     }
                 } else {
+                    ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {
                         int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
-                            alliedSoldiers.remove(alliedSoldier);
+                            toRemove.add(alliedSoldier);
                         } else if (alliedSoldierHealth == -1) {
                             // Spawn Zombie
-                            alliedSoldiers.remove(alliedSoldier);
+                            toRemove.add(alliedSoldier);
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
                     }
+
+                    alliedSoldiers.removeAll(toRemove);
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
