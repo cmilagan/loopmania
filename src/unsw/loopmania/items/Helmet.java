@@ -9,8 +9,8 @@ public class Helmet extends DefenceItem {
     private int usage = 0;
     private static int itemCost = 10;
     private static int itemDurability = 10;
-    private static int defencePercentage = 10;
-    private static int critDefencePercentage = 0;
+    private static double defencePercentage = 0.1;
+    private static double critDefencePercentage = 0;
 
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage);
@@ -22,13 +22,13 @@ public class Helmet extends DefenceItem {
     }
 
     @Override
-    public int useDefence() {
+    public double useDefence() {
         usage++;
         return defencePercentage;
     }
 
     @Override
-    public int useCritDefence() {
+    public double useCritDefence() {
         usage++;
         return critDefencePercentage;
     }

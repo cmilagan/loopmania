@@ -105,7 +105,7 @@ public class Character extends MovingEntity {
         this.equippedShield = shield;
     }
 
-    private double getTotalDefenceMultiplier() {
+    public double getTotalDefenceMultiplier() {
         double multiplier = 1;
         if (this.equippedArmor != null) multiplier -= this.equippedArmor.useDefence();
         if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.useDefence();
@@ -114,7 +114,7 @@ public class Character extends MovingEntity {
     }
     
 
-    private double getTotalCritDefenceMultiplier() {
+    public double getTotalCritDefenceMultiplier() {
         double multiplier = 1;
         if (this.equippedArmor != null) multiplier -= this.equippedArmor.useCritDefence();
         if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.useCritDefence();
