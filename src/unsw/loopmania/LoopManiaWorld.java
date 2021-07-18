@@ -486,15 +486,17 @@ public class LoopManiaWorld {
                     }
                 } else {
                     ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
-                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+                    AlliedSoldier firstSoldier = alliedSoldiers.get(0);
+                    
+                    /**
+                     * If statement for testing purposes only. The health of Allied Soldier should
+                     * never initially be -1 unless specifically set to be.
+                     */
+                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(e);
+
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {                    
                         int alliedSoldierHealth = alliedSoldier.getHealth();
                         
-                        /**
-                         * If statement for testing purposes only. The health of Allied Soldier should never initially
-                         * be -1 unless specifically set to be.
-                         */
-                        if (alliedSoldierHealth != -1) alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
-
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
@@ -506,7 +508,7 @@ public class LoopManiaWorld {
                         }
                     }
 
-                    alliedSoldiers.removeAll(toRemove);
+                    alliedSoldiers.removeAll(toRemove);             
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
@@ -1150,11 +1152,9 @@ public class LoopManiaWorld {
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
                 } else if (b instanceof BarracksBuilding) {
-                    // heal all allied soldiers that pass through
+                    // heal all allied soldiers
                     for (AlliedSoldier a : alliedSoldiers) {
-                        if (a.getX() == bX && a.getY() == bY) {
-                            a.setHealth(3);
-                        }
+                        a.setHealth(3);
                     }
 
                     // spawn new allied soldiers
