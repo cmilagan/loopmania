@@ -68,6 +68,7 @@ public class ZombieGraveyardTest {
         assertEquals(1, testWorldBuildings.size());
         for (int i = 0; i < orderedPath.size() * zombieGraveyardExpiry; i++) {
             testWorld.runTickMoves();
+            testWorld.possiblySpawnEnemies();
         }
         assertEquals(0, newGraveyard.getExpiry());
         assertEquals(0, testWorldBuildings.size());
