@@ -409,7 +409,7 @@ public class LoopManiaWorld {
             // checking if enemy X is within the support radius of enemy Y
             for (BasicEnemy attackingEnemy : battleEnemies) {
                 // ensure that we are not fighting the same enemy twice (i.e., supportingEnemy != attackingEnemy)
-                if (!supportingEnemy.equals(attackingEnemy)) {
+                if (!supportingEnemy.equals(attackingEnemy) && !battleEnemies.contains(supportingEnemy)) {
                     if (Math.sqrt(Math.pow((attackingEnemy.getX() - supportingEnemy.getX()), 2) + Math.pow((attackingEnemy.getY() - supportingEnemy.getY()), 2)) <= supportingEnemy.getSupportRadius()) {
                         supportEnemies.add(supportingEnemy);
                         System.out.println("adding support enemy");

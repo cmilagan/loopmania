@@ -55,7 +55,7 @@ class MainCharacterTest {
 
         PathPosition zombiePosition = new PathPosition(0, orderedPath);
         Zombie newZombie = new Zombie(zombiePosition);
-        testWorld.addEntity(newZombie);
+        testWorld.addEnemy(newZombie);
         testWorld.runBattles();
 
         int initialHealth = 100;
