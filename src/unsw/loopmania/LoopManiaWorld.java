@@ -27,7 +27,6 @@ import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.DefenceItem;
-import unsw.loopmania.items.ExpirableItems;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
