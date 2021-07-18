@@ -157,6 +157,10 @@ public class LoopManiaWorld {
         return this.alliedSoldiers.size();
     }
 
+    public void addAlliedSoldier(AlliedSoldier s) {
+        if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -457,8 +461,8 @@ public class LoopManiaWorld {
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
-                        } else if (alliedSoldierHealth == -1) {
-                            // Spawn Zombie
+                        } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
+                            // Remove Soldier and spawn Zombie
                             toRemove.add(alliedSoldier);
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
