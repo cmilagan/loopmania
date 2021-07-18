@@ -20,7 +20,7 @@ import unsw.loopmania.buildings.HeroCastleBuilding;
 
 public class HeroCastleTest {
     private Character newCharacter;
-    private HeroCastleBuilding heroCastle = new HeroCastleBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0), 0);
+    private HeroCastleBuilding heroCastle = new HeroCastleBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 

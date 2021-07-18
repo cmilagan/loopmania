@@ -288,22 +288,6 @@ public class LoopManiaWorld {
     }
 
     /**
-     * remove building from the grid that has expired
-     * 
-     * @param id the id of the building, from 0 to inf
-     */
-    private void removeBuilding() {
-        // Loop through all the buildings and find buildings that are expired
-        for (Building b : buildingEntities) {
-            // When found, remove the building from the list
-            if (b.getExpiry() == 0) {
-                b.destroy();
-                buildingEntities.remove(b);
-            }
-        }
-    }
-
-    /**
      * Get the list of buildings
      * 
      * @return a list of buildings
@@ -400,7 +384,7 @@ public class LoopManiaWorld {
     /**
      * remove a building
      * 
-     * @param enemy enemy to be killed
+     * @param building building to be removed
      */
     private void removeBuilding(Building building) {
         building.destroy();
