@@ -32,7 +32,7 @@ class AlliedSoldierTest {
         PathPosition initialPosition = new PathPosition(alliedSoldierPosition, orderedPath);
         
         AlliedSoldier newAlliedSoldier = new AlliedSoldier(initialPosition);
-        testWorld.addEntity(newAlliedSoldier);
+        testWorld.addAlliedSoldier(newAlliedSoldier);
 
         assertEquals(newAlliedSoldier.getHealth(), initialHealth);
     }
@@ -50,17 +50,11 @@ class AlliedSoldierTest {
             testWorld.addEntity(soldier);
         }
 
-        PathPosition pos6 = new PathPosition(6, orderedPath);
+        PathPosition pos6 = new PathPosition(3, orderedPath);
         AlliedSoldier soldier6 = new AlliedSoldier(pos6);
+        testWorld.addAlliedSoldier(soldier6);
 
-        Throwable t = null;
-        try {
-            testWorld.addEntity(soldier6);
-        } catch (Error err) {
-            t = err;
-        }
-
-        assertTrue(t instanceof Error);
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 5);
         
     }
 
