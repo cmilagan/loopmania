@@ -1,5 +1,7 @@
 package unsw.loopmania.npcs;
 
+import java.util.Random;
+
 import unsw.loopmania.PathPosition;
 
 public class Zombie extends BasicEnemy {
@@ -49,5 +51,4 @@ public class Zombie extends BasicEnemy {
 
         distanceTravelled++;
     }
-
 }
