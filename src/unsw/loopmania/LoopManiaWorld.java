@@ -1150,7 +1150,14 @@ public class LoopManiaWorld {
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
                 } else if (b instanceof BarracksBuilding) {
-                    // spawn allied soldiers
+                    // heal all allied soldiers that pass through
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        if (a.getX() == bX && a.getY() == bY) {
+                            a.setHealth(3);
+                        }
+                    }
+
+                    // spawn new allied soldiers
                     if (alliedSoldiers.size() < 5) {
                         int index = orderedPath.indexOf(buildingPos);
                         PathPosition pos = new PathPosition(index, orderedPath);
