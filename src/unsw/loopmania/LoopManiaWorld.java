@@ -510,6 +510,7 @@ public class LoopManiaWorld {
 
                     alliedSoldiers.removeAll(toRemove);
 
+                    // remaining allied soldiers should attack the enemy
                     for (AlliedSoldier a : alliedSoldiers) {
                         e.applyBuildingDamage(a.getDamage());
                     }
