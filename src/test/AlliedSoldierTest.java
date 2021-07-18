@@ -18,6 +18,7 @@ import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
 
 class AlliedSoldierTest {
     private Character newCharacter;
@@ -156,6 +157,30 @@ class AlliedSoldierTest {
 
     @Test
     /**
+     * Test multiple Allied Soldiers engaging in battle.
+     */
+    void testMultipleAlliedSoldiers() {
+        initializeWorld();
+        
+        // Spawn 2 allied soldiers.
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s1 = new AlliedSoldier(pos);
+        AlliedSoldier s2 = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s1);
+        testWorld.addAlliedSoldier(s2);
+
+        // Spawn a Zombie
+        Zombie zombie = new Zombie(pos);
+        testWorld.addEnemy(zombie);
+
+        testWorld.runBattles();
+
+        assertTrue(newCharacter.getHealth() > 0);
+    }
+
+    @Test
+    /**
      * Test if Allied Soldier is healed when passing through a Barracks building.
      */
     void testSoldierHeal() {
@@ -179,7 +204,6 @@ class AlliedSoldierTest {
         testWorld.runTickMoves();
 
         assertEquals(initialHealth, s.getHealth());
-
     }
 
     // setup template world
