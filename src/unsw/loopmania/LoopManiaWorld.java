@@ -145,6 +145,18 @@ public class LoopManiaWorld {
         return height;
     }
 
+    public int getLoopCount() {
+        return loopCounter;
+    }
+
+    public void setLoopCount(int num) {
+        loopCounter = num;
+    }
+    
+    public int getAlliedSoldiersNumber() {
+        return this.alliedSoldiers.size();
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -263,14 +275,6 @@ public class LoopManiaWorld {
         // TODO = if more specialised types being added from main menu, add more methods
         // like this with specific input types...
         nonSpecifiedEntities.add(entity);
-    }
-
-    public void addAlliedSoldier(AlliedSoldier s) {
-        alliedSoldiers.add(s);
-    }
-
-    public int getAlliedSoldiersNumber() {
-        return alliedSoldiers.size();
     }
 
     /**
