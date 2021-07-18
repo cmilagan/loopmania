@@ -176,7 +176,7 @@ class AlliedSoldierTest {
 
         testWorld.runBattles();
 
-        assertTrue(newCharacter.getHealth() > 0);
+        assertEquals(100, newCharacter.getHealth());
     }
 
     @Test
