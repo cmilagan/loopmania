@@ -60,12 +60,12 @@ public class BarracksTest {
     void testBarracksSoldier() {
         initializeWorld();
         assertTrue(testWorld.getBuildings().contains(newBarracks));
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 0);
         
         testWorld.runTickMoves(); // character now on Barracks
         testWorld.runTickMoves(); // character now passed Barracks
 
-        // TODO: get alliedsoldiers and check length.
-        assertTrue(true);
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 1);
     }
     
     /**
@@ -93,7 +93,7 @@ public class BarracksTest {
         // initialize Barracks
         SimpleIntegerProperty barracksX = new SimpleIntegerProperty(1);
         SimpleIntegerProperty barracksY = new SimpleIntegerProperty(0);
-        newBarracks = new BarracksBuilding(barracksX, barracksY, 1);
+        newBarracks = new BarracksBuilding(barracksX, barracksY);
         testWorld.addBuilding(newBarracks);
     }
 }
