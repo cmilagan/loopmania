@@ -72,7 +72,7 @@ public class BasicEnemy extends MovingEntity {
         return Math.min(0, this.health - damageDealt);
     }
 
-    public void applyTrapDamage(int dmg) {
+    public void applyBuildingDamage(int dmg) {
         setHealth(getHealth() - dmg);
     }
 

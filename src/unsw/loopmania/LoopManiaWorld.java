@@ -410,6 +410,21 @@ public class LoopManiaWorld {
             }
         }
 
+        // Check if there is a tower nearby to the battle (where the character is)
+        Boolean towerSupport = false;
+        // Loop through building and find a tower
+        for (Building b : buildingEntities) {
+            // Check if tower in radius
+            if (b instanceof TowerBuilding) {
+                TowerBuilding tower = (TowerBuilding) b;
+                if (Math.sqrt(Math.pow((character.getX() - tower.getX()), 2) + Math.pow((character.getY() - tower.getY()), 2)) <= tower.getRange()) {
+                    towerSupport = true;
+                    System.out.println("Tower is nearby");
+                }
+            }
+
+        }
+
         /**
          * Given that we have found some enemies X to fight, get enemies Y such that enemy X
          * is within the support radius of enemies Y (according to spec they should come join battle)
@@ -437,9 +452,24 @@ public class LoopManiaWorld {
         // Adding supportEnemies to battleEnemies as we have to fight them too
         battleEnemies.addAll(supportEnemies);
 
+
+        System.out.println("initiating battle phase");
+
+        // If tower is present, tower will deal damage to all enemies in the battle
+        if (towerSupport) {
+            TowerBuilding t = new TowerBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+            for (BasicEnemy e : battleEnemies) {
+                e.applyBuildingDamage(t.getDamage());
+                // Check if enemy is killed
+                if (e.getHealth() <= 0) {
+                    killEnemy(e);
+                    battleEnemies.remove(e);
+                }
+            }
+        }
+
         // Conduct Fights with Valid Enemies
         while (character.getHealth() > 0 && battleEnemies.size() > 0) {
-            System.out.println("initiating battle phase");
             // Continuously fight until character loses or all enemies are defeated
             List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
             // Newly added zombies can't attack until next phase
@@ -1127,7 +1157,7 @@ public class LoopManiaWorld {
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
                         removeBuilding(trap);
-                        e.applyTrapDamage(trap.getDamage());
+                        e.applyBuildingDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
                             killEnemy(e);
