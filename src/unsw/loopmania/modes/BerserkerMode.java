@@ -1,6 +1,6 @@
 package unsw.loopmania.modes;
 
-public class BerserkerMode {
+public class BerserkerMode extends GameDifficulty{
     // We can add more conditions for winning and other restrictions
     private int winLoop;
     private int winXP;

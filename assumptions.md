@@ -41,6 +41,9 @@
     - Defeating slug: Common-Uncommon drops
     - Defeating zombie: Uncommon-Epic drops
     - Defeating Vampire: Epic-Rare drops
+- Support and Battle radii are calculated by the pythagoras theorem
+    - if the character is within the battle radius of an enemy, a battle is engaged.
+- If the One Ring is in the character's inventory, the character respawns automatically on defeat.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
@@ -80,6 +83,7 @@
     - Sword: 8, 10
     - Staff: 3, 8
     - Stake Damage: 4, 8
+        - Stake has damage = 12 on Vampires.
 - Item Costs at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
@@ -119,7 +123,7 @@
     - Berserker: 8,000/850/18
     - Normal: 20,000/2,000/40
 - The allied soldier will join the main character when the main character is positioned on the tile right in front of the barracks
- 
+
 ## Graphics Related Assumptions:
 - What is the size of a tile?
     - 36px x 36px
