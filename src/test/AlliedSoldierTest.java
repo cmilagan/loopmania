@@ -9,10 +9,12 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
@@ -134,6 +136,34 @@ class AlliedSoldierTest {
         int healthAfterAlliedTurns = newCharacter.getHealth();
 
         assertTrue(healthAfterAlliedTurns < healthAfterSlugBattle);
+    }
+
+    @Test
+    /**
+     * Test if Allied Soldier is healed when passing through a Barracks building.
+     */
+    void testSoldierHeal() {
+        initializeWorld();
+
+        // initialize allied soldier with health = 1
+        int initialHealth = 3;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+        s.setHealth(1);
+
+        assertEquals(1, testWorld.getAlliedSoldiersNumber());
+
+
+        // initialize Barracks
+        BarracksBuilding b = new BarracksBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(0));
+        testWorld.addBuilding(b);
+
+        testWorld.runTickMoves();
+
+        assertEquals(initialHealth, s.getHealth());
+
     }
 
     // setup template world
