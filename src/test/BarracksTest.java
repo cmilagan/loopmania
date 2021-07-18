@@ -75,7 +75,7 @@ public class BarracksTest {
     void testBarracksMax() {
         initializeWorld();
 
-        for (int i = 0; i < 5 * orderedPath.size(); i++) {
+        for (int i = 0; i < 7 * orderedPath.size(); i++) {
             testWorld.runTickMoves();
         }
 
