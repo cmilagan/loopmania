@@ -1,6 +1,10 @@
 package unsw.loopmania.npcs;
 
+import java.util.List;
+
+import unsw.loopmania.Character;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Stake;
 
 public class Vampire extends BasicEnemy {
     
@@ -25,6 +29,27 @@ public class Vampire extends BasicEnemy {
      * 
      * move down until lower bound is reached
      */
+    @Override
+    public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
+        int damageDealt = 0;
+        
+        // if character has stake equipped and is battling Vampire, do additional damage
+        if (character.getWeapon() instanceof Stake) {
+            Stake stake = (Stake) character.getWeapon();
+            damageDealt = stake.getSpecialDamage();
+        } else {
+            damageDealt = character.getDamage();
+        }
+
+        for (AlliedSoldier s: alliedSoldiers) {
+            damageDealt += s.getDamage();
+        }
+
+        int leftHealth = Math.max(0, this.getHealth() - damageDealt);
+        this.setHealth(leftHealth);
+        return leftHealth;
+    }
+
     @Override
     public void move() {
         // check if Vampire is at either bound
