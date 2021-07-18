@@ -508,7 +508,11 @@ public class LoopManiaWorld {
                         }
                     }
 
-                    alliedSoldiers.removeAll(toRemove);             
+                    alliedSoldiers.removeAll(toRemove);
+
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        e.applyBuildingDamage(a.getDamage());
+                    }
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
