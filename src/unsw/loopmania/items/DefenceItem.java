@@ -9,10 +9,10 @@ public class DefenceItem extends BattleItem {
     /**
      * every defence item must have these stats
      */
-    private int defencePercentage;
-    private int critDefencePercentage;
+    private double defencePercentage;
+    private double critDefencePercentage;
     
-    public DefenceItem(SimpleIntegerProperty x, SimpleIntegerProperty y, int itemCost, int itemDurability, int defencePercentage, int critDefencePercentage) {
+    public DefenceItem(SimpleIntegerProperty x, SimpleIntegerProperty y, int itemCost, int itemDurability, double defencePercentage, double critDefencePercentage) {
         super(x, y, itemCost, itemDurability);
         this.defencePercentage = defencePercentage;
         this.critDefencePercentage = critDefencePercentage;
@@ -21,15 +21,15 @@ public class DefenceItem extends BattleItem {
     /**
      * getDefence() and getCritDefence() is for testing purposes only
      */
-    public int getDefence() {
+    public double getDefence() {
         return defencePercentage;
     }
 
-    public int getCritDefence() {
+    public double getCritDefence() {
         return critDefencePercentage;
     }
 
-    public int useDefence() { return 0; }
+    public double useDefence() { return 0; }
 
-    public int useCritDefence() { return 0; }
+    public double useCritDefence() { return 0; }
 }

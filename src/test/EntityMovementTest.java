@@ -15,7 +15,7 @@ import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
-public class EnemyMovementTest {
+public class EntityMovementTest {
     private int moveUp = -1;
     private int moveDown = 1;
     private int zombieReach = 2;

@@ -49,7 +49,7 @@ public class VampireTest {
     @Test
     void testVampireBattleRadius() {
         initializeWorld();
-        int initialBattleRadius = 3;
+        int initialBattleRadius = 2;
         assertEquals(initialBattleRadius, newVampire.getBattleRadius());
     }
 
@@ -59,7 +59,7 @@ public class VampireTest {
     @Test
     void testVampireSupportRadius() {
         initializeWorld();
-        int initialSupportRadius = 4;
+        int initialSupportRadius = 3;
         assertEquals(initialSupportRadius, newVampire.getSupportRadius());
     }
 

@@ -69,7 +69,7 @@ public class ShopItemAndExpiryTest {
                 Armor armor = (Armor) item;
                 assertEquals(20, armor.getItemCost());
                 assertEquals(10, armor.getItemDurability());
-                assertEquals(40, armor.getDefence());
+                assertEquals(0.4, armor.getDefence());
                 assertEquals(0, armor.getCritDefence());
                 itemPresent = true;
 
@@ -177,7 +177,7 @@ public class ShopItemAndExpiryTest {
                 Helmet helmet = (Helmet) item;
                 assertEquals(10, helmet.getItemCost());
                 assertEquals(10, helmet.getItemDurability());
-                assertEquals(10, helmet.getDefence());
+                assertEquals(0.1, helmet.getDefence());
                 assertEquals(0, helmet.getCritDefence());
                 itemPresent = true;
 
@@ -243,8 +243,8 @@ public class ShopItemAndExpiryTest {
                 Shield shield = (Shield) item;
                 assertEquals(10, shield.getItemCost());
                 assertEquals(5, shield.getItemDurability());
-                assertEquals(20, shield.getDefence());
-                assertEquals(60, shield.getCritDefence());
+                assertEquals(0.2, shield.getDefence());
+                assertEquals(0.6, shield.getCritDefence());
                 itemPresent = true;
 
                 // character has enough gold to buy item

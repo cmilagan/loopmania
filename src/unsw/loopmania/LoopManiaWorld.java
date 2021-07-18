@@ -389,34 +389,7 @@ public class LoopManiaWorld {
      */
     public List<BasicEnemy> runBattles() {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
-        /*
-        boolean conductFight = false;
-        // Checking If there is an enemy inside battle radii
-        for (BasicEnemy e : enemies) {
-            // Checking if enemy is inside battle radii
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
-                conductFight = true;
-                break;
-            }
-        }
-        if (conductFight) {
-            // Collecting all enemies inside support radii
-            List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
-            for (BasicEnemy e : enemies) {
-                // Checking if enemy is inside support radii
-                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
-                    battleEnemies.add(e);
-                }
-            }
-            int numberOfEnemies = battleEnemies.size();
-            // Conduct Fights with Valid Enemies
-            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
-                // Continuously fight until character loses or all enemies are defeated
-                for (BasicEnemy e : battleEnemies) {
-                    // Ignore Dead Enemies
-                    if (e.getHealth() <= 0) {
-                        continue;
-        */
+
         // Collecting all enemies which the character must fight (character within battle radius of an enemy)
         List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
         List<BasicEnemy> supportEnemies = new ArrayList<BasicEnemy>();
@@ -427,6 +400,7 @@ public class LoopManiaWorld {
                 System.out.println("adding enemy");
             }
         }
+
         /**
          * Given that we have found some enemies X to fight, get enemies Y such that enemy X
          * is within the support radius of enemies Y (according to spec they should come join battle)
@@ -435,7 +409,7 @@ public class LoopManiaWorld {
             // checking if enemy X is within the support radius of enemy Y
             for (BasicEnemy attackingEnemy : battleEnemies) {
                 // ensure that we are not fighting the same enemy twice (i.e., supportingEnemy != attackingEnemy)
-                if (!supportingEnemy.equals(attackingEnemy)) {
+                if (!supportingEnemy.equals(attackingEnemy) && !battleEnemies.contains(supportingEnemy)) {
                     if (Math.sqrt(Math.pow((attackingEnemy.getX() - supportingEnemy.getX()), 2) + Math.pow((attackingEnemy.getY() - supportingEnemy.getY()), 2)) <= supportingEnemy.getSupportRadius()) {
                         supportEnemies.add(supportingEnemy);
                         System.out.println("adding support enemy");
@@ -450,8 +424,10 @@ public class LoopManiaWorld {
                 }
             }
         }
+
         // Adding supportEnemies to battleEnemies as we have to fight them too
         battleEnemies.addAll(supportEnemies);
+
         // Conduct Fights with Valid Enemies
         while (character.getHealth() > 0 && battleEnemies.size() > 0) {
             System.out.println("initiating battle phase");
@@ -489,7 +465,7 @@ public class LoopManiaWorld {
             }
         }
         System.out.println("battle encounter finished");
-        // }
+        
         for (BasicEnemy e : defeatedEnemies) {
             System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
