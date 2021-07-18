@@ -16,7 +16,13 @@ public class AttackItem extends BattleItem {
         this.damage = damage;
     }
 
+    /**
+     * getDamage() is for testing purposes only,
+     * use inflictDamage() to correctly apply damage
+     */
     public int getDamage() {
         return this.damage;
     }
+
+    public int inflictDamage() { return 0; }
 }
