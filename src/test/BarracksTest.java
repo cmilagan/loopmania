@@ -93,7 +93,7 @@ public class BarracksTest {
         // initialize Barracks
         SimpleIntegerProperty barracksX = new SimpleIntegerProperty(1);
         SimpleIntegerProperty barracksY = new SimpleIntegerProperty(0);
-        newBarracks = new BarracksBuilding(barracksX, barracksY, 1);
+        // newBarracks = new BarracksBuilding(barracksX, barracksY, 1);
         testWorld.addBuilding(newBarracks);
     }
 }
