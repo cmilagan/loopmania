@@ -14,6 +14,7 @@ public class TowerBuilding extends Building {
         super(x, y);
         this.damage = 4;
         this.range = 2;
+        this.setExpiry(5);
     }
 
     public int getDamage() {

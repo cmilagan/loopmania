@@ -11,6 +11,7 @@ public class CampfireBuilding extends Building {
     public CampfireBuilding(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y);
         this.range = 2;
+        this.setExpiry(5);
     }
 
     public int getRange() {
