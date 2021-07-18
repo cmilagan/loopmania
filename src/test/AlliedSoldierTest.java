@@ -59,6 +59,22 @@ class AlliedSoldierTest {
 
     @Test
     /**
+     * Testing if Allied Soldier deals a damage of 5
+     */
+    void testAlliedSoldierDamage() {
+        initializeWorld();
+        
+        int expectedDamage = 5;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+
+        assertEquals(expectedDamage, s.getDamage());
+    }
+
+    @Test
+    /**
      * Test if 5 is the maximum number of Allied Soldiers allowed
      */
     void testMaxSoldiers() {
