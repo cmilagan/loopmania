@@ -67,6 +67,20 @@ public class BarracksTest {
 
         assertTrue(testWorld.getAlliedSoldiersNumber() == 1);
     }
+
+    @Test
+    /**
+     * Test if Barracks spawns 5 soldiers at max
+     */
+    void testBarracksMax() {
+        initializeWorld();
+
+        for (int i = 0; i < 5 * orderedPath.size(); i++) {
+            testWorld.runTickMoves();
+        }
+
+        assertEquals(5, testWorld.getAlliedSoldiersNumber());
+    }
     
     /**
      * Initialize the test world.
