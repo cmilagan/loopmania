@@ -9,13 +9,16 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
 
 class AlliedSoldierTest {
     private Character newCharacter;
@@ -53,6 +56,22 @@ class AlliedSoldierTest {
         testWorld.addAlliedSoldier(newAlliedSoldier);
 
         assertEquals(newAlliedSoldier.getHealth(), initialHealth);
+    }
+
+    @Test
+    /**
+     * Testing if Allied Soldier deals a damage of 5
+     */
+    void testAlliedSoldierDamage() {
+        initializeWorld();
+        
+        int expectedDamage = 5;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+
+        assertEquals(expectedDamage, s.getDamage());
     }
 
     @Test
@@ -134,6 +153,57 @@ class AlliedSoldierTest {
         int healthAfterAlliedTurns = newCharacter.getHealth();
 
         assertTrue(healthAfterAlliedTurns < healthAfterSlugBattle);
+    }
+
+    @Test
+    /**
+     * Test multiple Allied Soldiers engaging in battle.
+     */
+    void testMultipleAlliedSoldiers() {
+        initializeWorld();
+        
+        // Spawn 2 allied soldiers.
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s1 = new AlliedSoldier(pos);
+        AlliedSoldier s2 = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s1);
+        testWorld.addAlliedSoldier(s2);
+
+        // Spawn a Zombie
+        Zombie zombie = new Zombie(pos);
+        testWorld.addEnemy(zombie);
+
+        testWorld.runBattles();
+
+        assertEquals(100, newCharacter.getHealth());
+    }
+
+    @Test
+    /**
+     * Test if Allied Soldier is healed when passing through a Barracks building.
+     */
+    void testSoldierHeal() {
+        initializeWorld();
+
+        // initialize allied soldier with health = 1
+        int initialHealth = 3;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+        s.setHealth(1);
+
+        assertEquals(1, testWorld.getAlliedSoldiersNumber());
+
+
+        // initialize Barracks
+        BarracksBuilding b = new BarracksBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(0));
+        testWorld.addBuilding(b);
+
+        testWorld.runTickMoves();
+
+        assertEquals(initialHealth, s.getHealth());
     }
 
     // setup template world
