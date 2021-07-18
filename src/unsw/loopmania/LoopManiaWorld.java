@@ -88,6 +88,7 @@ public class LoopManiaWorld {
 
     // TODO = add more lists for other entities, for equipped inventory items,
     // etc...
+    private List<Item> equippedInventoryItems;
 
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
@@ -156,6 +157,34 @@ public class LoopManiaWorld {
     public int getAlliedSoldiersNumber() {
         return this.alliedSoldiers.size();
     }
+
+
+    public void checkCanEquip(int itemNodeX, int itemNodeY, int equipX, int equipY) {
+        // get the item
+        Item item = null;
+        for (Entity i: unequippedInventoryItems) {
+            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
+                if (item instanceof Item) {
+                    item = (Item) i;
+                    break;
+                }
+            }
+        }
+    }
+    // equip items
+    public void equipItem(int itemNodeX, int itemNodeY, int equipX, int equipY) {
+        // get the item
+        Item item = null;
+        for (Entity i: unequippedInventoryItems) {
+            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
+                if (item instanceof Item) {
+                    item = (Item) i;
+                    break;
+                }
+            }
+        }
+    }
+
 
     /**
      * Given an ID that maps to an item in the shop, add the 
@@ -1116,17 +1145,18 @@ public class LoopManiaWorld {
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
                     // Increment loop counter
-                    setLoopCount(getLoopCount() + 1);
+                    // setLoopCount(getLoopCount() + 1);
                     // open shop pause the game
                 }
             } 
             if (b instanceof TrapBuilding) {
                 TrapBuilding trap = (TrapBuilding) b;
+                boolean triggered = false;
                 for (BasicEnemy e: enemies) {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
-                        removeBuilding(trap);
+                        triggered = true;
                         e.applyTrapDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
@@ -1134,6 +1164,10 @@ public class LoopManiaWorld {
                             break;
                         }
                     }
+                }
+                if (triggered) {
+                    removeBuilding(trap);
+                    break;
                 }
             }
             // Check if there is a campfire
@@ -1224,5 +1258,13 @@ public class LoopManiaWorld {
 
         return false;
         
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Character getCharacter() {
+        return this.character;
     }
 }
