@@ -186,6 +186,10 @@ public class LoopManiaWorld {
     }
 
 
+    public void addAlliedSoldier(AlliedSoldier s) {
+        if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -439,6 +443,21 @@ public class LoopManiaWorld {
             }
         }
 
+        // Check if there is a tower nearby to the battle (where the character is)
+        Boolean towerSupport = false;
+        // Loop through building and find a tower
+        for (Building b : buildingEntities) {
+            // Check if tower in radius
+            if (b instanceof TowerBuilding) {
+                TowerBuilding tower = (TowerBuilding) b;
+                if (Math.sqrt(Math.pow((character.getX() - tower.getX()), 2) + Math.pow((character.getY() - tower.getY()), 2)) <= tower.getRange()) {
+                    towerSupport = true;
+                    System.out.println("Tower is nearby");
+                }
+            }
+
+        }
+
         /**
          * Given that we have found some enemies X to fight, get enemies Y such that enemy X
          * is within the support radius of enemies Y (according to spec they should come join battle)
@@ -466,9 +485,24 @@ public class LoopManiaWorld {
         // Adding supportEnemies to battleEnemies as we have to fight them too
         battleEnemies.addAll(supportEnemies);
 
+
+        System.out.println("initiating battle phase");
+
+        // If tower is present, tower will deal damage to all enemies in the battle
+        if (towerSupport) {
+            TowerBuilding t = new TowerBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
+            for (BasicEnemy e : battleEnemies) {
+                e.applyBuildingDamage(t.getDamage());
+                // Check if enemy is killed
+                if (e.getHealth() <= 0) {
+                    killEnemy(e);
+                    battleEnemies.remove(e);
+                }
+            }
+        }
+
         // Conduct Fights with Valid Enemies
         while (character.getHealth() > 0 && battleEnemies.size() > 0) {
-            System.out.println("initiating battle phase");
             // Continuously fight until character loses or all enemies are defeated
             List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
             // Newly added zombies can't attack until next phase
@@ -480,21 +514,32 @@ public class LoopManiaWorld {
                         break;
                     }
                 } else {
+                    ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {
-                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                        int alliedSoldierHealth = alliedSoldier.getHealth();
+                        
+                        /**
+                         * If statement for testing purposes only. The health of Allied Soldier should never initially
+                         * be -1 unless specifically set to be.
+                         */
+                        if (alliedSoldierHealth != -1) alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
-                            alliedSoldiers.remove(alliedSoldier);
-                        } else if (alliedSoldierHealth == -1) {
-                            // Spawn Zombie
-                            alliedSoldiers.remove(alliedSoldier);
+                            toRemove.add(alliedSoldier);
+                        } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
+                            // Remove Soldier and spawn Zombie
+                            toRemove.add(alliedSoldier);
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
                     }
+
+                    alliedSoldiers.removeAll(toRemove);
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
+
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
@@ -1135,7 +1180,9 @@ public class LoopManiaWorld {
                     }
                 } else if (b instanceof BarracksBuilding) {
                     // spawn allied soldiers
+                    System.out.print(alliedSoldiers.size());
                     if (alliedSoldiers.size() < 5) {
+                        System.out.print("adding allied soldier");
                         int index = orderedPath.indexOf(buildingPos);
                         PathPosition pos = new PathPosition(index, orderedPath);
                         AlliedSoldier a = new AlliedSoldier(pos);
@@ -1156,8 +1203,8 @@ public class LoopManiaWorld {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
-                        triggered = true;
-                        e.applyTrapDamage(trap.getDamage());
+                        removeBuilding(trap);
+                        e.applyBuildingDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
                             killEnemy(e);

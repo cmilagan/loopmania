@@ -368,6 +368,10 @@ public class LoopManiaWorldController {
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+            // display the gold of the hero
+            
+
+            // display the health of the hero
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -484,44 +488,44 @@ public class LoopManiaWorldController {
         // 50/50 either item or card
         loadBarracksCard();
 
-        // Random rd = new Random();
-        // if (rd.nextDouble() < 0.51) {
-        //     if (enemy instanceof Slug) {
-        //         // slugs have a low chance of dropping rare items 0.01%
-        //         loadLoot(0.991);
-        //     } else if (enemy instanceof Zombie) {
-        //         // Zombies have a higher chance of dropping rare items 5%
-        //         loadLoot(0.95);
-        //     } else if (enemy instanceof Vampire) {
-        //         // Vampires have the highest chance of dropping rare items 30%
-        //         loadLoot(0.30);
-        //     }        
-        // } else {
-        //     // RNG for card drops
-        //     double rgen = rd.nextDouble();
-        //     Random rd2 = new Random();
-        //     if (rgen > 0.9) {
-        //         // epic items
-        //         int randInt = rd2.nextInt(4);
-        //         if (randInt == 0) {
-        //             loadVampireCard();
-        //         } else if (randInt == 1) {
-        //             loadTowerCard();
-        //         } else if (randInt == 2) {
-        //             loadBarracksCard();
-        //         } else if (randInt == 3) {
-        //             loadCampfireCard();
-        //         } else if (randInt == 4) {
-        //             loadVillageCard();
-        //         }
-        //     } else if (rgen <= 0.9 && rgen > 0.6) {
-        //         // uncommon items
-        //         loadZombieGraveyardCard();
-        //     } else if (rgen <= 0.6) {
-        //         // common items
-        //         loadTrapCard();
-        //     }
-        // }
+        Random rd = new Random();
+        if (rd.nextDouble() < 0.51) {
+            if (enemy instanceof Slug) {
+                // slugs have a low chance of dropping rare items 0.01%
+                loadLoot(0.991);
+            } else if (enemy instanceof Zombie) {
+                // Zombies have a higher chance of dropping rare items 5%
+                loadLoot(0.95);
+            } else if (enemy instanceof Vampire) {
+                // Vampires have the highest chance of dropping rare items 30%
+                loadLoot(0.30);
+            }        
+        } else {
+            // RNG for card drops
+            double rgen = rd.nextDouble();
+            Random rd2 = new Random();
+            if (rgen > 0.9) {
+                // epic items
+                int randInt = rd2.nextInt(4);
+                if (randInt == 0) {
+                    loadVampireCard();
+                } else if (randInt == 1) {
+                    loadTowerCard();
+                } else if (randInt == 2) {
+                    loadBarracksCard();
+                } else if (randInt == 3) {
+                    loadCampfireCard();
+                } else if (randInt == 4) {
+                    loadVillageCard();
+                }
+            } else if (rgen <= 0.9 && rgen > 0.6) {
+                // uncommon items
+                loadZombieGraveyardCard();
+            } else if (rgen <= 0.6) {
+                // common items
+                loadTrapCard();
+            }
+        }
     }
 
     /**

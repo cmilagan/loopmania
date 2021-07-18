@@ -65,14 +65,18 @@ public class BasicEnemy extends MovingEntity {
     }
 
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
-        int damageDealt = character.getCharDamage();
+        int damageDealt = character.getDamage();
+        
         for (AlliedSoldier s: alliedSoldiers) {
-            
+            damageDealt += s.getDamage();
         }
-        return Math.min(0, this.health - damageDealt);
+
+        int leftHealth = Math.max(0, this.getHealth() - damageDealt);
+        this.setHealth(leftHealth);
+        return leftHealth;
     }
 
-    public void applyTrapDamage(int dmg) {
+    public void applyBuildingDamage(int dmg) {
         setHealth(getHealth() - dmg);
     }
 
