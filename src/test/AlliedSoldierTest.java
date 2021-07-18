@@ -101,7 +101,7 @@ class AlliedSoldierTest {
 
     @Test
     /**
-     * Test if an allied soldier becomes a Zombie when its health = 0.
+     * Test if an allied soldier becomes a Zombie when its health = -1 (critical hit from zombie).
      */
     void testAlliedSoldierZombie() {
         initializeWorld();
@@ -124,13 +124,14 @@ class AlliedSoldierTest {
         assertEquals(100, newCharacter.getHealth());
         
         AlliedSoldier s = new AlliedSoldier(pos);
+        s.setHealth(-1);
         testWorld.addAlliedSoldier(s);
         testWorld.addEnemy(slug);
 
         testWorld.runBattles();
-        int healthAfterAllied = newCharacter.getHealth();
+        int healthAfterAlliedTurns = newCharacter.getHealth();
 
-        assertTrue(healthAfterAllied < healthAfterSlugBattle);
+        assertTrue(healthAfterAlliedTurns < healthAfterSlugBattle);
     }
 
     // setup template world
