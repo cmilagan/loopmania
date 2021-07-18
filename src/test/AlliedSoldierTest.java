@@ -22,6 +22,22 @@ class AlliedSoldierTest {
 
     @Test
     /**
+     * Testing Allied Soldier spawns
+     */
+    void testAlliedSoldierSpawn() {
+        initializeWorld();
+
+        int alliedSoldierPosition = 1;
+        PathPosition path = new PathPosition(alliedSoldierPosition, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(path);
+
+        testWorld.addAlliedSoldier(s);
+
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 1);
+    }
+    
+    @Test
+    /**
      * Testing if Allied Soldier has health = 3 on spawn
      */
     void testAlliedHealth() {
