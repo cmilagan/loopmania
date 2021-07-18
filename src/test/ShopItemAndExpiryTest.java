@@ -10,6 +10,7 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
@@ -153,11 +154,26 @@ public class ShopItemAndExpiryTest {
                 Vampire newVampire = new Vampire(vampirePathPosition);
                 testWorld.addEnemy(newVampire);
 
+                /**
+                 * need to equip character with Stake otherwise
+                 * Vampire will kill character
+                 */
+                Stake stake = new Stake(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+                newCharacter.setWeapon(stake);
+
                 // run battle
                 testWorld.runBattles();
 
-                // check if health is less by 5
-                assertEquals(mainCharacterHealth - newVampire.getDamage(), newCharacter.getHealth());
+                // check if health is less by 40
+                /**
+                 * Explanation:
+                 * 
+                 * Vampire attacks Character -> Character health: 80
+                 * Character attacks Vampire with Stake -> Vampire health: 8
+                 * Vampire attacks Character -> Character health: 60
+                 * Character attacks Vampire with Stake -> Vampire health: 0
+                 */
+                assertEquals(mainCharacterHealth - newVampire.getDamage() * 2, newCharacter.getHealth());
 
                 // consume Health Potion
                 potion.use(newCharacter);
