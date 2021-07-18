@@ -17,6 +17,7 @@ public class Stake extends AttackItem {
     }
 
     public int getSpecialDamage() {
+        usage++;
         return itemVampireDamage;
     }
 

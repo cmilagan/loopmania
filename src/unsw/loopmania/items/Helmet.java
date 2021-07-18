@@ -29,7 +29,6 @@ public class Helmet extends DefenceItem {
 
     @Override
     public double useCritDefence() {
-        usage++;
         return critDefencePercentage;
     }
 }
