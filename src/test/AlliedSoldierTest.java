@@ -9,17 +9,38 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.npcs.AlliedSoldier;
+import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
+import unsw.loopmania.npcs.Zombie;
 
 class AlliedSoldierTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
+    @Test
+    /**
+     * Testing Allied Soldier spawns
+     */
+    void testAlliedSoldierSpawn() {
+        initializeWorld();
+
+        int alliedSoldierPosition = 1;
+        PathPosition path = new PathPosition(alliedSoldierPosition, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(path);
+
+        testWorld.addAlliedSoldier(s);
+
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 1);
+    }
+    
     @Test
     /**
      * Testing if Allied Soldier has health = 3 on spawn
@@ -32,9 +53,25 @@ class AlliedSoldierTest {
         PathPosition initialPosition = new PathPosition(alliedSoldierPosition, orderedPath);
         
         AlliedSoldier newAlliedSoldier = new AlliedSoldier(initialPosition);
-        testWorld.addEntity(newAlliedSoldier);
+        testWorld.addAlliedSoldier(newAlliedSoldier);
 
         assertEquals(newAlliedSoldier.getHealth(), initialHealth);
+    }
+
+    @Test
+    /**
+     * Testing if Allied Soldier deals a damage of 5
+     */
+    void testAlliedSoldierDamage() {
+        initializeWorld();
+        
+        int expectedDamage = 5;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+
+        assertEquals(expectedDamage, s.getDamage());
     }
 
     @Test
@@ -47,21 +84,126 @@ class AlliedSoldierTest {
         for (int i = 1; i <= 5; i++) {
             PathPosition pos = new PathPosition(i, orderedPath);
             AlliedSoldier soldier = new AlliedSoldier(pos);
-            testWorld.addEntity(soldier);
+            testWorld.addAlliedSoldier(soldier);
         }
 
-        PathPosition pos6 = new PathPosition(6, orderedPath);
+        PathPosition pos6 = new PathPosition(3, orderedPath);
         AlliedSoldier soldier6 = new AlliedSoldier(pos6);
+        testWorld.addAlliedSoldier(soldier6);
 
-        Throwable t = null;
-        try {
-            testWorld.addEntity(soldier6);
-        } catch (Error err) {
-            t = err;
-        }
-
-        assertTrue(t instanceof Error);
+        assertTrue(testWorld.getAlliedSoldiersNumber() == 5);
         
+    }
+
+    @Test
+    /**
+     * Test if an Allied Soldier despawns after battle where it's health = 0
+     */
+    void testAlliedDespawn() {
+        initializeWorld();
+
+        int alliedSoldierPosition = 1;
+        PathPosition pos = new PathPosition(alliedSoldierPosition, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+
+        testWorld.addAlliedSoldier(s);
+
+        assertEquals(1, testWorld.getAlliedSoldiersNumber());
+
+        Vampire v = new Vampire(pos);
+        testWorld.addEnemy(v);
+
+        testWorld.runBattles();
+
+        assertEquals(0, testWorld.getAlliedSoldiersNumber());
+    }
+
+    @Test
+    /**
+     * Test if an allied soldier becomes a Zombie when its health = -1 (critical hit from zombie).
+     */
+    void testAlliedSoldierZombie() {
+        initializeWorld();
+
+        // Run battle with only a Slug in world. Record character health.
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        
+        Slug slug = new Slug(pos);
+        testWorld.addEnemy(slug);
+        
+        testWorld.runBattles();
+        
+        int healthAfterSlugBattle = newCharacter.getHealth();
+        
+        /* Reset character health, now run battle with Slug and Allied Soldier.
+         * Allied Soldier should turn into zombie and damage main character.
+         * Main character health after battle should be less than previous battle.
+         */
+        newCharacter.setHealth(100);
+        assertEquals(100, newCharacter.getHealth());
+        
+        AlliedSoldier s = new AlliedSoldier(pos);
+        s.setHealth(-1);
+
+        testWorld.addAlliedSoldier(s);
+        testWorld.addEnemy(slug);
+
+        testWorld.runBattles();
+        int healthAfterAlliedTurns = newCharacter.getHealth();
+
+        assertTrue(healthAfterAlliedTurns < healthAfterSlugBattle);
+    }
+
+    @Test
+    /**
+     * Test multiple Allied Soldiers engaging in battle.
+     */
+    void testMultipleAlliedSoldiers() {
+        initializeWorld();
+        
+        // Spawn 2 allied soldiers.
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s1 = new AlliedSoldier(pos);
+        AlliedSoldier s2 = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s1);
+        testWorld.addAlliedSoldier(s2);
+
+        // Spawn a Zombie
+        Zombie zombie = new Zombie(pos);
+        testWorld.addEnemy(zombie);
+
+        testWorld.runBattles();
+
+        assertEquals(100, newCharacter.getHealth());
+    }
+
+    @Test
+    /**
+     * Test if Allied Soldier is healed when passing through a Barracks building.
+     */
+    void testSoldierHeal() {
+        initializeWorld();
+
+        // initialize allied soldier with health = 1
+        int initialHealth = 3;
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+        s.setHealth(1);
+
+        assertEquals(1, testWorld.getAlliedSoldiersNumber());
+
+
+        // initialize Barracks
+        BarracksBuilding b = new BarracksBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(0));
+        testWorld.addBuilding(b);
+
+        testWorld.runTickMoves();
+
+        assertEquals(initialHealth, s.getHealth());
     }
 
     // setup template world

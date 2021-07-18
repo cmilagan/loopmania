@@ -84,8 +84,18 @@ public class SlugTest {
         // run battle
         testWorld.runBattles();
 
-        // check if health is less by 5
-        assertEquals(mainCharacterHealth - newSlug.getDamage(), newCharacter.getHealth());
+        // check if health is less by 
+        /**
+         * Explanation:
+         * 
+         * Slug attacks Character -> Character health: 95
+         * Character attacks Slug -> Slug health: 2
+         * Slug attacks Character -> Character health: 90
+         * Character attacks Slug -> Slug health: 1
+         * Slug attacks Character -> Character health: 85
+         * Character attacks Slug -> Slug health: 0
+         */
+        assertEquals(mainCharacterHealth - newSlug.getDamage() * 3, newCharacter.getHealth());
     }
 
     /**

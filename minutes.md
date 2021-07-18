@@ -121,3 +121,82 @@
 ### Meeting Duration: 8:00pm - 9:00pm
 
 ## ----------------------------------------------------------------------------------
+
+## Date: 10/07/21
+
+### Attendees:
+- Jason Yu
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+- Subrat Shrestha
+
+### Taken by: Prathamesh
+
+### Outcomes:
+
+- Discussion on tests and general update
+- Going over UML and design
+- Allocate frontend tasks:
+    - Christian, Jason
+
+### Meeting Duration: 8:00pm - 10:00pm
+
+## ----------------------------------------------------------------------------------
+
+## Date: 17/07/21
+
+### Attendees:
+- Tam Do
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+- Subrat Shrestha
+
+### Taken by: Subrat
+
+### Outcomes:
+
+- Reallocation of tasks for Milestone 2 since Jason is out
+- Priority given to backend implementation since its worth the most marks
+- Jason's tasks reallocated:
+    - Allied Soldiers testing and implementation: Subrat
+    - Barracks testing and implementation: Subrat
+    - Health bar in frontend: Christian
+    - Run battle implementation: Prathamesh
+
+### Updates:
+- Subrat done with Zombie tests
+- Subrat done with XP implementation
+- Pathamesh done with implementing enemies
+- Christian done with Vampire tests and implementation
+- Tam done with health potion tests and implementation
+
+
+### Meeting Duration: 8:00pm - 10:00pm
+
+## ----------------------------------------------------------------------------------
+
+## Date: 18/07/21
+
+### Attendees:
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+- Subrat Shrestha
+
+### Taken by: Subrat
+
+### Outcomes:
+
+- General updates
+- Finalizing patterns in UML
+- Going over all tests and checking coverage
+
+### Updates:
+- Subrat done with tests and implementations for Barracks, Allied Soldiers, Zombie implementation
+- Prathamesh done with designing strategies, Run Battle, Vampire movement, Health potions, Item expiry
+- Christian almost done with Frontend implementation
+- Tam done with Campfire tests and implementation
+- Everyone: updated tests to maximize coverage
+
+### Meeting Duration: 8:00pm - 11:00pm
+
+## ----------------------------------------------------------------------------------

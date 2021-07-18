@@ -157,6 +157,10 @@ public class LoopManiaWorld {
         return this.alliedSoldiers.size();
     }
 
+    public void addAlliedSoldier(AlliedSoldier s) {
+        if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -481,21 +485,39 @@ public class LoopManiaWorld {
                         break;
                     }
                 } else {
-                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
-                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                    ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
+                    AlliedSoldier firstSoldier = alliedSoldiers.get(0);
+                    
+                    /**
+                     * If statement for testing purposes only. The health of Allied Soldier should
+                     * never initially be -1 unless specifically set to be.
+                     */
+                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(e);
+
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {                    
+                        int alliedSoldierHealth = alliedSoldier.getHealth();
+                        
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
-                            alliedSoldiers.remove(alliedSoldier);
-                        } else if (alliedSoldierHealth == -1) {
-                            // Spawn Zombie
-                            alliedSoldiers.remove(alliedSoldier);
+                            toRemove.add(alliedSoldier);
+                        } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
+                            // Remove Soldier and spawn Zombie
+                            toRemove.add(alliedSoldier);
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
                     }
+
+                    alliedSoldiers.removeAll(toRemove);
+
+                    // remaining allied soldiers should attack the enemy
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        e.applyBuildingDamage(a.getDamage());
+                    }
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
+
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
@@ -1135,7 +1157,12 @@ public class LoopManiaWorld {
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
                 } else if (b instanceof BarracksBuilding) {
-                    // spawn allied soldiers
+                    // heal all allied soldiers
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        a.setHealth(3);
+                    }
+
+                    // spawn new allied soldiers
                     if (alliedSoldiers.size() < 5) {
                         int index = orderedPath.indexOf(buildingPos);
                         PathPosition pos = new PathPosition(index, orderedPath);

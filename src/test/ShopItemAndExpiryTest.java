@@ -10,6 +10,7 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
@@ -62,15 +63,11 @@ public class ShopItemAndExpiryTest {
      * 7 - Health Potion
      */
     @Test
-    public void testArmorStats() {
+    public void testBuyArmor() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Armor) {
                 Armor armor = (Armor) item;
-                assertEquals(20, armor.getItemCost());
-                assertEquals(10, armor.getItemDurability());
-                assertEquals(0.4, armor.getDefence());
-                assertEquals(0, armor.getCritDefence());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -94,7 +91,7 @@ public class ShopItemAndExpiryTest {
                 assertFalse(testWorld.buyItemByID(armorID));
 
                 // use for usage times
-                for (int i = 0; i < (armor.getItemDurability() / 2); i++) {
+                for (int i = 0; i < armor.getItemDurability(); i++) {
                     addedArmor.useDefence();
                     addedArmor.useCritDefence();
                     testWorld.runTickMoves();
@@ -114,13 +111,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testHealthPotionStats() {
+    public void testBuyHealthPotion() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof HealthPotion) {
                 HealthPotion healthPotion = (HealthPotion) item;
-                assertEquals(20, healthPotion.getItemCost());
-                assertEquals(1, healthPotion.getItemDurability());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -153,11 +148,26 @@ public class ShopItemAndExpiryTest {
                 Vampire newVampire = new Vampire(vampirePathPosition);
                 testWorld.addEnemy(newVampire);
 
+                /**
+                 * need to equip character with Stake otherwise
+                 * Vampire will kill character
+                 */
+                Stake stake = new Stake(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+                newCharacter.setWeapon(stake);
+
                 // run battle
                 testWorld.runBattles();
 
-                // check if health is less by 5
-                assertEquals(mainCharacterHealth - newVampire.getDamage(), newCharacter.getHealth());
+                // check if health is less by 40
+                /**
+                 * Explanation:
+                 * 
+                 * Vampire attacks Character -> Character health: 80
+                 * Character attacks Vampire with Stake -> Vampire health: 8
+                 * Vampire attacks Character -> Character health: 60
+                 * Character attacks Vampire with Stake -> Vampire health: 0
+                 */
+                assertEquals(mainCharacterHealth - newVampire.getDamage() * 2, newCharacter.getHealth());
 
                 // consume Health Potion
                 potion.use(newCharacter);
@@ -170,15 +180,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testHelmetStats() {
+    public void testBuyHelmet() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Helmet) {
                 Helmet helmet = (Helmet) item;
-                assertEquals(10, helmet.getItemCost());
-                assertEquals(10, helmet.getItemDurability());
-                assertEquals(0.1, helmet.getDefence());
-                assertEquals(0, helmet.getCritDefence());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -204,13 +210,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testOneRingStats() {
+    public void testBuyOneRing() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof OneRing) {
                 OneRing ring = (OneRing) item;
-                assertEquals(500, ring.getItemCost());
-                assertEquals(1, ring.getItemDurability());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -236,15 +240,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testShieldStats() {
+    public void testBuyShield() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Shield) {
                 Shield shield = (Shield) item;
-                assertEquals(10, shield.getItemCost());
-                assertEquals(5, shield.getItemDurability());
-                assertEquals(0.2, shield.getDefence());
-                assertEquals(0.6, shield.getCritDefence());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -270,14 +270,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testStaffStats() {
+    public void testBuyStaff() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Staff) {
                 Staff staff = (Staff) item;
-                assertEquals(8, staff.getItemCost());
-                assertEquals(8, staff.getItemDurability());
-                assertEquals(3, staff.getDamage());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -303,15 +300,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testStakeStats() {
+    public void testBuyStake() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Stake) {
                 Stake stake = (Stake) item;
-                assertEquals(8, stake.getItemCost());
-                assertEquals(8, stake.getItemDurability());
-                assertEquals(4, stake.getDamage());
-                assertEquals(12, stake.getSpecialDamage());
                 itemPresent = true;
 
                 // character has enough gold to buy item
@@ -337,14 +330,11 @@ public class ShopItemAndExpiryTest {
     }
 
     @Test
-    public void testSwordStats() {
+    public void testBuySword() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
             if (item instanceof Sword) {
                 Sword sword = (Sword) item;
-                assertEquals(10, sword.getItemCost());
-                assertEquals(10, sword.getItemDurability());
-                assertEquals(8, sword.getDamage());
                 itemPresent = true;
 
                 // character has enough gold to buy item
