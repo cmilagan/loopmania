@@ -47,8 +47,10 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
+import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
@@ -177,6 +179,14 @@ public class LoopManiaWorldController {
     private Image herosCastleImage;
 
     private Image swordImage;
+    private Image shieldImage;
+    private Image armourImage;
+    private Image helmetImage;
+    private Image potionImage;
+    private Image stakeImage;
+    private Image staffImage;
+    private Image ringImage;
+    
 
     // enemy images
     private Image slugImage;
@@ -255,6 +265,13 @@ public class LoopManiaWorldController {
 
         // Item images
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
+        shieldImage = new Image((new File("src/images/shield.png")).toURI().toString());
+        armourImage = new Image((new File("src/images/armour.png")).toURI().toString());
+        ringImage = new Image((new File("src/images/the_one_ring.png")).toURI().toString());
+        staffImage = new Image((new File("src/images/staff.png")).toURI().toString());
+        stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
+        helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
+        potionImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
         
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
@@ -407,7 +424,6 @@ public class LoopManiaWorldController {
      * load a vampire card from the world, and pair it with an image in the GUI
      */
     private void loadTowerCard() {
-        // TODO = load more types of card
         TowerCard towerCard = world.loadTowerCard();
         onLoad(towerCard);
     }
@@ -416,7 +432,6 @@ public class LoopManiaWorldController {
      * load a vampire card from the world, and pair it with an image in the GUI
      */
     private void loadBarracksCard() {
-        // TODO = load more types of card
         BarracksCard barracksCard = world.loadBarracksCard();
         onLoad(barracksCard);
     }
@@ -425,7 +440,6 @@ public class LoopManiaWorldController {
      * load a vampire card from the world, and pair it with an image in the GUI
      */
     private void loadCampfireCard() {
-        // TODO = load more types of card
         CampfireCard campfireCard = world.loadCampfireCard();
         onLoad(campfireCard);
     }
@@ -435,10 +449,10 @@ public class LoopManiaWorldController {
     /**
      * load a sword from the world, and pair it with an image in the GUI
      */
-    private void loadLoot(){
+    private void loadLoot(double rareBound){
         // TODO = load more types of weapon
-        // start by getting first available coordinates
-        Item loot = world.addUnequippedItem();
+        // start by getting first available coordinates        
+        Item loot = world.addUnequippedItem(rareBound);
         onLoad(loot);
     }
 
@@ -457,35 +471,40 @@ public class LoopManiaWorldController {
         // 50/50 either item or card
         
         Random rd = new Random();
-        if (rd.nextDouble() < 0) {
-            // TODO: RNG for item drops
-            loadLoot();
+        if (rd.nextDouble() < 0.51) {
+            if (enemy instanceof Slug) {
+                // slugs have a low chance of dropping rare items 0.01%
+                loadLoot(0.991);
+            } else if (enemy instanceof Zombie) {
+                // Zombies have a higher chance of dropping rare items 5%
+                loadLoot(0.95);
+            } else if (enemy instanceof Vampire) {
+                // Vampires have the highest chance of dropping rare items 30%
+                loadLoot(0.30);
+            }        
         } else {
             // RNG for card drops
             double rgen = rd.nextDouble();
-            if (rgen > 0.99) {
-                // rare
-                rgen = rd.nextDouble();
-                if (rgen <= (1/2)) {
-                    loadTowerCard();
-                } else if (rgen > (1/2)) {
+            Random rd2 = new Random();
+            if (rgen > 0.9) {
+                // epic items
+                int randInt = rd2.nextInt(4);
+                if (randInt == 0) {
                     loadVampireCard();
-                }
-            } else if (rgen > 0.90 && rgen <= 0.99) {
-                // epic
-                rgen = rd.nextDouble();
-                if (rgen <= (1/3)) {
-                    loadVillageCard();
-                } else if (rgen <= (2/3) && rgen > (1/3)) {
-                    loadCampfireCard();
-                } else if (rgen <= 1 && rgen > (2/3)) {
+                } else if (randInt == 1) {
+                    loadTowerCard();
+                } else if (randInt == 2) {
                     loadBarracksCard();
+                } else if (randInt == 3) {
+                    loadCampfireCard();
+                } else if (randInt == 4) {
+                    loadVillageCard();
                 }
-            } else if (rgen > 0.6 && rgen <= 0.90) { 
-                // uncommon
+            } else if (rgen <= 0.9 && rgen > 0.6) {
+                // uncommon items
                 loadZombieGraveyardCard();
             } else if (rgen <= 0.6) {
-                // common
+                // common items
                 loadTrapCard();
             }
         }
@@ -538,12 +557,28 @@ public class LoopManiaWorldController {
     private void onLoad(Item item) {
         ImageView view = null;
         if (item instanceof Sword) {
+            System.out.println("sword");
             view = new ImageView(swordImage);
         } else if (item instanceof Armor) {
+            System.out.println("armor");
+            view = new ImageView(armourImage);
         } else if (item instanceof Helmet) {
+            System.out.println("helmet");
+            view = new ImageView(helmetImage);
         } else if (item instanceof Shield) {
+            System.out.println("shield");
+            view = new ImageView(shieldImage);
         } else if (item instanceof Staff) {
+            System.out.println("staff");
+            view = new ImageView(staffImage);
         } else if (item instanceof Stake) {
+            System.out.println("stak");
+            view = new ImageView(stakeImage);
+        } else if (item instanceof HealthPotion) {
+            System.out.println("pot");
+            view = new ImageView(potionImage);
+        } else if (item instanceof OneRing) {
+            view = new ImageView(ringImage);
         } else {
             try {
                 throw new Exception("Invalid Item");

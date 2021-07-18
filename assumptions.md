@@ -44,15 +44,14 @@
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
-- Each card has its own rarity: Common (60%), Uncommon (30%), Epic (9%), Rare (1%)
-    - Vampire Castle: Rare
+- Each card has its own rarity: Common (60%), Uncommon (30%), Epic (10%)
+    - Vampire Castle: Epic
     - Zombie Pit: Uncommon
-    - Tower: Rare
+    - Tower: Epic
     - Village: Epic
     - Barracks: Epic
     - Trap: Common
     - Campfire: Epic 
-    - Rare Item Type: Rare
 - The Initial Values of damage/expiry(/rounds) for building items:
     - Tower: 4, 5
     - Trap: 8, 1
@@ -70,7 +69,7 @@
 - Zombies/vampires spawn on their respective buildings
 - Heros castle is at 0,0:
 - Character does not trigger traps
-- Traps do not give the character any form of reward
+- Traps killing enemies do not give the character any form of reward (promotes strategic use)
 
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
@@ -89,6 +88,15 @@
     - Shield: 10
     - Helmet: 10
     - Health Potion: 20
+- Item rarity (since some items cost more) - excluding rare items
+    common 60%, uncommon 40%
+    - Sword: common
+    - Stake: common
+    - helmet: common
+    - Armour: uncommon
+    - shield: uncommon
+    - staff: uncommon
+    - healthpotion: uncommon
 - The Initial Values of defence/crit protection/durability/ for defence items:
     - Armour Defence: 40%, 0%, 10
     - Helmet Defence: 10%, 0%, 10
@@ -97,6 +105,8 @@
     - If item uses are reduced to 0, the item will disappear
 - The shield item reduces inflicted damage by the defence stats
 - Health Potions (when acquired) will be displayed in Character's inventory. It can be used by simply clicking on it in the time of need or by pressing 'H'. When used, the potion item will disappear and the character's health will return to max. A sound effect will also be added to signify the usage of a Health Potion.
+- Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping. (this changes based on enemy type defeated)
+- Defeating higher level enemies increases the chance of dropping rare items (promotes placing zombie pit buildings)
     
 ## Game State Related Assumptions:
 - The Game starts with the Vampire Castle and Zombie Pit already built

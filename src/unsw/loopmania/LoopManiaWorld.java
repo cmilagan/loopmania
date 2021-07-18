@@ -552,7 +552,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -574,7 +574,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -595,7 +595,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -616,7 +616,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -638,7 +638,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -661,7 +661,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -684,7 +684,7 @@ public class LoopManiaWorld {
             // Assign gold randomly (formula in assumptions)
             character.setGold(goldReward());
             // Assign an item reward
-            Item loot = addUnequippedItem();
+            Item loot = addUnequippedItem(1);
             unequippedInventoryItems.add(loot);
             removeCard(0);
         }
@@ -713,7 +713,9 @@ public class LoopManiaWorld {
      * 
      * @return an item to be spawned in the controller as a JavaFX node
      */
-    public Item addUnequippedItem() {
+    public Item addUnequippedItem(double rareBound) {
+        // TODO = expand this - we would like to be able to add multiple types of items,
+        // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
             // eject the oldest unequipped item and replace it... oldest item is that at
@@ -728,10 +730,56 @@ public class LoopManiaWorld {
 
         // now we insert an item, as we know we have at least made a slot
         // available...
-        Random rand = new Random(); 
-        ArrayList<Item> itemRewards = getPosCardRewards();
-        int upperbound = itemRewards.size();
-        return itemRewards.get(rand.nextInt(upperbound));
+        Random rand = new Random();
+        double choice = rand.nextDouble();
+        System.out.println(choice);
+        Item addedItem = null;
+        if (choice < rareBound) {
+            System.out.println("basic item");
+            Random nrand1 = new Random();
+            double commonUncommon = nrand1.nextDouble();
+            Random nrand2 = new Random();
+            if (commonUncommon < 0.6) {
+                // common item drops
+                int nextChoice = nrand2.nextInt(2);
+                System.out.println(nextChoice);
+
+                if (nextChoice == 0) {
+                    System.out.println("sword dropped");
+                    addedItem = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } else if (nextChoice == 1) {
+                    addedItem = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } else if (nextChoice == 2) {
+                    addedItem = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } 
+            } else {
+                // uncommon item drops
+                int nextChoice = nrand2.nextInt(3);
+
+                if (nextChoice == 0) {
+                    addedItem = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } else if (nextChoice == 1) {
+                    addedItem = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } else if (nextChoice == 2) {
+                    addedItem = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } else if (nextChoice == 3) {
+                    addedItem = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+                } 
+            }
+        } else {
+            // rare item (the one ring)
+            addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+        }
+        unequippedInventoryItems.add(addedItem);
+        return addedItem;
     }
 
     /**
