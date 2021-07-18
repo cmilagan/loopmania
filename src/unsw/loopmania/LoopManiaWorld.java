@@ -1079,7 +1079,6 @@ public class LoopManiaWorld {
         cardEntities.remove(card);
         shiftCardsDownFromXCoordinate(cardNodeX);
     
-
         return newBuilding;
     }
 
@@ -1105,14 +1104,6 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
-                 /*} else if (b instanceof CampfireBuilding) {
-                    // TODO Add building effects for Campfire:
-
-                } else if (b instanceof TrapBuilding) {
-                    // TODO Add building effects for Trap:
-
-                } else if (b instanceof TowerBuilding) {
-                    // TODO add building effects of tower:*/
                 } else if (b instanceof BarracksBuilding) {
                     // spawn allied soldiers
                     if (alliedSoldiers.size() < 5) {
@@ -1124,31 +1115,25 @@ public class LoopManiaWorld {
                     }
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
+                    // Increment loop counter
+                    setLoopCount(getLoopCount() + 1);
                     // open shop pause the game
                 }
             } 
             if (b instanceof TrapBuilding) {
                 TrapBuilding trap = (TrapBuilding) b;
-
-                boolean triggered = false;
                 for (BasicEnemy e: enemies) {
-                    int eX = e.getX();
-                    int eY = e.getY();
-                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX, eY);
+                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
-                        triggered = true;
-                        e.setHealth(e.getHealth() - trap.getDamage());
+                        removeBuilding(trap);
+                        e.applyTrapDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
                             killEnemy(e);
                             break;
                         }
                     }
-                }
-                if (triggered) {
-                    removeBuilding(trap);
-                    break;
                 }
             }
             // Check if there is a campfire
@@ -1163,20 +1148,7 @@ public class LoopManiaWorld {
                     character.setDamage(character.getDamage());
                 }
             }
-            // Check if an enemy stepped into a trap
-            if (b instanceof TrapBuilding) {
-                TrapBuilding trap = (TrapBuilding) b;
-                // Loop through all the enemies and find their position and if it is on the trap
-                for (BasicEnemy e : enemies) {
-                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
-                    if (buildingPos == enemyPos) {
-                        // Deal damage to the enemy
-                        e.applyTrapDamage(trap.getDamage());
-                    }
-                }
-            }
         }
-
     }
 
     //////////////////////////////////////////////////////////////////////
