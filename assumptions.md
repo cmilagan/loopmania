@@ -69,7 +69,7 @@
 - Zombies/vampires spawn on their respective buildings
 - Heros castle is at 0,0:
 - Character does not trigger traps
-- Traps do not give the character any form of reward
+- Traps killing enemies do not give the character any form of reward (promotes strategic use)
 
 ## Inventory Related Assumptions:
 - There will be a general ‘weapons’ slot in the equipped inventory section instead of a ‘sword’ slot. The Human Player will drag the weapon to be used from the unequipped inventory into this slot to use the weapon. Only items which are equippable can be dragged from the unequipped inventory into the equipped inventory 
