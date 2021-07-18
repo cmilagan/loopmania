@@ -158,6 +158,10 @@ public class LoopManiaWorld {
         return this.alliedSoldiers.size();
     }
 
+    public List<AlliedSoldier> getAlliedSoldiers() {
+        return this.alliedSoldiers;
+    }
+
 
     public void checkCanEquip(int itemNodeX, int itemNodeY, int equipX, int equipY) {
         // get the item
@@ -529,9 +533,11 @@ public class LoopManiaWorld {
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
+                            alliedSoldier.destroy();
                         } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
                             // Remove Soldier and spawn Zombie
                             toRemove.add(alliedSoldier);
+                            alliedSoldier.destroy();
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
@@ -1327,4 +1333,17 @@ public class LoopManiaWorld {
     public Character getCharacter() {
         return this.character;
     }
+
+    // private Pair<Integer, Integer> consumePotion() {
+    //     for (Entity i: getCharacterInventory()) {
+    //         if (i instanceof HealthPotion) {
+    //             HealthPotion potion = (HealthPotion) i;
+    //             potion.use(character);
+    //             potion.destroy();
+    //             unequippedInventoryItems.remove(potion);
+    //             return new Pair<Integer, Integer>(i.getX(), i.getX());
+    //         }
+    //     }
+    //     return null;
+    // }
 }

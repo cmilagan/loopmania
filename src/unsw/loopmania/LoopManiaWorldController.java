@@ -29,6 +29,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
@@ -62,7 +65,8 @@ import unsw.loopmania.npcs.Zombie;
 import unsw.loopmania.npcs.AlliedSoldier;
 
 import java.util.EnumMap;
-
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
@@ -102,6 +106,12 @@ enum DRAGGABLE_TYPE{
  *     This is run on the JavaFX application thread when it has enough time.
  */
 public class LoopManiaWorldController {
+
+    /**
+     * Showcase characters current health
+     */
+    @FXML
+    private GridPane healthStatus;
 
     /**
      * stats gridpane includes money, exp
@@ -372,6 +382,11 @@ public class LoopManiaWorldController {
             
 
             // display the health of the hero
+                // Integer health = world.getCharacter().getHealth();
+                // Text text = new Text();
+                // text.setText(health.toString());
+                // text.setFi
+                // healthStatus.add(text,5,0);
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -486,7 +501,6 @@ public class LoopManiaWorldController {
         // TODO: add RNG
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
-        loadBarracksCard();
 
         Random rd = new Random();
         if (rd.nextDouble() < 0.51) {
@@ -936,6 +950,8 @@ public class LoopManiaWorldController {
             else{
                 pause();
             }
+            break;
+        case H:
             break;
         default:
             break;
