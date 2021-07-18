@@ -105,26 +105,26 @@ public class Character extends MovingEntity {
         this.equippedShield = shield;
     }
 
-    private double getTotalDefenceMultiplier() {
+    public double getTotalDefenceMultiplier() {
         double multiplier = 1;
-        if (this.equippedArmor != null) multiplier -= this.equippedArmor.getDefence();
-        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.getDefence();
-        if (this.equippedShield != null) multiplier -= this.equippedShield.getDefence();
+        if (this.equippedArmor != null) multiplier -= this.equippedArmor.useDefence();
+        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.useDefence();
+        if (this.equippedShield != null) multiplier -= this.equippedShield.useDefence();
         return multiplier;
     }
     
 
-    private double getTotalCritDefenceMultiplier() {
+    public double getTotalCritDefenceMultiplier() {
         double multiplier = 1;
-        if (this.equippedArmor != null) multiplier -= this.equippedArmor.getCritDefence();
-        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.getCritDefence();
-        if (this.equippedShield != null) multiplier -= this.equippedShield.getCritDefence();
+        if (this.equippedArmor != null) multiplier -= this.equippedArmor.useCritDefence();
+        if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.useCritDefence();
+        if (this.equippedShield != null) multiplier -= this.equippedShield.useCritDefence();
         return multiplier;
     }
 
     public int getDamage() {
         if (equippedWeapon == null) return 1;
-        else return equippedWeapon.getDamage();
+        else return equippedWeapon.inflictDamage();
     }
 
     public Pair<Integer, Integer> getCoordinatePair() {

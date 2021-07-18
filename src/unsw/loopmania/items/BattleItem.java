@@ -9,6 +9,7 @@ public class BattleItem extends Item {
     /**
      * every battle item must have these stats
      */
+    private int usage;
     private int itemCost;
     private int itemDurability;
 
@@ -24,6 +25,10 @@ public class BattleItem extends Item {
 
     public int getItemDurability() {
         return itemDurability;
+    }
+
+    public int getUsage() {
+        return usage;
     }
 }
 

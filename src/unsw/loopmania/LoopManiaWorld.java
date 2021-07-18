@@ -26,6 +26,7 @@ import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.DefenceItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -143,6 +144,10 @@ public class LoopManiaWorld {
         return height;
     }
 
+    public int getAlliedSoldiersNumber() {
+        return this.alliedSoldiers.size();
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -163,9 +168,8 @@ public class LoopManiaWorld {
     public boolean buyItemByID(int itemID) {
         List<BattleItem> battleItems = getBattleItems();
         BattleItem itemBought = new BattleItem(null, null, 0, 0);
-        // TODO: what should the values of X and Y be?
-        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
-        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newX = new SimpleIntegerProperty();
+        SimpleIntegerProperty newY = new SimpleIntegerProperty();
 
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
@@ -272,9 +276,7 @@ public class LoopManiaWorld {
     public void addBuilding(Building building) {
         // Add a static entity
         buildingEntities.add(building);
-    }
-
-    
+    }   
 
     /**
      * Get the list of buildings
@@ -342,8 +344,7 @@ public class LoopManiaWorld {
                     enemies.add(newZombie);
                     spawningEnemies.add(newZombie);
                     if (b.getExpiry() == 0) {
-                        b.destroy();
-                        buildingEntities.remove(b);
+                        removeBuilding(b);
                         break;
                     }
                 }
@@ -352,14 +353,14 @@ public class LoopManiaWorld {
                     Vampire newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
                     enemies.add(newVampire);
                     spawningEnemies.add(newVampire);
-                    b.destroy();
-                    buildingEntities.remove(b);
+                    removeBuilding(b);
                     break;
                 }
             } 
         }
         return spawningEnemies;
     }
+
 
     /**
      * kill an enemy
@@ -372,40 +373,23 @@ public class LoopManiaWorld {
     }
 
     /**
+     * remove a building
+     * 
+     * @param enemy enemy to be killed
+     */
+    private void removeBuilding(Building building) {
+        building.destroy();
+        buildingEntities.remove(building);
+    }
+
+    /**
      * run the expected battles in the world, based on current world state
      * 
      * @return list of enemies which have been killed
      */
     public List<BasicEnemy> runBattles() {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
-        /*
-        boolean conductFight = false;
-        // Checking If there is an enemy inside battle radii
-        for (BasicEnemy e : enemies) {
-            // Checking if enemy is inside battle radii
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
-                conductFight = true;
-                break;
-            }
-        }
-        if (conductFight) {
-            // Collecting all enemies inside support radii
-            List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
-            for (BasicEnemy e : enemies) {
-                // Checking if enemy is inside support radii
-                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
-                    battleEnemies.add(e);
-                }
-            }
-            int numberOfEnemies = battleEnemies.size();
-            // Conduct Fights with Valid Enemies
-            while (character.getHealth() > 0 && defeatedEnemies.size() < numberOfEnemies) {
-                // Continuously fight until character loses or all enemies are defeated
-                for (BasicEnemy e : battleEnemies) {
-                    // Ignore Dead Enemies
-                    if (e.getHealth() <= 0) {
-                        continue;
-        */
+
         // Collecting all enemies which the character must fight (character within battle radius of an enemy)
         List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
         List<BasicEnemy> supportEnemies = new ArrayList<BasicEnemy>();
@@ -416,6 +400,7 @@ public class LoopManiaWorld {
                 System.out.println("adding enemy");
             }
         }
+
         /**
          * Given that we have found some enemies X to fight, get enemies Y such that enemy X
          * is within the support radius of enemies Y (according to spec they should come join battle)
@@ -424,7 +409,7 @@ public class LoopManiaWorld {
             // checking if enemy X is within the support radius of enemy Y
             for (BasicEnemy attackingEnemy : battleEnemies) {
                 // ensure that we are not fighting the same enemy twice (i.e., supportingEnemy != attackingEnemy)
-                if (!supportingEnemy.equals(attackingEnemy)) {
+                if (!supportingEnemy.equals(attackingEnemy) && !battleEnemies.contains(supportingEnemy)) {
                     if (Math.sqrt(Math.pow((attackingEnemy.getX() - supportingEnemy.getX()), 2) + Math.pow((attackingEnemy.getY() - supportingEnemy.getY()), 2)) <= supportingEnemy.getSupportRadius()) {
                         supportEnemies.add(supportingEnemy);
                         System.out.println("adding support enemy");
@@ -439,8 +424,10 @@ public class LoopManiaWorld {
                 }
             }
         }
+
         // Adding supportEnemies to battleEnemies as we have to fight them too
         battleEnemies.addAll(supportEnemies);
+
         // Conduct Fights with Valid Enemies
         while (character.getHealth() > 0 && battleEnemies.size() > 0) {
             System.out.println("initiating battle phase");
@@ -452,7 +439,6 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
-                        character.destroy();
                         break;
                     }
                 } else {
@@ -479,7 +465,7 @@ public class LoopManiaWorld {
             }
         }
         System.out.println("battle encounter finished");
-        // }
+        
         for (BasicEnemy e : defeatedEnemies) {
             System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
@@ -783,6 +769,36 @@ public class LoopManiaWorld {
         buildingEntities.removeAll(expired);
     }
 
+    /**
+     * Remove all expired items from character's equipped and unequipped inventory
+     */
+    public void removeExpiredItems() {
+        List<BattleItem> expirableItems = new ArrayList<BattleItem>();
+        for (Entity entities : unequippedInventoryItems) {
+            if (entities instanceof BattleItem) {
+                expirableItems.add((BattleItem) entities);
+            }
+        }
+
+        /**
+         * Check if item is expired, if it is remove from unequipped inventory and
+         * remove from character's equipped inventory
+         */
+        for (BattleItem item : expirableItems) {
+            if (item.getUsage() == item.getItemDurability()) {
+                unequippedInventoryItems.remove(item);
+                if (item instanceof AttackItem) {
+                    character.setWeapon(null);
+                } else if (item instanceof Helmet) {
+                    character.setHelmet(null);
+                } else if (item instanceof Shield) {
+                    character.setShield(null);
+                } else if (item instanceof Armor) {
+                    character.setArmor(null);
+                }
+            }
+        }
+    }
     
     /**
      * run moves which occur with every tick without needing to spawn anything
@@ -805,6 +821,7 @@ public class LoopManiaWorld {
         moveBasicEnemies();
         
         removeExpiredBuildings();
+        removeExpiredItems();
 
         //e.g if loopCounter = 20 win game
 
@@ -1022,24 +1039,51 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
-                } else if (b instanceof CampfireBuilding) {
+                 /*} else if (b instanceof CampfireBuilding) {
                     // TODO Add building effects for Campfire:
 
                 } else if (b instanceof TrapBuilding) {
                     // TODO Add building effects for Trap:
 
                 } else if (b instanceof TowerBuilding) {
-                    // TODO add building effects of tower:
-                    
+                    // TODO add building effects of tower:*/
                 } else if (b instanceof BarracksBuilding) {
-
+                    // spawn allied soldiers
+                    if (alliedSoldiers.size() < 5) {
+                        int index = orderedPath.indexOf(buildingPos);
+                        PathPosition pos = new PathPosition(index, orderedPath);
+                        AlliedSoldier a = new AlliedSoldier(pos);
+    
+                        alliedSoldiers.add(a);
+                    }
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
                     // open shop pause the game
                 }
+            } 
+            if (b instanceof TrapBuilding) {
+                TrapBuilding trap = (TrapBuilding) b;
 
-
-
+                boolean triggered = false;
+                for (BasicEnemy e: enemies) {
+                    int eX = e.getX();
+                    int eY = e.getY();
+                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX, eY);
+                    if (enemyPos.equals(buildingPos)) {
+                        // enemy steps on trap
+                        triggered = true;
+                        e.setHealth(e.getHealth() - trap.getDamage());
+                        if (e.getHealth() <= 0) {
+                            // enemy killed
+                            killEnemy(e);
+                            break;
+                        }
+                    }
+                }
+                if (triggered) {
+                    removeBuilding(trap);
+                    break;
+                }
             }
         }
 
