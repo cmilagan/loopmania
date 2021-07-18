@@ -1,6 +1,6 @@
 package unsw.loopmania.modes;
 
-public class SurvivalMode {
+public class SurvivalMode extends GameDifficulty{
     // We can add more conditions for winning and other restrictions
     private int winLoop;
     private int winXP;
