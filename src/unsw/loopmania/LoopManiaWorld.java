@@ -682,7 +682,7 @@ public class LoopManiaWorld {
         double choice = rand.nextDouble();
         System.out.println(choice);
         Item addedItem = null;
-        if (choice < 0.95) {
+        if (choice < 0.99) {
             System.out.println("basic item");
             Random nrand = new Random();
             int nextChoice = nrand.nextInt(6);
