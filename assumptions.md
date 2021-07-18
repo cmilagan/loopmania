@@ -86,6 +86,15 @@
     - Shield: 10
     - Helmet: 10
     - Health Potion: 20
+- Item rarity (since some items cost more) - excluding rare items
+    common 60%, uncommon 40%
+    - Sword: common
+    - Stake: common
+    - helmet: common
+    - Armour: uncommon
+    - shield: uncommon
+    - staff: uncommon
+    - healthpotion: uncommon
 - The Initial Values of defence/crit protection/durability/ for defence items:
     - Armour Defence: 40%, 0%, 10
     - Helmet Defence: 10%, 0%, 10
@@ -94,7 +103,7 @@
     - If item uses are reduced to 0, the item will disappear
 - The shield item reduces inflicted damage by the defence stats
 - Health Potions (when acquired) will be displayed in Character's inventory. It can be used by simply clicking on it in the time of need or by pressing 'H'. When used, the potion item will disappear and the character's health will return to max. A sound effect will also be added to signify the usage of a Health Potion.
-- Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping.
+- Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping. (this changes based on enemy type defeated)
     
 ## Game State Related Assumptions:
 - The Game starts with the Vampire Castle and Zombie Pit already built

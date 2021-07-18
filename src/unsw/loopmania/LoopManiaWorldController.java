@@ -449,10 +449,10 @@ public class LoopManiaWorldController {
     /**
      * load a sword from the world, and pair it with an image in the GUI
      */
-    private void loadLoot(){
+    private void loadLoot(double rareBound){
         // TODO = load more types of weapon
         // start by getting first available coordinates        
-        Item loot = world.addUnequippedItem();
+        Item loot = world.addUnequippedItem(rareBound);
         onLoad(loot);
     }
 
@@ -472,7 +472,16 @@ public class LoopManiaWorldController {
         
         Random rd = new Random();
         if (rd.nextDouble() < 0.51) {
-            loadLoot();
+            if (enemy instanceof Slug) {
+                // slugs have a low chance of dropping rare items 0.01%
+                loadLoot(0.991);
+            } else if (enemy instanceof Zombie) {
+                // Zombies have a higher chance of dropping rare items 1%
+                loadLoot(0.99);
+            } else if (enemy instanceof Vampire) {
+                // Vampires have the highest chance of dropping rare items 8%
+                loadLoot(0.92);
+            }        
         } else {
             // RNG for card drops
             double rgen = rd.nextDouble();
