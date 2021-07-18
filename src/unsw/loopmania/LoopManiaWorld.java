@@ -457,7 +457,14 @@ public class LoopManiaWorld {
                 } else {
                     ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {
-                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                        int alliedSoldierHealth = alliedSoldier.getHealth();
+                        
+                        /**
+                         * If statement for testing purposes only. The health of Allied Soldier should never initially
+                         * be -1 unless specifically set to be.
+                         */
+                        if (alliedSoldierHealth != -1) alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
