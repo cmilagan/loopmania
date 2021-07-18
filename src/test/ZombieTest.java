@@ -8,9 +8,11 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.Zombie;
 
 public class ZombieTest {
@@ -69,6 +71,11 @@ public class ZombieTest {
         initializeWorld();
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 100;
+
+        // giving character a Sword so he wins the battle with Zombie
+        Sword sword = new Sword(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setWeapon(sword);
+
         testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }

@@ -486,15 +486,17 @@ public class LoopManiaWorld {
                     }
                 } else {
                     ArrayList<AlliedSoldier> toRemove = new ArrayList<AlliedSoldier>();
-                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+                    AlliedSoldier firstSoldier = alliedSoldiers.get(0);
+                    
+                    /**
+                     * If statement for testing purposes only. The health of Allied Soldier should
+                     * never initially be -1 unless specifically set to be.
+                     */
+                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(e);
+
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {                    
                         int alliedSoldierHealth = alliedSoldier.getHealth();
                         
-                        /**
-                         * If statement for testing purposes only. The health of Allied Soldier should never initially
-                         * be -1 unless specifically set to be.
-                         */
-                        if (alliedSoldierHealth != -1) alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
-
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
@@ -507,6 +509,11 @@ public class LoopManiaWorld {
                     }
 
                     alliedSoldiers.removeAll(toRemove);
+
+                    // remaining allied soldiers should attack the enemy
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        e.applyBuildingDamage(a.getDamage());
+                    }
                 }
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
@@ -1150,7 +1157,12 @@ public class LoopManiaWorld {
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
                 } else if (b instanceof BarracksBuilding) {
-                    // spawn allied soldiers
+                    // heal all allied soldiers
+                    for (AlliedSoldier a : alliedSoldiers) {
+                        a.setHealth(3);
+                    }
+
+                    // spawn new allied soldiers
                     if (alliedSoldiers.size() < 5) {
                         int index = orderedPath.indexOf(buildingPos);
                         PathPosition pos = new PathPosition(index, orderedPath);
