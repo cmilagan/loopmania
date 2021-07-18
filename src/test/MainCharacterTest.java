@@ -8,10 +8,15 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
+
 import org.javatuples.Pair;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Shield;
 import unsw.loopmania.npcs.Zombie;
 
 class MainCharacterTest {
@@ -50,7 +55,7 @@ class MainCharacterTest {
 
         PathPosition zombiePosition = new PathPosition(0, orderedPath);
         Zombie newZombie = new Zombie(zombiePosition);
-        testWorld.addEntity(newZombie);
+        testWorld.addEnemy(newZombie);
         testWorld.runBattles();
 
         int initialHealth = 100;
@@ -62,6 +67,27 @@ class MainCharacterTest {
     void testCharacterDeath() {
         // TODO: test game over when health < 0.
         // Part of issue "Main Character Test"
+    }
+    
+    @Test
+    void testDefenceAndCritMultiplier() {
+        initializeWorld();
+
+        // buy armor
+        Armor armor = new Armor(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+
+        // buy helmet
+        Helmet helmet = new Helmet(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+
+        // buy shield
+        Shield shield = new Shield(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+
+        newCharacter.setArmor(armor);
+        newCharacter.setHelmet(helmet);
+        newCharacter.setShield(shield);
+
+        assertEquals(newCharacter.getTotalDefenceMultiplier(), 1 - 0.1 - 0.4 - 0.2);
+        assertEquals(newCharacter.getTotalCritDefenceMultiplier(), 1 - 0 - 0 - 0.6);
     }
 
     // setup template world

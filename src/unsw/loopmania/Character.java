@@ -20,6 +20,7 @@ public class Character extends MovingEntity {
     private Helmet equippedHelmet;
     private Armor equippedArmor;
     private Shield equippedShield;
+    private int damage = 1;
     private int xp = 0;
 
     public Character(PathPosition position) {
@@ -124,6 +125,14 @@ public class Character extends MovingEntity {
     public int getDamage() {
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.getDamage();
+    }
+
+    public int getCharDamage() {
+        return damage;
+    }
+
+    public void setDamage(int newDmg) {
+        this.damage = newDmg;
     }
 
     public Pair getCoordinatePair() {

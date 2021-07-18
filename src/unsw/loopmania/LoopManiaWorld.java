@@ -10,6 +10,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
+import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
@@ -25,6 +26,7 @@ import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.items.DefenceItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -36,6 +38,7 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
 /**
@@ -51,11 +54,6 @@ public class LoopManiaWorld {
     public static final int unequippedInventoryHeight = 4;
 
     /**
-     * Counter for the loops completed
-     */
-    public int loopCount;
-
-    /**
      * width of the world in GridPane cells
      */
     private int width;
@@ -66,6 +64,17 @@ public class LoopManiaWorld {
     private int height;
 
     /**
+     * 
+     * Current number of loops completed;
+     */
+    private int loopCounter;
+
+    /**
+     * Previous loop count
+     */
+    private int prevLoop;
+    /**
+     * 
      * Current number of ticks;
      */
     private int tickCounter;
@@ -123,7 +132,7 @@ public class LoopManiaWorld {
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
-        loopCount = 0;
+        this.loopCounter = 0;
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
     }
@@ -137,11 +146,15 @@ public class LoopManiaWorld {
     }
 
     public int getLoopCount() {
-        return loopCount;
+        return loopCounter;
     }
 
     public void setLoopCount(int num) {
-        loopCount = num;
+        loopCounter = num;
+    }
+    
+    public int getAlliedSoldiersNumber() {
+        return this.alliedSoldiers.size();
     }
 
     /**
@@ -164,9 +177,8 @@ public class LoopManiaWorld {
     public boolean buyItemByID(int itemID) {
         List<BattleItem> battleItems = getBattleItems();
         BattleItem itemBought = new BattleItem(null, null, 0, 0);
-        // TODO: what should the values of X and Y be?
-        SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
-        SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
+        SimpleIntegerProperty newX = new SimpleIntegerProperty();
+        SimpleIntegerProperty newY = new SimpleIntegerProperty();
 
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
@@ -310,22 +322,70 @@ public class LoopManiaWorld {
     }
 
     /**
+     * 
+     * @param x
+     * @param y
+     * @return the closest path tile
+     */
+    public Pair<Integer, Integer> closestPathTile(int x, int y) {
+        // finding the closest path
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                Pair<Integer, Integer> tile = new Pair<Integer, Integer>((x - i), (y - j));
+                if (orderedPath.contains(tile)) {
+                    return tile;
+                }
+            }
+        }   
+        return null;
+    }
+
+    /**
      * spawns enemies if the conditions warrant it, adds to world
      * 
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
-        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
+
+        // spawning slugs
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
+
+        Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
         }
+
+        // spawning zombies and vampires
+        for (Building b: buildingEntities) {
+            Pair<Integer, Integer> buildSpawnPos = closestPathTile(b.getX(), b.getY());
+            int indexInPath = orderedPath.indexOf(buildSpawnPos);
+            if (b instanceof ZombieGraveyardBuilding) {
+                if (prevLoop != loopCounter) {
+                    Zombie newZombie = new Zombie(new PathPosition(indexInPath, orderedPath));
+                    enemies.add(newZombie);
+                    spawningEnemies.add(newZombie);
+                    if (b.getExpiry() == 0) {
+                        removeBuilding(b);
+                        break;
+                    }
+                }
+            } else if (b instanceof VampireCastleBuilding) {
+                if (b.getExpiry() == 0) {
+                    Vampire newVampire = new Vampire(new PathPosition(indexInPath, orderedPath));
+                    enemies.add(newVampire);
+                    spawningEnemies.add(newVampire);
+                    removeBuilding(b);
+                    break;
+                }
+            } 
+        }
         return spawningEnemies;
     }
+
 
     /**
      * kill an enemy
@@ -338,69 +398,99 @@ public class LoopManiaWorld {
     }
 
     /**
+     * remove a building
+     * 
+     * @param enemy enemy to be killed
+     */
+    private void removeBuilding(Building building) {
+        building.destroy();
+        buildingEntities.remove(building);
+    }
+
+    /**
      * run the expected battles in the world, based on current world state
      * 
      * @return list of enemies which have been killed
      */
     public List<BasicEnemy> runBattles() {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
-        boolean conductFight = false;
-        // Checking If there is an enemy inside battle radii
+
+        // Collecting all enemies which the character must fight (character within battle radius of an enemy)
+        List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
+        List<BasicEnemy> supportEnemies = new ArrayList<BasicEnemy>();
         for (BasicEnemy e : enemies) {
             // Checking if enemy is inside battle radii
-            if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getBattleRadius()) {
-                conductFight = true;
-                break;
+            if (Math.sqrt(Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2)) <= e.getBattleRadius()) {
+                battleEnemies.add(e);
+                System.out.println("adding enemy");
             }
         }
-        if (conductFight) {
-            // Collecting all enemies inside support radii
-            List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
-            for (BasicEnemy e : enemies) {
-                // Checking if enemy is inside support radii
-                if (Math.pow((character.getX() - e.getX()), 2) + Math.pow((character.getY() - e.getY()), 2) <= e.getSupportRadius()) {
-                    battleEnemies.add(e);
-                }
-            }
-            // Conduct Fights with Valid Enemies
-            while (character.getHealth() > 0 && battleEnemies.size() > 0) {
-                System.out.println("initiating battle phase");
-                // Continuously fight until character loses or all enemies are defeated
-                List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
-                // Newly added zombies can't attack until next phase
-                for (BasicEnemy e : currentBattleEnemies) {
-                    if (alliedSoldiers.size() == 0) {
-                        // Calculate Character
-                        int characterHealth = character.applyEnemyDamage(e);
-                        if (characterHealth == 0) {
-                            System.out.println("character killed");
-                            break;
-                        }
-                    } else {
-                        for (AlliedSoldier alliedSoldier : alliedSoldiers) {
-                            int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
-                            if (alliedSoldierHealth == 0) {
-                                // Remove Allied Soldier
-                                alliedSoldiers.remove(alliedSoldier);
-                            } else if (alliedSoldierHealth == -1) {
-                                // Spawn Zombie
-                                alliedSoldiers.remove(alliedSoldier);
-                                int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
-                                battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
-                            }
-                        }
-                    }
-                    // Calculate Enemy
-                    int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
-                    if (enemyHealth == 0) {
-                        defeatedEnemies.add(e);
-                        battleEnemies.remove(e);
-                        System.out.println("enemy killed");
+
+        /**
+         * Given that we have found some enemies X to fight, get enemies Y such that enemy X
+         * is within the support radius of enemies Y (according to spec they should come join battle)
+        */
+        for (BasicEnemy supportingEnemy : enemies) {
+            // checking if enemy X is within the support radius of enemy Y
+            for (BasicEnemy attackingEnemy : battleEnemies) {
+                // ensure that we are not fighting the same enemy twice (i.e., supportingEnemy != attackingEnemy)
+                if (!supportingEnemy.equals(attackingEnemy) && !battleEnemies.contains(supportingEnemy)) {
+                    if (Math.sqrt(Math.pow((attackingEnemy.getX() - supportingEnemy.getX()), 2) + Math.pow((attackingEnemy.getY() - supportingEnemy.getY()), 2)) <= supportingEnemy.getSupportRadius()) {
+                        supportEnemies.add(supportingEnemy);
+                        System.out.println("adding support enemy");
+                        /**
+                         * According to our assumption, we must move supporting enemies next to (position + 1) the 
+                         * battle enemies to show that the supporting enemies have joined the battle too
+                         */
+                        int moveToIndex = attackingEnemy.getCurrentPositionIndex() + 1;
+                        supportingEnemy.moveTo(moveToIndex);
+                        System.out.println("moving support enemy next to battle enemy");
                     }
                 }
             }
-            System.out.println("battle encounter finished");
         }
+
+        // Adding supportEnemies to battleEnemies as we have to fight them too
+        battleEnemies.addAll(supportEnemies);
+
+        // Conduct Fights with Valid Enemies
+        while (character.getHealth() > 0 && battleEnemies.size() > 0) {
+            System.out.println("initiating battle phase");
+            // Continuously fight until character loses or all enemies are defeated
+            List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
+            // Newly added zombies can't attack until next phase
+            for (BasicEnemy e : currentBattleEnemies) {
+                if (alliedSoldiers.size() == 0) {
+                    // Calculate Character
+                    int characterHealth = character.applyEnemyDamage(e);
+                    if (characterHealth == 0) {
+                        break;
+                    }
+                } else {
+                    for (AlliedSoldier alliedSoldier : alliedSoldiers) {
+                        int alliedSoldierHealth = alliedSoldier.applyEnemyDamage(e);
+                        if (alliedSoldierHealth == 0) {
+                            // Remove Allied Soldier
+                            alliedSoldiers.remove(alliedSoldier);
+                        } else if (alliedSoldierHealth == -1) {
+                            // Spawn Zombie
+                            alliedSoldiers.remove(alliedSoldier);
+                            int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
+                            battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
+                        }
+                    }
+                }
+                // Calculate Enemy
+                int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
+                if (enemyHealth == 0) {
+                    defeatedEnemies.add(e);
+                    battleEnemies.remove(e);
+                    System.out.println("enemy killed");
+                }
+            }
+        }
+        System.out.println("battle encounter finished");
+        
         for (BasicEnemy e : defeatedEnemies) {
             System.out.println("killing enemy");
             // IMPORTANT = we kill enemies here, because killEnemy removes the enemy from
@@ -705,33 +795,69 @@ public class LoopManiaWorld {
     public void removeExpiredBuildings() {
         List<Building> expired = new ArrayList<Building>();
         for (Building b: buildingEntities) {
-            if (b.getExpiry() == 0) {
+            if (b.getExpiry() == 0 && ! (b instanceof VampireCastleBuilding) && ! (b instanceof ZombieGraveyardBuilding)) {
+                b.destroy();
                 expired.add(b);
             }
         }
         buildingEntities.removeAll(expired);
     }
 
+    /**
+     * Remove all expired items from character's equipped and unequipped inventory
+     */
+    public void removeExpiredItems() {
+        List<BattleItem> expirableItems = new ArrayList<BattleItem>();
+        for (Entity entities : unequippedInventoryItems) {
+            if (entities instanceof BattleItem) {
+                expirableItems.add((BattleItem) entities);
+            }
+        }
+
+        /**
+         * Check if item is expired, if it is remove from unequipped inventory and
+         * remove from character's equipped inventory
+         */
+        for (BattleItem item : expirableItems) {
+            if (item.getUsage() == item.getItemDurability()) {
+                unequippedInventoryItems.remove(item);
+                if (item instanceof AttackItem) {
+                    character.setWeapon(null);
+                } else if (item instanceof Helmet) {
+                    character.setHelmet(null);
+                } else if (item instanceof Shield) {
+                    character.setShield(null);
+                } else if (item instanceof Armor) {
+                    character.setArmor(null);
+                }
+            }
+        }
+    }
     
     /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
      */
     public void runTickMoves() {
-        character.moveDownPath();
-        applyBuildingEffects();
-        moveBasicEnemies();
-
+        
         // add to tick counter
         this.tickCounter += 1;
         // if loop completed increment
+        this.prevLoop = this.loopCounter;
         if (this.tickCounter % orderedPath.size() == 0) {
-            this.loopCount += 1;
+            this.loopCounter += 1;
             // update building expiries
             buildingUpdateExpiry();
-        }        
+        }
+
+        character.moveDownPath();
+        applyBuildingEffects();
+        moveBasicEnemies();
         
         removeExpiredBuildings();
+        removeExpiredItems();
+
+        //e.g if loopCounter = 20 win game
 
     }
 
@@ -937,7 +1063,6 @@ public class LoopManiaWorld {
             Pair<Integer, Integer> buildingPos = new Pair<Integer, Integer>(bX, bY);
             if (buildingPos.equals(characterPos)) {
                 // if character is on a village building, heal the character for 10
-                // TODO: check if this works
                 if (b instanceof VillageBuilding) {
                     System.out.println("building found\n");
                     VillageBuilding village = (VillageBuilding) b;
@@ -948,6 +1073,50 @@ public class LoopManiaWorld {
                         // if the healing that can be done is < village.getHeal
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
+                 /*} else if (b instanceof CampfireBuilding) {
+                    // TODO Add building effects for Campfire:
+
+                } else if (b instanceof TrapBuilding) {
+                    // TODO Add building effects for Trap:
+
+                } else if (b instanceof TowerBuilding) {
+                    // TODO add building effects of tower:*/
+                } else if (b instanceof BarracksBuilding) {
+                    // spawn allied soldiers
+                    if (alliedSoldiers.size() < 5) {
+                        int index = orderedPath.indexOf(buildingPos);
+                        PathPosition pos = new PathPosition(index, orderedPath);
+                        AlliedSoldier a = new AlliedSoldier(pos);
+    
+                        alliedSoldiers.add(a);
+                    }
+                } else if (b instanceof HeroCastleBuilding) {
+                    // TODO add building effects of hero castle
+                    // open shop pause the game
+                }
+            } 
+            if (b instanceof TrapBuilding) {
+                TrapBuilding trap = (TrapBuilding) b;
+
+                boolean triggered = false;
+                for (BasicEnemy e: enemies) {
+                    int eX = e.getX();
+                    int eY = e.getY();
+                    Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(eX, eY);
+                    if (enemyPos.equals(buildingPos)) {
+                        // enemy steps on trap
+                        triggered = true;
+                        e.setHealth(e.getHealth() - trap.getDamage());
+                        if (e.getHealth() <= 0) {
+                            // enemy killed
+                            killEnemy(e);
+                            break;
+                        }
+                    }
+                }
+                if (triggered) {
+                    removeBuilding(trap);
+                    break;
                 }
             }
             // Check if there is a campfire

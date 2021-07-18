@@ -19,7 +19,10 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.LoopManiaWorldLoader;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.ZombieGraveyardBuilding;
+import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Zombie;
 
 
 
@@ -28,7 +31,7 @@ import unsw.loopmania.buildings.ZombieGraveyardBuilding;
 public class ZombieGraveyardTest {
 
     // building properties;
-    private int zombiePitExpiry = 5;
+    private int zombieGraveyardExpiry = 5;
     // world related fields
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -36,23 +39,61 @@ public class ZombieGraveyardTest {
     
     @Test
     void testZombieSpawn() {
+        
+        initializeWorld();
+
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newGraveyard);
-        for (int i = 0; i < 8; i++) {
+        testWorld.addBuilding(newGraveyard);
+        for (int i = 0; i < orderedPath.size(); i++) {
             testWorld.runTickMoves();
         }
-        // TODO: How do we check an enemy spawns, implementation based~
-        assertEquals(1, 2);
+        boolean zombieFound = false;
+        List<BasicEnemy> enemies = testWorld.possiblySpawnEnemies();
+        for (BasicEnemy e: enemies) {
+            if (e instanceof Zombie) {
+                zombieFound = true;
+            }
+        }
+        assertEquals(true, zombieFound);
+
     }
     
     @Test
     void testZombieGraveyardExpiry() {
+        initializeWorld();
+
         ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
-        testWorld.addEntity(newGraveyard);
-        for (int i = 0; i < 8 * zombiePitExpiry; i++) {
+        testWorld.addBuilding(newGraveyard);
+        List<Building> testWorldBuildings = testWorld.getBuildings();
+        assertEquals(1, testWorldBuildings.size());
+        for (int i = 0; i < orderedPath.size() * zombieGraveyardExpiry; i++) {
             testWorld.runTickMoves();
+            testWorld.possiblySpawnEnemies();
         }
-        assertEquals(newGraveyard, null);
+        assertEquals(0, newGraveyard.getExpiry());
+        assertEquals(0, testWorldBuildings.size());
+    }
+
+    @Test
+    void testZombieSpawnMax() {
+        // one singular zombie pit should spawn 5 zombies
+        initializeWorld();
+
+        ZombieGraveyardBuilding newGraveyard = new ZombieGraveyardBuilding(new SimpleIntegerProperty(1), new SimpleIntegerProperty(1));
+        testWorld.addBuilding(newGraveyard);
+        List<BasicEnemy> enemies = new ArrayList<BasicEnemy>();
+        for (int i = 0; i < (orderedPath.size() * zombieGraveyardExpiry); i++) {
+            testWorld.runTickMoves();
+            enemies.addAll(testWorld.possiblySpawnEnemies());
+        }
+        int zombieCount = 0;
+        for (BasicEnemy e: enemies) {
+            if (e instanceof Zombie) {
+                zombieCount += 1;
+            }
+        }
+
+        assertEquals(zombieGraveyardExpiry, zombieCount);
     }
     
 
