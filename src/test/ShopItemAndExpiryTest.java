@@ -23,6 +23,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.npcs.Vampire;
 
 /**
  * test the battleItems array located in LoopManiaWorld 
@@ -130,15 +131,39 @@ public class ShopItemAndExpiryTest {
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
+                HealthPotion potion = (HealthPotion) item;
                 for (Entity entities : testWorld.getCharacterInventory()) {
                     if (entities instanceof HealthPotion) {
                         equipmentContains = true;
+                        potion = (HealthPotion) entities;
                     }
                 }   
                 assertTrue(equipmentContains);
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(healthPotionID));
+
+                // testing if Health Potion is working
+
+                // get initial character health
+                int mainCharacterHealth = newCharacter.getHealth();
+
+                // initializing Vampire
+                PathPosition vampirePathPosition = new PathPosition(characterPosition + 1, orderedPath);
+                Vampire newVampire = new Vampire(vampirePathPosition);
+                testWorld.addEnemy(newVampire);
+
+                // run battle
+                testWorld.runBattles();
+
+                // check if health is less by 5
+                assertEquals(mainCharacterHealth - newVampire.getDamage(), newCharacter.getHealth());
+
+                // consume Health Potion
+                potion.use(newCharacter);
+
+                // check if health is back to max
+                assertEquals(mainCharacterHealth, newCharacter.getHealth());
             }
         }
         assertTrue(itemPresent);

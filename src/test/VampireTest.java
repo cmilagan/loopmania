@@ -8,13 +8,15 @@ import java.util.List;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.buildings.CampfireBuilding;
 import unsw.loopmania.npcs.Vampire;
 
 public class VampireTest {
-    private int zombiePosition = 1;
+    private int vampirePosition = 1;
     private int characterPosition = 0;
     private Vampire newVampire;
     private Character newCharacter;
@@ -90,6 +92,32 @@ public class VampireTest {
         // check if health is less by 5
         assertEquals(mainCharacterHealth - newVampire.getDamage(), newCharacter.getHealth());
     }
+
+    /**
+     * When Vampire encounters a Campfire, the Vampire should move away from the Campfire
+     */
+    @Test
+    public void testVampireCampfireMovement() {
+        initializeWorld();
+        int vampirePosition = 5;
+
+        // initializing new Vampire
+        PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
+        newVampire = new Vampire(vampirePathPosition);
+        testWorld.addEnemy(newVampire);
+
+        // placing a campfire on the exact path position of Vampire
+        CampfireBuilding newCampfire = new CampfireBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(3));
+        testWorld.addBuilding(newCampfire);
+
+        // tick the world
+        testWorld.runTickMoves();
+
+        // vampire position should now be away from campfire
+        int posX = newVampire.getX();
+        int posY = newVampire.getY(); 
+        assertEquals(orderedPath.get(vampirePosition - 1), Pair.with(posX, posY));
+    }
     
     /**
      * Setup template world
@@ -114,7 +142,7 @@ public class VampireTest {
         testWorld.setCharacter(newCharacter);
 
         // initializing Vampire
-        PathPosition vampirePathPosition = new PathPosition(zombiePosition, orderedPath);
+        PathPosition vampirePathPosition = new PathPosition(vampirePosition, orderedPath);
         newVampire = new Vampire(vampirePathPosition);
         testWorld.addEnemy(newVampire);
     }
