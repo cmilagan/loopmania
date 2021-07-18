@@ -144,6 +144,10 @@ public class LoopManiaWorld {
         return height;
     }
 
+    public int getAlliedSoldiersNumber() {
+        return this.alliedSoldiers.size();
+    }
+
     /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
@@ -272,9 +276,7 @@ public class LoopManiaWorld {
     public void addBuilding(Building building) {
         // Add a static entity
         buildingEntities.add(building);
-    }
-
-    
+    }   
 
     /**
      * Get the list of buildings
@@ -1032,7 +1034,14 @@ public class LoopManiaWorld {
                 } else if (b instanceof TowerBuilding) {
                     // TODO add building effects of tower:*/
                 } else if (b instanceof BarracksBuilding) {
-
+                    // spawn allied soldiers
+                    if (alliedSoldiers.size() < 5) {
+                        int index = orderedPath.indexOf(buildingPos);
+                        PathPosition pos = new PathPosition(index, orderedPath);
+                        AlliedSoldier a = new AlliedSoldier(pos);
+    
+                        alliedSoldiers.add(a);
+                    }
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
                     // open shop pause the game
