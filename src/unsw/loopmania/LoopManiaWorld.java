@@ -390,7 +390,7 @@ public class LoopManiaWorld {
      * 
      * @param building building to be removed
      */
-    private void removeBuilding(Building building) {
+    public void removeBuilding(Building building) {
         building.destroy();
         buildingEntities.remove(building);
     }

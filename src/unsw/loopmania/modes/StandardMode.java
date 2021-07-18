@@ -1,6 +1,6 @@
 package unsw.loopmania.modes;
 
-public class StandardMode {
+public class StandardMode extends GameDifficulty {
     // We can add more conditions for winning and other restrictions
     private int winLoop;
     private int winXP;
