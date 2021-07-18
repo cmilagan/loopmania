@@ -476,11 +476,11 @@ public class LoopManiaWorldController {
                 // slugs have a low chance of dropping rare items 0.01%
                 loadLoot(0.991);
             } else if (enemy instanceof Zombie) {
-                // Zombies have a higher chance of dropping rare items 1%
-                loadLoot(0.99);
+                // Zombies have a higher chance of dropping rare items 5%
+                loadLoot(0.95);
             } else if (enemy instanceof Vampire) {
-                // Vampires have the highest chance of dropping rare items 8%
-                loadLoot(0.92);
+                // Vampires have the highest chance of dropping rare items 30%
+                loadLoot(0.30);
             }        
         } else {
             // RNG for card drops
