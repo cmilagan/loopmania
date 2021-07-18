@@ -29,6 +29,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.TrapBuilding;
@@ -62,7 +65,8 @@ import unsw.loopmania.npcs.Zombie;
 import unsw.loopmania.npcs.AlliedSoldier;
 
 import java.util.EnumMap;
-
+import java.awt.Color;
+import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 
@@ -102,6 +106,12 @@ enum DRAGGABLE_TYPE{
  *     This is run on the JavaFX application thread when it has enough time.
  */
 public class LoopManiaWorldController {
+
+    /**
+     * Showcase characters current health
+     */
+    @FXML
+    private GridPane healthStatus;
 
     /**
      * stats gridpane includes money, exp
@@ -186,12 +196,13 @@ public class LoopManiaWorldController {
     private Image stakeImage;
     private Image staffImage;
     private Image ringImage;
-    
 
     // enemy images
     private Image slugImage;
     private Image zombieImage;
     private Image vampireImage;
+
+    private Image soldierImage;
 
     /**
      * the image currently being dragged, if there is one, otherwise null.
@@ -263,6 +274,8 @@ public class LoopManiaWorldController {
         zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
 
+        soldierImage = new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString());
+
         // Item images
         swordImage = new Image((new File("src/images/basic_sword.png")).toURI().toString());
         shieldImage = new Image((new File("src/images/shield.png")).toURI().toString());
@@ -293,11 +306,10 @@ public class LoopManiaWorldController {
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
 
-        // Add soldiers bar
         for (int x = 0; x < world.getWidth(); x++) {
             ImageView groundView = new ImageView(imageJustBlack);
             groundView.setViewport(imagePart);
-            soldiers.add(groundView, x, 0);
+            soldiers.add(groundView, x, 1);
         }
 
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
@@ -313,6 +325,10 @@ public class LoopManiaWorldController {
         for (ImageView entity : entityImages){
             squares.getChildren().add(entity);
         }
+        // place the castle at 0,0
+        ImageView heroCastle = new ImageView(herosCastleImage);
+        heroCastle.setViewport(imagePart);
+        squares.add(heroCastle, 0, 0);
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -355,6 +371,22 @@ public class LoopManiaWorldController {
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
+            // display allied soldiers in soldier bar
+            int numAlliedSoldiers = world.getAlliedSoldiersNumber();
+            for (int i = 0; i < numAlliedSoldiers; i++) {
+                // Add soldiers bar
+                ImageView soldier = new ImageView(soldierImage);
+                soldiers.add(soldier, i, 1);
+            }
+            // display the gold of the hero
+            
+
+            // display the health of the hero
+                // Integer health = world.getCharacter().getHealth();
+                // Text text = new Text();
+                // text.setText(health.toString());
+                // text.setFi
+                // healthStatus.add(text,5,0);
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -469,7 +501,7 @@ public class LoopManiaWorldController {
         // TODO: add RNG
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
-        
+
         Random rd = new Random();
         if (rd.nextDouble() < 0.51) {
             if (enemy instanceof Slug) {
@@ -692,16 +724,22 @@ public class LoopManiaWorldController {
 
                         switch (draggableType){
                             case CARD:
+                                // if u cannot place card should go back to its slot
+                                 boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                if (!canPlace) {
+                                    return;
+                                }
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 // TODO = spawn a building here of different types done in LoopManiaWorld.java
-                                boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
-                                if (canPlace) {
-                                    Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
-                                    onLoad(newBuilding);
-                                }
+                            
+                                Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
+                                onLoad(newBuilding);
                                 break;
                             case ITEM:
+                                // if item is d
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
+                                
+                                
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
@@ -723,6 +761,7 @@ public class LoopManiaWorldController {
                 // consuming prevents the propagation of the event to the anchorPaneRoot (as a sub-node of anchorPaneRoot, GridPane is prioritized)
                 // https://openjfx.io/javadoc/11/javafx.base/javafx/event/Event.html#consume()
                 // to understand this in full detail, ask your tutor or read https://docs.oracle.com/javase/8/javafx/events-tutorial/processing.htm
+
                 event.consume();    
             }
         });
@@ -912,6 +951,8 @@ public class LoopManiaWorldController {
                 pause();
             }
             break;
+        case H:
+            break;
         default:
             break;
         }
@@ -968,7 +1009,6 @@ public class LoopManiaWorldController {
             }
         };
 
-        // TODO: Fix bug where cards are removed if incorrectly placed
         // if need to remove items from the equipped inventory, add code to remove from equipped inventory gridpane in the .onDetach part
         ListenerHandle handleX = ListenerHandles.createFor(entity.x(), node)
                                                .onAttach((o, l) -> o.addListener(xListener))

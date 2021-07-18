@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import unsw.loopmania.buildings.HeroCastleBuilding;
 
 import java.util.List;
 
@@ -69,6 +70,10 @@ public abstract class LoopManiaWorldLoader {
         // TODO = load more entity types from the file
         switch (type) {
         case "hero_castle":
+            // HeroCastleBuilding heroCastle = new HeroCastleBuilding(new SimpleIntegerProperty(x), new SimpleIntegerProperty(x));
+            // onLoad(heroCastle);
+            // entity = heroCastle;
+            // world.addEntity(heroCastle);
             Character character = new Character(new PathPosition(indexInPath, orderedPath));
             world.setCharacter(character);
             onLoad(character);
@@ -146,7 +151,7 @@ public abstract class LoopManiaWorldLoader {
 
     public abstract void onLoad(Character character);
     public abstract void onLoad(PathTile pathTile, PathTile.Direction into, PathTile.Direction out);
-
+    // public abstract void onLoad(HeroCastleBuilding heroCastle);
     // TODO Create additional abstract methods for the other entities
 
 }

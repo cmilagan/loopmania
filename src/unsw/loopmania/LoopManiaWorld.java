@@ -88,6 +88,7 @@ public class LoopManiaWorld {
 
     // TODO = add more lists for other entities, for equipped inventory items,
     // etc...
+    private List<Item> equippedInventoryItems;
 
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
@@ -156,6 +157,38 @@ public class LoopManiaWorld {
     public int getAlliedSoldiersNumber() {
         return this.alliedSoldiers.size();
     }
+
+    public List<AlliedSoldier> getAlliedSoldiers() {
+        return this.alliedSoldiers;
+    }
+
+
+    public void checkCanEquip(int itemNodeX, int itemNodeY, int equipX, int equipY) {
+        // get the item
+        Item item = null;
+        for (Entity i: unequippedInventoryItems) {
+            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
+                if (item instanceof Item) {
+                    item = (Item) i;
+                    break;
+                }
+            }
+        }
+    }
+    // equip items
+    public void equipItem(int itemNodeX, int itemNodeY, int equipX, int equipY) {
+        // get the item
+        Item item = null;
+        for (Entity i: unequippedInventoryItems) {
+            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
+                if (item instanceof Item) {
+                    item = (Item) i;
+                    break;
+                }
+            }
+        }
+    }
+
 
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
@@ -500,9 +533,11 @@ public class LoopManiaWorld {
                         if (alliedSoldierHealth == 0) {
                             // Remove Allied Soldier
                             toRemove.add(alliedSoldier);
+                            alliedSoldier.destroy();
                         } else if (alliedSoldierHealth == -1) {             // Only happens on critical hit from Zombie
                             // Remove Soldier and spawn Zombie
                             toRemove.add(alliedSoldier);
+                            alliedSoldier.destroy();
                             int indexInPath = orderedPath.indexOf(character.getCoordinatePair());
                             battleEnemies.add(new Zombie(new PathPosition(indexInPath, orderedPath)));
                         }
@@ -1157,6 +1192,8 @@ public class LoopManiaWorld {
                         character.setHealth(character.getHealth() + (character.getMaxHealth() - character.getHealth()));
                     }
                 } else if (b instanceof BarracksBuilding) {
+                    // spawn allied soldiers
+                    System.out.print(alliedSoldiers.size());
                     // heal all allied soldiers
                     for (AlliedSoldier a : alliedSoldiers) {
                         a.setHealth(3);
@@ -1164,6 +1201,7 @@ public class LoopManiaWorld {
 
                     // spawn new allied soldiers
                     if (alliedSoldiers.size() < 5) {
+                        System.out.print("adding allied soldier");
                         int index = orderedPath.indexOf(buildingPos);
                         PathPosition pos = new PathPosition(index, orderedPath);
                         AlliedSoldier a = new AlliedSoldier(pos);
@@ -1173,12 +1211,13 @@ public class LoopManiaWorld {
                 } else if (b instanceof HeroCastleBuilding) {
                     // TODO add building effects of hero castle
                     // Increment loop counter
-                    setLoopCount(getLoopCount() + 1);
+                    // setLoopCount(getLoopCount() + 1);
                     // open shop pause the game
                 }
             } 
             if (b instanceof TrapBuilding) {
                 TrapBuilding trap = (TrapBuilding) b;
+                boolean triggered = false;
                 for (BasicEnemy e: enemies) {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
@@ -1191,6 +1230,10 @@ public class LoopManiaWorld {
                             break;
                         }
                     }
+                }
+                if (triggered) {
+                    removeBuilding(trap);
+                    break;
                 }
             }
             // Check if there is a campfire
@@ -1282,4 +1325,25 @@ public class LoopManiaWorld {
         return false;
         
     }
+
+    /**
+     * 
+     * @return
+     */
+    public Character getCharacter() {
+        return this.character;
+    }
+
+    // private Pair<Integer, Integer> consumePotion() {
+    //     for (Entity i: getCharacterInventory()) {
+    //         if (i instanceof HealthPotion) {
+    //             HealthPotion potion = (HealthPotion) i;
+    //             potion.use(character);
+    //             potion.destroy();
+    //             unequippedInventoryItems.remove(potion);
+    //             return new Pair<Integer, Integer>(i.getX(), i.getX());
+    //         }
+    //     }
+    //     return null;
+    // }
 }
