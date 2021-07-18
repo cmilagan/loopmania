@@ -30,7 +30,7 @@ import unsw.loopmania.items.Sword;
  * 
  * Note: this array is used to display the items in the Shop menu
  */
-public class ShopItemTest {
+public class ShopItemAndExpiryTest {
     private int armorID = 0;
     private int helmetID = 1;
     private int shieldID = 2;
@@ -45,7 +45,7 @@ public class ShopItemTest {
     private List<BattleItem> battleItems;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-    public ShopItemTest() {
+    public ShopItemAndExpiryTest() {
         initializeWorld();
     }
 
@@ -79,9 +79,11 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(armorID));
 
                 // item should appear in character's inventory
+                Armor addedArmor = (Armor) item;
                 boolean equipmentContains = false;
                 for (Entity entities : testWorld.getCharacterInventory()) {
                     if (entities instanceof Armor) {
+                        addedArmor = (Armor) entities;
                         equipmentContains = true;
                     }
                 }   
@@ -89,6 +91,22 @@ public class ShopItemTest {
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(armorID));
+
+                // use for usage times
+                for (int i = 0; i < (armor.getItemDurability() / 2); i++) {
+                    addedArmor.useDefence();
+                    addedArmor.useCritDefence();
+                    testWorld.runTickMoves();
+                }
+
+                // item should dissapear in character's inventory
+                equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Armor) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertFalse(equipmentContains);
             }
         }
         assertTrue(itemPresent);
@@ -311,9 +329,11 @@ public class ShopItemTest {
                 assertTrue(testWorld.buyItemByID(swordID));
 
                 // item should appear in character's inventory
+                Sword addedSword = (Sword) item;
                 boolean equipmentContains = false;
                 for (Entity entities : testWorld.getCharacterInventory()) {
                     if (entities instanceof Sword) {
+                        addedSword = (Sword) entities;
                         equipmentContains = true;
                     }
                 }   
@@ -321,6 +341,21 @@ public class ShopItemTest {
 
                 // cant buy another item
                 assertFalse(testWorld.buyItemByID(swordID));
+
+                // use for usage times
+                for (int i = 0; i < sword.getItemDurability(); i++) {
+                    addedSword.inflictDamage();
+                    testWorld.runTickMoves();
+                }
+
+                // item should dissapear in character's inventory
+                equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Sword) {
+                        equipmentContains = true;
+                    }
+                }   
+                assertFalse(equipmentContains);
             }
         }
         assertTrue(itemPresent);
