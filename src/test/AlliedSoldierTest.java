@@ -14,6 +14,8 @@ import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.npcs.AlliedSoldier;
+import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Vampire;
 
 class AlliedSoldierTest {
     private Character newCharacter;
@@ -72,6 +74,63 @@ class AlliedSoldierTest {
 
         assertTrue(testWorld.getAlliedSoldiersNumber() == 5);
         
+    }
+
+    @Test
+    /**
+     * Test if an Allied Soldier despawns after battle where it's health = 0
+     */
+    void testAlliedDespawn() {
+        initializeWorld();
+
+        int alliedSoldierPosition = 1;
+        PathPosition pos = new PathPosition(alliedSoldierPosition, orderedPath);
+        AlliedSoldier s = new AlliedSoldier(pos);
+
+        testWorld.addAlliedSoldier(s);
+
+        assertEquals(1, testWorld.getAlliedSoldiersNumber());
+
+        Vampire v = new Vampire(pos);
+        testWorld.addEnemy(v);
+
+        testWorld.runBattles();
+
+        assertEquals(0, testWorld.getAlliedSoldiersNumber());
+    }
+
+    @Test
+    /**
+     * Test if an allied soldier becomes a Zombie when its health = 0.
+     */
+    void testAlliedSoldierZombie() {
+        initializeWorld();
+
+        // Run battle with only a Slug in world. Record character health.
+        int index = 1;
+        PathPosition pos = new PathPosition(index, orderedPath);
+        
+        Slug slug = new Slug(pos);
+        testWorld.addEnemy(slug);
+        
+        testWorld.runBattles();
+        
+        int healthAfterSlugBattle = newCharacter.getHealth();
+        
+        // Reset character health, now run battle with Slug and Allied Soldier.
+        // Allied Soldier should turn into zombie and damage main character.
+        // Main character health after battle should be less than previous battle.
+        newCharacter.setHealth(100);
+        assertEquals(100, newCharacter.getHealth());
+        
+        AlliedSoldier s = new AlliedSoldier(pos);
+        testWorld.addAlliedSoldier(s);
+        testWorld.addEnemy(slug);
+
+        testWorld.runBattles();
+        int healthAfterAllied = newCharacter.getHealth();
+
+        assertTrue(healthAfterAllied < healthAfterSlugBattle);
     }
 
     // setup template world
