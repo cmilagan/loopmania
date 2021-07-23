@@ -426,7 +426,6 @@ public class LoopManiaWorld {
                     System.out.println("Tower is nearby");
                 }
             }
-
         }
 
         /**
@@ -460,6 +459,7 @@ public class LoopManiaWorld {
         System.out.println("initiating battle phase");
 
         // If tower is present, tower will deal damage to all enemies in the battle
+        List<BasicEnemy> killedEnemies = new ArrayList<BasicEnemy>();
         if (towerSupport) {
             TowerBuilding t = new TowerBuilding(new SimpleIntegerProperty(0), new SimpleIntegerProperty(0));
             for (BasicEnemy e : battleEnemies) {
@@ -467,9 +467,10 @@ public class LoopManiaWorld {
                 // Check if enemy is killed
                 if (e.getHealth() <= 0) {
                     killEnemy(e);
-                    battleEnemies.remove(e);
+                    killedEnemies.add(e);
                 }
             }
+            battleEnemies.removeAll(killedEnemies);
         }
 
         // Conduct Fights with Valid Enemies
