@@ -5,19 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.text.html.parser.Entity;
-
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
-import unsw.loopmania.LoopManiaWorldLoader;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.npcs.Slug;
 
