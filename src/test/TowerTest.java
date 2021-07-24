@@ -1,28 +1,26 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.text.html.parser.Entity;
-
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
-
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
-import unsw.loopmania.LoopManiaWorldLoader;
-import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
+import unsw.loopmania.npcs.Slug;
 
 public class TowerTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
-    private int towerDamage;
+    private int towerDamage = 4;
+    private Slug newSlug;
+    private int expectedHealth = -1;
+    private int slugPosition = 0;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
     @Test
@@ -31,12 +29,18 @@ public class TowerTest {
         // Create world
         initializeWorld();
         // Place down the tower
-        // TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1), 0);
-        // testWorld.addBuilding(newTower);
-        // assertEquals(newTower.getDamage(), towerDamage);
+        TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(1));
+        testWorld.addBuilding(newTower);
         // Check if the tower is in the right location
-        // assertEquals(Pair.with(1, 1), Pair.with(newTower.getX(), newTower.getY()));
+        assertEquals(Pair.with(1, 1), Pair.with(newTower.getX(), newTower.getY()));
         // Check during battle if the tower attacks first and the amount of damage
+        // Tower attacks first if the character takes no damage
+        assertEquals(newTower.getDamage(), towerDamage);
+        int initCharHp = newCharacter.getHealth();
+        int initSlugHp = newSlug.getHealth();
+        testWorld.runBattles();
+        assertEquals(initCharHp, newCharacter.getHealth());
+        assertEquals(initSlugHp - newTower.getDamage(), expectedHealth);
         System.out.println("--- Passed ---\n");
     }
     
@@ -45,12 +49,13 @@ public class TowerTest {
         System.out.println("TEST - Check the tower expires");
         initializeWorld();
         // Place the tower down
-        // TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0), 0);
-        // testWorld.addBuilding(newTower);
-        // Make Character loop through map
-        testWorld.runTickMoves();
+        TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0));
+        testWorld.addBuilding(newTower);
+        // Make the tower expire
+        newTower.setExpiry(0);
         // Check if the tower is gone
-
+        testWorld.removeExpiredBuildings();
+        assertTrue(testWorld.getBuildings().isEmpty());
         System.out.println("--- Passed ---\n");
     }
 
@@ -58,11 +63,13 @@ public class TowerTest {
     public void checkTowerRadiusTest(){
         System.out.println("TEST - Check the tower radius");
         initializeWorld();
-        // TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(0),new SimpleIntegerProperty(0), 0);
-        // testWorld.addBuilding(newTower);
-        // Check if the tower engaged in battle when in range
-
+        TowerBuilding newTower = new TowerBuilding(new SimpleIntegerProperty(1),new SimpleIntegerProperty(2));
+        testWorld.addBuilding(newTower);
         // Check if the tower engaged in battle when out of range
+        int initHealth = newCharacter.getHealth();
+        testWorld.runBattles();
+        // Check that the character did take damage
+        assertEquals(initHealth - newSlug.getDamage() * 3, newCharacter.getHealth());
         System.out.println("--- Passed ---\n");
     }
 
@@ -85,5 +92,10 @@ public class TowerTest {
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
+
+        // initializing slug
+        PathPosition slugPathPosition = new PathPosition(slugPosition, orderedPath);
+        newSlug = new Slug(slugPathPosition);
+        testWorld.addEnemy(newSlug);
     }
 }
