@@ -200,3 +200,68 @@
 ### Meeting Duration: 8:00pm - 11:00pm
 
 ## ----------------------------------------------------------------------------------
+
+## Date: 24/07/21
+
+### Attendees:
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+- Subrat Shrestha
+- Tam Do
+
+### Taken by: Subrat
+
+### Outcomes:
+
+- Going over new requirements for Milestone 3
+- Talking about possible extensions
+- Allocating tasks missing from Milestone 2
+- Allocating tasks for Milestone 3
+
+### Updates:
+
+whats missing:
+
+* Implement OneRing -> Prats
+	* use a Strategy Pattern
+	* implement OneRing addition via Strategy Pattern
+
+* Implement staff trance => rare chance that when zombie is hit by staff, turns into allied soldier -> Prats
+
+* Game modes test -> Tam
+	* use strategy pattern
+
+* After another 2 full cycles of the path, the Human Player will be able to access the Hero's castle again to purchase items, then again after another 3 full cycles, etc (a full cycle is where the Character moves throughout the path once, as in this example in separate file:moving through path)... -> Subrat/Prats
+
+* new game function -> Subrat
+
+* Frontend:
+	* health bar -> Christian
+	* xp -> Christian
+	* gold -> Christian
+	* potion -> Christian
+	* cards limit reached => get gold/xp/item -> Christian
+	* fix opacity bug on tiles -> Christian
+	* character death - no game over screen -> Christian
+	* shop frontend -> Prats
+	* mode selection -> Tam
+	* Adding OneRing to world configuration before start -> Prats
+	* Adding Tree stump frontend -> Prats
+	* Adding Anduril, Flame of the West -> Prats
+	* Equipping items -> Christian
+	* main menus -> TBD
+		* new game leads to:
+			* mode selection
+			* config (one ring, tree stump, flame of the west) 
+		* resume game does what "start game" does currently
+
+
+Milestone 3:
+* doggie enemy -> Subrat
+* Elan Muske -> Subrat
+* doge coin -> Subrat
+* Anduril, Flame of the West -> Subrat
+* Tree Stump -> Subrat
+* confusing mode -> Tam
+
+### Meeting Duration: 9:00pm - 11:00pm
