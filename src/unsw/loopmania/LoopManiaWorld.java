@@ -1339,7 +1339,8 @@ public class LoopManiaWorld {
                 HealthPotion potion = (HealthPotion) i;
                 potion.use(character);
                 potion.destroy();
-                unequippedInventoryItems.remove(potion);                
+                unequippedInventoryItems.remove(potion);
+                break;                
             }
         }
     }
