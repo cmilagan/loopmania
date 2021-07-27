@@ -474,8 +474,8 @@ public class LoopManiaWorldController {
      * load a trap card from the world, and pair with image in GUI
      */
     private void loadTrapCard() {
-        TrapCard villageCard = world.loadTrapCard();
-        onLoad(villageCard);
+        TrapCard trapCard = world.loadTrapCard();
+        onLoad(trapCard);
     }
 
     /**
@@ -537,9 +537,11 @@ public class LoopManiaWorldController {
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
 
-        
+
+
+
         Random rd = new Random();
-        if (rd.nextDouble() < 0.51) {
+        if (rd.nextDouble() > 0.51) {
             if (enemy instanceof Slug) {
                 // slugs have a low chance of dropping rare items 0.01%
                 loadLoot(0.991);
@@ -552,6 +554,11 @@ public class LoopManiaWorldController {
             }        
         } else {
             // RNG for card drops
+            // if a card slots are full, discard and reward
+            if (world.getNumCards() >= world.getWidth()) {
+                Item itemReward = world.rewardDiscard();
+                onLoad(itemReward);
+            }
             double rgen = rd.nextDouble();
             Random rd2 = new Random();
             if (rgen > 0.9) {
