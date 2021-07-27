@@ -1024,6 +1024,7 @@ public class LoopManiaWorldController {
             }
             break;
         case H:
+            world.consumePotion();
             break;
         default:
             break;

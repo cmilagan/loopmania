@@ -1333,16 +1333,14 @@ public class LoopManiaWorld {
         return this.character;
     }
 
-    // private Pair<Integer, Integer> consumePotion() {
-    //     for (Entity i: getCharacterInventory()) {
-    //         if (i instanceof HealthPotion) {
-    //             HealthPotion potion = (HealthPotion) i;
-    //             potion.use(character);
-    //             potion.destroy();
-    //             unequippedInventoryItems.remove(potion);
-    //             return new Pair<Integer, Integer>(i.getX(), i.getX());
-    //         }
-    //     }
-    //     return null;
-    // }
+    public void consumePotion() {
+        for (Entity i: getCharacterInventory()) {
+            if (i instanceof HealthPotion) {
+                HealthPotion potion = (HealthPotion) i;
+                potion.use(character);
+                potion.destroy();
+                unequippedInventoryItems.remove(potion);                
+            }
+        }
+    }
 }
