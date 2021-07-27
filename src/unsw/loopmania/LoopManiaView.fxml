@@ -45,7 +45,7 @@
                                 <Image url="@../../images/sword_unequipped.png" />
                             </image>
                         <GridPane.margin>
-                           <Insets left="4.0" />
+                           <Insets />
                         </GridPane.margin>
                         </ImageView>
                         <!-- helmet cell is the cell where a helmet intended to be equipped will be dragged by the human player -->
@@ -54,7 +54,7 @@
                                 <Image url="@../../images/helmet_slot.png" />
                             </image>
                         <GridPane.margin>
-                           <Insets left="16.0" />
+                           <Insets />
                         </GridPane.margin>
                         </ImageView>
                         <!-- shieldCell is the cell where a shield intended to be equipped will be dragged by the human player -->
@@ -63,7 +63,7 @@
                                 <Image url="@../../images/shield_unequipped.png" />
                             </image>
                         <GridPane.margin>
-                           <Insets left="16.0" />
+                           <Insets />
                         </GridPane.margin>
                         </ImageView>
                         <!-- armor cell is the cell where a armor intended to be equipped will be dragged by the human player -->
@@ -72,7 +72,7 @@
                                 <Image url="@../../images/armor_slot.png" />
                             </image>
                         <GridPane.margin>
-                           <Insets left="16.0" />
+                           <Insets />
                         </GridPane.margin>
                         </ImageView>
                     </children>

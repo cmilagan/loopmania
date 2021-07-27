@@ -286,7 +286,7 @@ public class LoopManiaWorldController {
         trapBuildingImage = new Image((new File("src/images/trap.png")).toURI().toString());
         towerBuildingImage = new Image((new File("src/images/tower.png")).toURI().toString());
         barracksBuildingImage = new Image((new File("src/images/barracks.png")).toURI().toString());
-        campfireCardImage = new Image((new File("src/images/campfire.png")).toURI().toString());
+        campfireBuildingImage = new Image((new File("src/images/campfire.png")).toURI().toString());
         herosCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
 
         // Enemy images
