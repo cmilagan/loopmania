@@ -914,6 +914,7 @@ public class LoopManiaWorld {
         for (BattleItem item : expirableItems) {
             if (item.getUsage() == item.getItemDurability()) {
                 unequippedInventoryItems.remove(item);
+                item.destroy();
                 if (item instanceof AttackItem) {
                     character.setWeapon(null);
                 } else if (item instanceof Helmet) {
