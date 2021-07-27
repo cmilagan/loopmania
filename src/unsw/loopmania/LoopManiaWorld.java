@@ -163,33 +163,6 @@ public class LoopManiaWorld {
     }
 
 
-    public void checkCanEquip(int itemNodeX, int itemNodeY, int equipX, int equipY) {
-        // get the item
-        Item item = null;
-        for (Entity i: unequippedInventoryItems) {
-            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
-                if (item instanceof Item) {
-                    item = (Item) i;
-                    break;
-                }
-            }
-        }
-    }
-    // equip items
-    public void equipItem(int itemNodeX, int itemNodeY, int equipX, int equipY) {
-        // get the item
-        Item item = null;
-        for (Entity i: unequippedInventoryItems) {
-            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
-                if (item instanceof Item) {
-                    item = (Item) i;
-                    break;
-                }
-            }
-        }
-    }
-
-
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
     }
@@ -1223,6 +1196,7 @@ public class LoopManiaWorld {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
+                        triggered = true;
                         e.applyBuildingDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
@@ -1328,8 +1302,32 @@ public class LoopManiaWorld {
 
     /**
      * 
-     * @return
+     * @param itemNodeX
+     * @param itemNodeY
+     * @return Item
      */
+    public Item getItem(int itemNodeX, int itemNodeY) {
+        // get the item
+        Item item = (Item) getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
+        return item;
+    }
+
+    /**
+     * Equips the item
+     * @param item
+     */
+    public void equipItem(Item item) {
+        if (item instanceof Helmet) {
+            character.setHelmet((Helmet)item);
+        } else if (item instanceof Armor) {
+            character.setArmor((Armor)item);
+        } else if (item instanceof AttackItem) {
+            character.setWeapon((AttackItem)item);
+        } else if (item instanceof Shield) {
+            character.setShield((Shield)item);
+        }
+    }
+
     public Character getCharacter() {
         return this.character;
     }

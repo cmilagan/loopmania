@@ -54,6 +54,7 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -760,7 +761,7 @@ public class LoopManiaWorldController {
                         switch (draggableType){
                             case CARD:
                                 // if u cannot place card should go back to its slot
-                                 boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
                                 if (!canPlace) {
                                     return;
                                 }
@@ -773,8 +774,44 @@ public class LoopManiaWorldController {
                             case ITEM:
                                 // if item is d
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
-                                
-                                
+                                // get the currently dragged item
+                                Item newItem = world.getItem(nodeX, nodeY);
+                                if (newItem == null) {
+                                    System.out.println("invalid");
+                                    return;
+                                }
+                                if (newItem instanceof Helmet) {
+                                    System.out.println("helmet spawn");
+                                    // respective coordinates of the helmet slot
+                                    if (!(x == 1 && y == 1)) {
+                                        return;
+                                    } 
+                                    // equip the item
+                                } else if (newItem instanceof Armor) {
+                                    System.out.println("armor spawn");
+                                    // respective coordinates of the armor slot
+                                    if (!(x == 1 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else if (newItem instanceof AttackItem) {
+                                    System.out.println("attack spawn");
+                                    // respective coordinates of the sword slot
+                                    if (!(x == 0 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else if (newItem instanceof Shield) {
+                                    System.out.println("shield spawn");
+                                    // respective coordinates of the shield slot
+                                    if (!(x == 3 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else {
+                                    return;
+                                }
+                                world.equipItem(newItem);
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
