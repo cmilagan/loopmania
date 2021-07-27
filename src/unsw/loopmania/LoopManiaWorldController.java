@@ -537,11 +537,6 @@ public class LoopManiaWorldController {
         // 50/50 either item or card
 
         
-        loadBarracksCard();
-        loadBarracksCard();
-        loadBarracksCard();
-        loadBarracksCard();
-        /*
         Random rd = new Random();
         if (rd.nextDouble() < 0.51) {
             if (enemy instanceof Slug) {
@@ -579,7 +574,7 @@ public class LoopManiaWorldController {
                 // common items
                 loadTrapCard();
             }
-        }*/
+        }
     }
 
     /**
