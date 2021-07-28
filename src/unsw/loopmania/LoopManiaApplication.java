@@ -29,6 +29,12 @@ public class LoopManiaApplication extends Application {
         // alternatively, you could allow rescaling of the game (you'd have to program resizing of the JavaFX nodes)
         primaryStage.setResizable(false);
 
+        // load game over screen
+        GameOverController GameOverController = new GameOverController();
+        FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOverView.fxml"));
+        gameOverLoader.setController(GameOverController);
+        Parent gameOverRoot = gameOverLoader.load();
+
         // load the main game
         LoopManiaWorldControllerLoader loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
         mainController = loopManiaLoader.loadController();

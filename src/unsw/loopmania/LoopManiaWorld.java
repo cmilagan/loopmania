@@ -489,6 +489,7 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
+                        character.destroy();
                         break;
                     }
                 } else {
@@ -1271,10 +1272,17 @@ public class LoopManiaWorld {
         }
     }
 
+    /**
+     * Gets this worlds character
+     * @return Character
+     */
     public Character getCharacter() {
         return this.character;
     }
 
+    /**
+     * Consumes a potion in the character inventory
+     */
     public void consumePotion() {
         for (Entity i: getCharacterInventory()) {
             if (i instanceof HealthPotion) {
@@ -1285,6 +1293,22 @@ public class LoopManiaWorld {
                 break;                
             }
         }
+    }
+
+    public boolean consumeOneRing() {
+        boolean consumed = false;
+        for (Entity i: getCharacterInventory()) {
+            if (i instanceof OneRing) {
+                OneRing ring = (OneRing) i;
+                // TODO apply ring effects
+                character.setHealth(character.getMaxHealth());
+                ring.destroy();
+                unequippedInventoryItems.remove(ring);
+                consumed = true;
+                break;                
+            }
+        }
+        return consumed;
     }
 
     /**

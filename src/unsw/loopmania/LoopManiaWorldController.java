@@ -413,6 +413,7 @@ public class LoopManiaWorldController {
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+
             // display the experience of the hero
             String charXP = Integer.toString(world.getCharacter().getXP());
             xp.setText(charXP);
@@ -422,6 +423,20 @@ public class LoopManiaWorldController {
             // display the health of the hero
             String charHealth = Integer.toString(world.getCharacter().getHealth());
             health.setText(charHealth);
+            if (world.getCharacter().getHealth() == 0) {
+                // check if has one ring & consume
+                // if not trigger end game screen
+                if (!world.consumeOneRing()) {
+                    for (int x = 0; x < world.getWidth(); x++) {
+                        for (int y = 0; y < world.getHeight(); y++) {
+                            ImageView groundView = new ImageView(imageJustBlack);
+                            squares.add(groundView, x, y);
+                        }
+                    }
+                    terminate();
+                }
+            }
+
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
