@@ -8,10 +8,14 @@ import org.codefx.libfx.listener.handle.ListenerHandles;
 
 import java.util.Random;
 
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Label;
+
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -50,6 +54,7 @@ import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
+import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -69,8 +74,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
-
-
 /**
  * the draggable types.
  * If you add more draggable types, add an enum value here.
@@ -111,7 +114,25 @@ public class LoopManiaWorldController {
      * Showcase characters current health
      */
     @FXML
-    private GridPane healthStatus;
+    private Text health;
+    
+    /**
+     * Showcase characters current gold
+     */
+    @FXML
+    private Text gold;
+
+    /**
+     * Showcase characters current gold
+     */
+    @FXML
+    private Text xp;
+
+    // /**
+    //  * Showcase characters current health
+    //  */
+    // @FXML
+    // private Rectangle2D healthbar;
 
     /**
      * stats gridpane includes money, exp
@@ -266,7 +287,7 @@ public class LoopManiaWorldController {
         trapBuildingImage = new Image((new File("src/images/trap.png")).toURI().toString());
         towerBuildingImage = new Image((new File("src/images/tower.png")).toURI().toString());
         barracksBuildingImage = new Image((new File("src/images/barracks.png")).toURI().toString());
-        campfireCardImage = new Image((new File("src/images/campfire.png")).toURI().toString());
+        campfireBuildingImage = new Image((new File("src/images/campfire.png")).toURI().toString());
         herosCastleImage = new Image((new File("src/images/heros_castle.png")).toURI().toString());
 
         // Enemy images
@@ -306,12 +327,19 @@ public class LoopManiaWorldController {
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
         Rectangle2D imagePart = new Rectangle2D(0, 0, 32, 32);
 
+        // soldier status bar
         for (int x = 0; x < world.getWidth(); x++) {
             ImageView groundView = new ImageView(imageJustBlack);
             groundView.setViewport(imagePart);
             soldiers.add(groundView, x, 1);
         }
 
+        // health bar
+        health.setText("100");
+        // gold text
+        gold.setText("0");
+        // experience text
+        xp.setText("0");
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
             for (int y = 0; y < world.getHeight(); y++) {
@@ -357,12 +385,20 @@ public class LoopManiaWorldController {
      */
     public void startTimer(){
         // TODO = handle more aspects of the behaviour required by the specification
+        Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         System.out.println("starting timer");
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         // basically a loop
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             world.runTickMoves();
+            int numAlliedSoldiers = world.getAlliedSoldiersNumber();
+            // remove dead allied soldiers from soldier bar
+            for (int i = numAlliedSoldiers; i <= 5; i++) {
+                ImageView black = new ImageView(imageJustBlack);
+                soldiers.add(black, i, 1);
+            }
+
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
@@ -371,22 +407,21 @@ public class LoopManiaWorldController {
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
             }
-            // display allied soldiers in soldier bar
-            int numAlliedSoldiers = world.getAlliedSoldiersNumber();
+            // display alive allied soldiers
             for (int i = 0; i < numAlliedSoldiers; i++) {
                 // Add soldiers bar
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+            // display the experience of the hero
+            String charXP = Integer.toString(world.getCharacter().getXP());
+            xp.setText(charXP);
             // display the gold of the hero
-            
-
+            String charGold = Integer.toString(world.getCharacter().getGold());
+            gold.setText(charGold);
             // display the health of the hero
-                // Integer health = world.getCharacter().getHealth();
-                // Text text = new Text();
-                // text.setText(health.toString());
-                // text.setFi
-                // healthStatus.add(text,5,0);
+            String charHealth = Integer.toString(world.getCharacter().getHealth());
+            health.setText(charHealth);
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -439,8 +474,8 @@ public class LoopManiaWorldController {
      * load a trap card from the world, and pair with image in GUI
      */
     private void loadTrapCard() {
-        TrapCard villageCard = world.loadTrapCard();
-        onLoad(villageCard);
+        TrapCard trapCard = world.loadTrapCard();
+        onLoad(trapCard);
     }
 
     /**
@@ -502,8 +537,11 @@ public class LoopManiaWorldController {
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
 
+
+
+
         Random rd = new Random();
-        if (rd.nextDouble() < 0.51) {
+        if (rd.nextDouble() > 0.51) {
             if (enemy instanceof Slug) {
                 // slugs have a low chance of dropping rare items 0.01%
                 loadLoot(0.991);
@@ -516,6 +554,11 @@ public class LoopManiaWorldController {
             }        
         } else {
             // RNG for card drops
+            // if a card slots are full, discard and reward
+            if (world.getNumCards() >= world.getWidth()) {
+                Item itemReward = world.rewardDiscard();
+                onLoad(itemReward);
+            }
             double rgen = rd.nextDouble();
             Random rd2 = new Random();
             if (rgen > 0.9) {
@@ -725,7 +768,7 @@ public class LoopManiaWorldController {
                         switch (draggableType){
                             case CARD:
                                 // if u cannot place card should go back to its slot
-                                 boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
                                 if (!canPlace) {
                                     return;
                                 }
@@ -738,8 +781,44 @@ public class LoopManiaWorldController {
                             case ITEM:
                                 // if item is d
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
-                                
-                                
+                                // get the currently dragged item
+                                Item newItem = world.getItem(nodeX, nodeY);
+                                if (newItem == null) {
+                                    System.out.println("invalid");
+                                    return;
+                                }
+                                if (newItem instanceof Helmet) {
+                                    System.out.println("helmet spawn");
+                                    // respective coordinates of the helmet slot
+                                    if (!(x == 1 && y == 1)) {
+                                        return;
+                                    } 
+                                    // equip the item
+                                } else if (newItem instanceof Armor) {
+                                    System.out.println("armor spawn");
+                                    // respective coordinates of the armor slot
+                                    if (!(x == 1 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else if (newItem instanceof AttackItem) {
+                                    System.out.println("attack spawn");
+                                    // respective coordinates of the sword slot
+                                    if (!(x == 0 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else if (newItem instanceof Shield) {
+                                    System.out.println("shield spawn");
+                                    // respective coordinates of the shield slot
+                                    if (!(x == 3 && y == 2)) {
+                                        return;
+                                    }
+                                    // equip the item
+                                } else {
+                                    return;
+                                }
+                                world.equipItem(newItem);
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
@@ -952,6 +1031,7 @@ public class LoopManiaWorldController {
             }
             break;
         case H:
+            world.consumePotion();
             break;
         default:
             break;

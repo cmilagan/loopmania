@@ -163,33 +163,6 @@ public class LoopManiaWorld {
     }
 
 
-    public void checkCanEquip(int itemNodeX, int itemNodeY, int equipX, int equipY) {
-        // get the item
-        Item item = null;
-        for (Entity i: unequippedInventoryItems) {
-            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
-                if (item instanceof Item) {
-                    item = (Item) i;
-                    break;
-                }
-            }
-        }
-    }
-    // equip items
-    public void equipItem(int itemNodeX, int itemNodeY, int equipX, int equipY) {
-        // get the item
-        Item item = null;
-        for (Entity i: unequippedInventoryItems) {
-            if((i.getX() == itemNodeX) && (i.getY() == itemNodeY)) {
-                if (item instanceof Item) {
-                    item = (Item) i;
-                    break;
-                }
-            }
-        }
-    }
-
-
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
     }
@@ -627,6 +600,18 @@ public class LoopManiaWorld {
     //                                   CARDS                                           //
     ///////////////////////////////////////////////////////////////////////////////////////
 
+    public Item rewardDiscard() {
+        // Assign XP (amount in the assumptions)
+        character.setXP(character.getXP() + 200);
+        // Assign gold randomly (formula in assumptions)
+        character.setGold(goldReward());
+        // Assign an item reward
+        Item loot = addUnequippedItem(1);
+        unequippedInventoryItems.add(loot);
+        removeCard(0);
+        return loot;
+    }
+
     /**
      * spawn a vampire castle card in the world and return the card entity
      * 
@@ -634,16 +619,6 @@ public class LoopManiaWorld {
      */
     public VampireCastleCard loadVampireCard() {
         // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         VampireCastleCard vampireCastleCard = new VampireCastleCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(vampireCastleCard);
@@ -656,16 +631,6 @@ public class LoopManiaWorld {
      * @return a card to be spawned in the controller as a JavaFX node
      */
     public VillageCard loadVillageCard() {
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         VillageCard villageCard = new VillageCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         cardEntities.add(villageCard);
         return villageCard;
@@ -677,16 +642,6 @@ public class LoopManiaWorld {
      * @return a card to be spawned in the controller as a JavaFX node
      */
     public TrapCard loadTrapCard() {
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         TrapCard trapCard = new TrapCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         cardEntities.add(trapCard);
         return trapCard;
@@ -698,16 +653,6 @@ public class LoopManiaWorld {
      * @return a card to be spawned in the controller as a JavaFX node
      */
     public ZombieGraveyardCard loadZombieGraveyardCard() {
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         ZombieGraveyardCard zombieGraveCard = new ZombieGraveyardCard(new SimpleIntegerProperty(cardEntities.size()), new SimpleIntegerProperty(0));
         cardEntities.add(zombieGraveCard);
         return zombieGraveCard;
@@ -720,16 +665,6 @@ public class LoopManiaWorld {
      */
     public TowerCard loadTowerCard() {
         // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         TowerCard towerCard = new TowerCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(towerCard);
@@ -743,16 +678,6 @@ public class LoopManiaWorld {
      */
     public CampfireCard loadCampfireCard() {
         // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         CampfireCard campfireCard = new CampfireCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(campfireCard);
@@ -766,16 +691,6 @@ public class LoopManiaWorld {
      */
     public BarracksCard loadBarracksCard() {
         // if adding more cards than have, remove the first card...
-        if (cardEntities.size() >= getWidth()) {
-            // Assign XP (amount in the assumptions)
-            character.setXP(character.getXP() + 200);
-            // Assign gold randomly (formula in assumptions)
-            character.setGold(goldReward());
-            // Assign an item reward
-            Item loot = addUnequippedItem(1);
-            unequippedInventoryItems.add(loot);
-            removeCard(0);
-        }
         BarracksCard barracksCard = new BarracksCard(new SimpleIntegerProperty(cardEntities.size()),
                 new SimpleIntegerProperty(0));
         cardEntities.add(barracksCard);
@@ -941,6 +856,7 @@ public class LoopManiaWorld {
         for (BattleItem item : expirableItems) {
             if (item.getUsage() == item.getItemDurability()) {
                 unequippedInventoryItems.remove(item);
+                item.destroy();
                 if (item instanceof AttackItem) {
                     character.setWeapon(null);
                 } else if (item instanceof Helmet) {
@@ -1223,7 +1139,7 @@ public class LoopManiaWorld {
                     Pair<Integer, Integer> enemyPos = new Pair<Integer, Integer>(e.getX(), e.getY());
                     if (enemyPos.equals(buildingPos)) {
                         // enemy steps on trap
-                        removeBuilding(trap);
+                        triggered = true;
                         e.applyBuildingDamage(trap.getDamage());
                         if (e.getHealth() <= 0) {
                             // enemy killed
@@ -1329,22 +1245,53 @@ public class LoopManiaWorld {
 
     /**
      * 
-     * @return
+     * @param itemNodeX
+     * @param itemNodeY
+     * @return Item
      */
+    public Item getItem(int itemNodeX, int itemNodeY) {
+        // get the item
+        Item item = (Item) getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
+        return item;
+    }
+
+    /**
+     * Equips the item
+     * @param item
+     */
+    public void equipItem(Item item) {
+        if (item instanceof Helmet) {
+            character.setHelmet((Helmet)item);
+        } else if (item instanceof Armor) {
+            character.setArmor((Armor)item);
+        } else if (item instanceof AttackItem) {
+            character.setWeapon((AttackItem)item);
+        } else if (item instanceof Shield) {
+            character.setShield((Shield)item);
+        }
+    }
+
     public Character getCharacter() {
         return this.character;
     }
 
-    // private Pair<Integer, Integer> consumePotion() {
-    //     for (Entity i: getCharacterInventory()) {
-    //         if (i instanceof HealthPotion) {
-    //             HealthPotion potion = (HealthPotion) i;
-    //             potion.use(character);
-    //             potion.destroy();
-    //             unequippedInventoryItems.remove(potion);
-    //             return new Pair<Integer, Integer>(i.getX(), i.getX());
-    //         }
-    //     }
-    //     return null;
-    // }
+    public void consumePotion() {
+        for (Entity i: getCharacterInventory()) {
+            if (i instanceof HealthPotion) {
+                HealthPotion potion = (HealthPotion) i;
+                potion.use(character);
+                potion.destroy();
+                unequippedInventoryItems.remove(potion);
+                break;                
+            }
+        }
+    }
+
+    /**
+     * the amount of cards the user currently has
+     * @return int
+     */
+    public int getNumCards() {
+        return this.cardEntities.size();
+    }
 }
