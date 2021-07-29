@@ -11,9 +11,10 @@ import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.npcs.ElanMuske;
+import unsw.loopmania.npcs.Zombie;
 
 public class ElanMuskeTest {
-    private int slugPosition = 1;
+    private int elanPosition = 1;
     private int characterPosition = 0;
     private ElanMuske elan;
     private Character newCharacter;
@@ -26,6 +27,7 @@ public class ElanMuskeTest {
     @Test
     public void testExpectedHealth() {
         initializeWorld();
+        addElan();
         int initialElanHealth = 40;
         assertEquals(initialElanHealth, elan.getHealth());
     }
@@ -36,6 +38,7 @@ public class ElanMuskeTest {
     @Test
     void testElanDamage() {
         initializeWorld();
+        addElan();
         int initialDamage = 25;
         assertEquals(initialDamage, elan.getDamage());
     }
@@ -46,6 +49,7 @@ public class ElanMuskeTest {
     @Test
     void testElanBattleRadius() {
         initializeWorld();
+        addElan();
         int initialBattleRadius = 1;
         assertEquals(initialBattleRadius, elan.getBattleRadius());
     }
@@ -56,6 +60,7 @@ public class ElanMuskeTest {
     @Test
     void testElanSupportRadius() {
         initializeWorld();
+        addElan();
         int initialSupportRadius = 1;
         assertEquals(initialSupportRadius, elan.getSupportRadius());
     }
@@ -66,6 +71,7 @@ public class ElanMuskeTest {
     @Test
     void testElanXP() {
         initializeWorld();
+        addElan();
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 500;
 
@@ -74,6 +80,23 @@ public class ElanMuskeTest {
     }
 
     // TODO: add test to check if enemies are healed
+    @Test
+    void testCheckEnemiesHealed() {
+        initializeWorld();
+
+        // spawn Zombie with reduced health
+        PathPosition zombiePathPosition = new PathPosition(elanPosition, orderedPath);
+        Zombie zombie = new Zombie(zombiePathPosition);
+        zombie.setHealth(5);
+        testWorld.addEnemy(zombie);
+
+        assertEquals(5, zombie.getHealth());
+        
+        testWorld.runTickMoves();
+
+        assertEquals(10, zombie.getHealth());
+    }
+
     // TODO: add test to check if the price of doggieCoin goes up on spawn
     // TODO: add test to check if the price of doggieCoin goes down on defeat
 
@@ -98,9 +121,11 @@ public class ElanMuskeTest {
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
+    }
 
-        // initializing slug
-        PathPosition elanPathPosition = new PathPosition(slugPosition, orderedPath);
+    public void addElan() {
+        // initializing Elan
+        PathPosition elanPathPosition = new PathPosition(elanPosition, orderedPath);
         elan = new ElanMuske(elanPathPosition);
         testWorld.addEnemy(elan);
     }
