@@ -915,7 +915,7 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
+    public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
         for (Entity e : unequippedInventoryItems) {
             if ((e.getX() == x) && (e.getY() == y)) {
                 return e;
@@ -1243,16 +1243,42 @@ public class LoopManiaWorld {
         
     }
 
-    /**
-     * 
-     * @param itemNodeX
-     * @param itemNodeY
-     * @return Item
-     */
-    public Item getItem(int itemNodeX, int itemNodeY) {
-        // get the item
-        Item item = (Item) getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
-        return item;
+    
+    Pair<Item, Item> equipItemByCoordinates(int itemNodeX, int itemNodeY, int slotX, int slotY) {
+        Item equip = null;
+        // getting the appropiate item
+        for (Entity e: getCharacterInventory()) {
+            if (e instanceof Item) {
+                if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
+                    equip = (Item) e;
+                }
+            }
+        }
+        // equipable items
+        if (equip instanceof AttackItem) {
+            AttackItem attackItem = (AttackItem) equip;
+            if (!attackItem.equipToCoordinates(slotX, slotY)) {
+                return null;
+            }
+        } else if (equip instanceof Shield) {
+            Shield shieldItem = (Shield) equip;
+            if (!shieldItem.equipToCoordinates(slotX, slotY)) {
+                return null;
+            }
+        } else if (equip instanceof Armor) {
+            Armor armourItem = (Armor) equip;
+            if (!armourItem.equipToCoordinates(slotX, slotY)) {
+                return null;
+            }
+        } else if (equip instanceof Helmet) {
+            Helmet helmetItem = (Helmet) equip;
+            if (!helmetItem.equipToCoordinates(slotX, slotY)) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+
     }
 
     /**

@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * represents an equipped or unequipped helmt in the backend world
  */
-public class Helmet extends DefenceItem {
+public class Helmet extends DefenceItem implements EquipItem {
     private int usage = 0;
     private static int itemCost = 10;
     private static int itemDurability = 10;
@@ -30,5 +30,11 @@ public class Helmet extends DefenceItem {
     @Override
     public double useCritDefence() {
         return critDefencePercentage;
+    }
+
+    @Override
+    public boolean equipToCoordinates(int targetX, int targetY) {
+        if (targetX == 1 && targetY == 1) return true;
+        return false;
     }
 }

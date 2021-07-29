@@ -782,43 +782,7 @@ public class LoopManiaWorldController {
                                 // if item is d
                                 // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 // get the currently dragged item
-                                Item newItem = world.getItem(nodeX, nodeY);
-                                if (newItem == null) {
-                                    System.out.println("invalid");
-                                    return;
-                                }
-                                if (newItem instanceof Helmet) {
-                                    System.out.println("helmet spawn");
-                                    // respective coordinates of the helmet slot
-                                    if (!(x == 1 && y == 1)) {
-                                        return;
-                                    } 
-                                    // equip the item
-                                } else if (newItem instanceof Armor) {
-                                    System.out.println("armor spawn");
-                                    // respective coordinates of the armor slot
-                                    if (!(x == 1 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof AttackItem) {
-                                    System.out.println("attack spawn");
-                                    // respective coordinates of the sword slot
-                                    if (!(x == 0 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof Shield) {
-                                    System.out.println("shield spawn");
-                                    // respective coordinates of the shield slot
-                                    if (!(x == 3 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else {
-                                    return;
-                                }
-                                world.equipItem(newItem);
+                                Item newItem = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
@@ -899,6 +863,16 @@ public class LoopManiaWorldController {
      */
     private Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         return world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
+    }
+
+    /**
+     * 
+     * @param itemNodeX the x coordinate the item was dragged from in the unequipped inventory slot
+     * @param itemNodeY the y coordinate the item was dragged from in the unequipped inventory slot
+     * @return
+     */
+    private Item getUnequippedInventoryItemEntityByCoordinates(int itemNodeX, int itemNodeY) {
+        return (Item) world.getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
     }
 
     /**

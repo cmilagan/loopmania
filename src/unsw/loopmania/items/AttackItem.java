@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 /**
  * groups all Attack Items together
  */
-public class AttackItem extends BattleItem {
+public class AttackItem extends BattleItem implements EquipItem {
     /**
      * every attack item must have these stats
      */
@@ -25,4 +25,10 @@ public class AttackItem extends BattleItem {
     }
 
     public int inflictDamage() { return 0; }
+
+    @Override
+    public boolean equipToCoordinates(int targetX, int targetY) {
+        if (targetX == 0 && targetY == 1) return true;
+        return false;
+    }
 }
