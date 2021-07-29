@@ -114,6 +114,7 @@ public class LoopManiaWorldControllerLoader extends LoopManiaWorldLoader {
     private static void trackPositionOfNonSpawningEntities(Entity entity, Node node) {
         GridPane.setColumnIndex(node, entity.getX());
         GridPane.setRowIndex(node, entity.getY());
+
         entity.x().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable,

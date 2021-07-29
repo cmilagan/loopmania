@@ -43,10 +43,16 @@ public class LoopManiaApplication extends Application {
         Parent mainMenuRoot = menuLoader.load();
 
         // load the new game menu
-        GameMenuController gameMenuController = new GameMenuController();
-        FXMLLoader newGameMenuLoader = new FXMLLoader(getClass().getResource("NewGameMenuView.fxml"));
-        newGameMenuLoader.setController(gameMenuController);
-        Parent gameMenuRoot = newGameMenuLoader.load();
+        // GameMenuController gameMenuController = new GameMenuController();
+        // FXMLLoader newGameMenuLoader = new FXMLLoader(getClass().getResource("NewGameMenuView.fxml"));
+        // newGameMenuLoader.setController(gameMenuController);
+        // Parent gameMenuRoot = newGameMenuLoader.load();
+        
+        // load the item shop
+        ShopMenuController shopMenuController = new ShopMenuController(mainController.getWorld());
+        FXMLLoader shopLoader = new FXMLLoader(getClass().getResource("ShopMenuView.fxml"));
+        shopLoader.setController(shopMenuController);
+        Parent shopMenuRoot = shopLoader.load();
 
         // create new scene with the main menu (so we start with the main menu)
         Scene scene = new Scene(mainMenuRoot);
@@ -54,16 +60,25 @@ public class LoopManiaApplication extends Application {
         // set functions which are activated when button click to switch menu is pressed
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
+        mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRoot, primaryStage);});
+        // mainController.setMenuSwitcher(() -> {switchToRoot(scene, gameMenuRoot, primaryStage);});
+        
         mainMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
         });
-        gameMenuController.setMenuSwitcher(() -> {switchToRoot(scene, gameMenuRoot, primaryStage);});
-        
-        gameMenuController.setMenuSwitcher(() -> {
+
+        // when exit button is pressed, the screen shown switches to map
+        shopMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
         });
+        
+        // gameMenuController.setMenuSwitcher(() -> {
+        //     switchToRoot(scene, gameRoot, primaryStage);
+        //     mainController.startTimer();
+        // });
+
         // deploy the main onto the stage
         gameRoot.requestFocus();
         primaryStage.setScene(scene);

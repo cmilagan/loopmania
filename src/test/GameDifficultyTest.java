@@ -1,5 +1,6 @@
 package test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -12,7 +13,11 @@ import org.junit.Test;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.modes.BerserkerMode;
+import unsw.loopmania.modes.ConfusingMode;
 import unsw.loopmania.modes.GameDifficulty;
+import unsw.loopmania.modes.StandardMode;
+import unsw.loopmania.modes.SurvivalMode;
 
 public class GameDifficultyTest {
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
@@ -20,6 +25,10 @@ public class GameDifficultyTest {
     private int characterPosition = 0;
     private LoopManiaWorld testWorld;
     private GameDifficulty mode = new GameDifficulty();
+    private StandardMode standard = new StandardMode();
+    private SurvivalMode survival = new SurvivalMode();
+    private BerserkerMode berserker = new BerserkerMode();
+    private ConfusingMode confusing = new ConfusingMode();
     
     /**
      * Check that the game difficulty is standard
@@ -33,6 +42,10 @@ public class GameDifficultyTest {
         assertTrue(mode.getStandard());
         assertFalse(mode.getBerserker());
         assertFalse(mode.getSurvival());
+        assertFalse(mode.getConfusing());
+        assertEquals(standard.getWinGold(), testWorld.getWinGold());
+        assertEquals(standard.getWinLoop(), testWorld.getWinLoops());
+        assertEquals(standard.getWinXP(), testWorld.getWinXp());
         System.out.println("--- Passed ---\n");
     }
 
@@ -48,6 +61,7 @@ public class GameDifficultyTest {
         assertTrue(mode.getSurvival());
         assertFalse(mode.getBerserker());
         assertFalse(mode.getStandard());
+        assertFalse(mode.getConfusing());
         System.out.println("--- Passed ---\n");
     }
 
@@ -63,6 +77,7 @@ public class GameDifficultyTest {
         assertTrue(mode.getBerserker());
         assertFalse(mode.getStandard());
         assertFalse(mode.getSurvival());
+        assertFalse(mode.getConfusing());
         System.out.println("--- Passed ---\n");
     }
 

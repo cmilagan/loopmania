@@ -35,6 +35,11 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.modes.BerserkerMode;
+import unsw.loopmania.modes.ConfusingMode;
+import unsw.loopmania.modes.GameDifficulty;
+import unsw.loopmania.modes.StandardMode;
+import unsw.loopmania.modes.SurvivalMode;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
@@ -116,6 +121,11 @@ public class LoopManiaWorld {
     private List<Pair<Integer, Integer>> orderedPath;
 
     /**
+     * Determines the winning conditions and the restrictions or effect on the game
+     */
+    private GameDifficulty mode;
+
+    /**
      * create the world (constructor)
      * 
      * @param width       width of world in number of cells
@@ -136,6 +146,7 @@ public class LoopManiaWorld {
         this.loopCounter = 0;
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
+        mode = new GameDifficulty();
     }
 
     public int getWidth() {
@@ -165,6 +176,83 @@ public class LoopManiaWorld {
 
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
+    // If a mode isn't selected from the new game screen, it will automatically have standard
+    // mode conditions
+    /**
+     * Gives the corresponding amount of xp needed to win
+     * @return the amount of xp needed to win
+     */
+    public int getWinXp() {
+        if (mode.getStandard()) {
+            StandardMode m = new StandardMode();
+            return m.getWinXP();
+        }
+        if (mode.getSurvival()) {
+            SurvivalMode m = new SurvivalMode();
+            return m.getWinXP();
+        }
+        if (mode.getBerserker()) {
+            BerserkerMode m = new BerserkerMode();
+            return m.getWinXP();
+        }
+        if (mode.getConfusing()) {
+            ConfusingMode m = new ConfusingMode();
+            return m.getWinXP();
+        }
+        StandardMode m = new StandardMode();
+        return m.getWinXP();
+    }
+
+    /**
+     * Gives the corresponding amount of gold needed to win
+     * @return the amount of gold needed to win
+     */
+    public int getWinGold() {
+        if (mode.getStandard()) {
+            StandardMode m = new StandardMode();
+            return m.getWinGold();
+        }
+        if (mode.getSurvival()) {
+            SurvivalMode m = new SurvivalMode();
+            return m.getWinGold();
+        }
+        if (mode.getBerserker()) {
+            BerserkerMode m = new BerserkerMode();
+            return m.getWinGold();
+        }
+        if (mode.getConfusing()) {
+            ConfusingMode m = new ConfusingMode();
+            return m.getWinGold();
+        }
+        StandardMode m = new StandardMode();
+        return m.getWinGold();
+    }
+
+    /**
+     * Gives the corresponding amount of loops needed to win
+     * @return the amount of loops needed to win
+     */
+    public int getWinLoops() {
+        if (mode.getStandard()) {
+            StandardMode m = new StandardMode();
+            return m.getWinLoop();
+        }
+        if (mode.getSurvival()) {
+            SurvivalMode m = new SurvivalMode();
+            return m.getWinLoop();
+        }
+        if (mode.getBerserker()) {
+            BerserkerMode m = new BerserkerMode();
+            return m.getWinLoop();
+        }
+        if (mode.getConfusing()) {
+            ConfusingMode m = new ConfusingMode();
+            return m.getWinLoop();
+        }
+        StandardMode m = new StandardMode();
+        return m.getWinLoop();
     }
 
     /**
@@ -474,6 +562,7 @@ public class LoopManiaWorld {
                 if (e.getHealth() <= 0) {
                     killEnemy(e);
                     killedEnemies.add(e);
+                    character.setGold(goldReward());
                 }
             }
             battleEnemies.removeAll(killedEnemies);
@@ -545,6 +634,7 @@ public class LoopManiaWorld {
             // due to mutating list we're iterating over
             killEnemy(e);
             character.setXP(character.getXP() + e.getExperience());
+            character.setGold(goldReward());
         }
         return defeatedEnemies;
     }
@@ -558,8 +648,9 @@ public class LoopManiaWorld {
     public int goldReward() {
         Random rand = new Random(); 
         int upperbound = 10;
-        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 1000);
+        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 100);
         int giveGold = character.getGold() + goldGained;
+        System.out.println(giveGold);
         return giveGold;
     }
 
@@ -604,7 +695,7 @@ public class LoopManiaWorld {
         // Assign XP (amount in the assumptions)
         character.setXP(character.getXP() + 200);
         // Assign gold randomly (formula in assumptions)
-        character.setGold(goldReward());
+        character.setGold(goldReward() + character.getGold());
         // Assign an item reward
         Item loot = addUnequippedItem(1);
         unequippedInventoryItems.add(loot);
@@ -1130,6 +1221,7 @@ public class LoopManiaWorld {
                     // Increment loop counter
                     // setLoopCount(getLoopCount() + 1);
                     // open shop pause the game
+                    
                 }
             } 
             if (b instanceof TrapBuilding) {
