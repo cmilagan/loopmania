@@ -9,16 +9,21 @@ public class GameOverController {
      */
     private MenuSwitcher gameSwitcher;
 
+    
+    /**
+     * 
+     * @param gameSwitcher
+     */
     public void setGameSwitcher(MenuSwitcher gameSwitcher){
         this.gameSwitcher = gameSwitcher;
     }
-
+    
     /**
-     * facilitates switching to main game upon button click
+     * Goes to main menu when button clicked
      * @throws IOException
      */
     @FXML
-    private void switchToGame() throws IOException {
+    public void switchToMainMenu() throws IOException {
         gameSwitcher.switchMenu();
     }
 }

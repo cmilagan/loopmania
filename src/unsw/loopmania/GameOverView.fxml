@@ -33,7 +33,7 @@
                   </Text>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button alignment="TOP_RIGHT" mnemonicParsing="false" text="main menu">
+                        <Button onAction="#switchToMainMenu" alignment="TOP_RIGHT" mnemonicParsing="false" text="main menu">
                            <font>
                               <Font name="Arial" size="12.0" />
                            </font>

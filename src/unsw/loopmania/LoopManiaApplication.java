@@ -61,6 +61,7 @@ public class LoopManiaApplication extends Application {
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
         mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRoot, primaryStage);});
+        mainController.setGameOverSwitcher(() -> {switchToRoot(scene, gameOverRoot, primaryStage);});
         mainMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
@@ -69,6 +70,12 @@ public class LoopManiaApplication extends Application {
         shopMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
+        });
+        
+        // when main menu button is pressed, screen switches to main menu
+        GameOverController.setGameSwitcher(()-> {
+            switchToRoot(scene, mainMenuRoot, primaryStage);
+            mainController.terminate();
         });
         
         // deploy the main onto the stage
