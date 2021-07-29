@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5">
+         <image>
+            <Image url="@../../images/bimg.jpg" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="147.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
+      <Label layoutX="153.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop">
+         <font>
+            <Font name="Goudy Old Style Bold" size="30.0" />
+         </font>
+      </Label>
+      <ImageView layoutX="323.0" layoutY="242.0">
+         <image>
+            <Image url="@../../images/armour.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="323.0" layoutY="292.0">
+         <image>
+            <Image url="@../../images/brilliant_blue_new.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="323.0" layoutY="185.0">
+         <image>
+            <Image url="@../../images/helmet.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="323.0" layoutY="127.0">
+         <image>
+            <Image url="@../../images/shield.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="14.0" layoutY="182.0">
+         <image>
+            <Image url="@../../images/staff.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="14.0" layoutY="239.0">
+         <image>
+            <Image url="@../../images/stake.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="124.0">
+         <image>
+            <Image url="@../../images/basic_sword.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView layoutX="14.0" layoutY="292.0">
+         <image>
+            <Image url="@../../images/doggiecoin.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <Label layoutX="53.0" layoutY="187.0" prefHeight="22.0" prefWidth="84.0" text="Staff">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="53.0" layoutY="129.0" prefHeight="22.0" prefWidth="84.0" text="Sword">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="53.0" layoutY="244.0" prefHeight="22.0" prefWidth="84.0" text="Stake">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="53.0" layoutY="297.0" prefHeight="22.0" prefWidth="93.0" text="Doggie Coin">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="362.0" layoutY="132.0" prefHeight="22.0" prefWidth="84.0" text="Shield">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="362.0" layoutY="190.0" prefHeight="22.0" prefWidth="84.0" text="Helmet">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="362.0" layoutY="247.0" prefHeight="22.0" prefWidth="84.0" text="Armour">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="362.0" layoutY="297.0" prefHeight="22.0" prefWidth="109.0" text="Health Potion">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <Label layoutX="231.0" layoutY="60.0" prefHeight="22.0" prefWidth="110.0" text="Current Gold: ">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="205.0" layoutY="60.0">
+         <image>
+            <Image url="@../../images/gold_pile.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="buySword" layoutX="105.0" layoutY="125.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="backToMapButton" layoutX="240.0" layoutY="350.0" mnemonicParsing="false" onAction="#switchToGameMenu" text="Back To Map">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Text layoutX="339.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="62.13671875">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="statusField" layoutX="120.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="362.9366455078125">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="buyStaff" layoutX="105.0" layoutY="182.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyStake" layoutX="105.0" layoutY="240.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellSword" layoutX="163.0" layoutY="125.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellStaff" layoutX="163.0" layoutY="182.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellStake" layoutX="163.0" layoutY="240.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellDoggieCoin" layoutX="163.0" layoutY="290.0" minWidth="41.0" mnemonicParsing="false" onAction="#doggieCoinSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyShield" layoutX="473.0" layoutY="125.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyHelmet" layoutX="473.0" layoutY="183.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyArmor" layoutX="473.0" layoutY="240.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyHealthPotion" layoutX="473.0" layoutY="293.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellShield" layoutX="531.0" layoutY="125.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellHelmet" layoutX="531.0" layoutY="183.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellArmour" layoutX="531.0" layoutY="240.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellHealthPotion" layoutX="531.0" layoutY="293.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+   </children>
+</AnchorPane>

@@ -264,6 +264,11 @@ public class LoopManiaWorldController {
     private MenuSwitcher mainMenuSwitcher;
 
     /**
+     * object handling switching to the shop menu
+     */
+    private MenuSwitcher shopMenuSwitcher;
+
+    /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
      */
@@ -353,10 +358,33 @@ public class LoopManiaWorldController {
         for (ImageView entity : entityImages){
             squares.getChildren().add(entity);
         }
+
         // place the castle at 0,0
         ImageView heroCastle = new ImageView(herosCastleImage);
         heroCastle.setViewport(imagePart);
         squares.add(heroCastle, 0, 0);
+
+        /**
+         * track the position of the character and if the character is at (0, 0)
+         * i.e., the character is at the hero's castle, automatically open shop menu
+         * Note: Oberver Pattern used here 
+         */
+        Character character = world.getCharacter();
+        character.x().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number oldValue, Number newValue) {
+                character.y().addListener(new ChangeListener<Number>() {
+                    @Override
+                    public void changed(ObservableValue<? extends Number> observable,
+                            Number oldValue, Number newValue) {
+                        if (character.getX() == 0 && character.getY() == 0) {
+                            switchToShopMenu();
+                        }
+                    }
+                });
+            }
+        });
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -390,6 +418,7 @@ public class LoopManiaWorldController {
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         // basically a loop
+        // TODO = change back 0.1 to 0.3
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             world.runTickMoves();
             int numAlliedSoldiers = world.getAlliedSoldiersNumber();
@@ -455,6 +484,10 @@ public class LoopManiaWorldController {
 
     public void terminate(){
         pause();
+    }
+
+    public LoopManiaWorld getWorld() {
+        return world;
     }
 
     /**
@@ -1054,7 +1087,6 @@ public class LoopManiaWorldController {
     }
 
     public void setMainMenuSwitcher(MenuSwitcher mainMenuSwitcher){
-        // TODO = possibly set other menu switchers
         this.mainMenuSwitcher = mainMenuSwitcher;
     }
 
@@ -1064,9 +1096,30 @@ public class LoopManiaWorldController {
      */
     @FXML
     private void switchToMainMenu() throws IOException {
-        // TODO = possibly set other menu switchers
         pause();
         mainMenuSwitcher.switchMenu();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                            Shop UI                               //
+    //////////////////////////////////////////////////////////////////////
+
+    public void setShopMenuSwitcher(MenuSwitcher shopMenuSwitcher) {
+        this.shopMenuSwitcher = shopMenuSwitcher;
+    }
+
+    /**
+     * 
+     * switch to shop screen if character is at (0, 0)
+     * which is the location of Hero's Castle
+     *
+     * this method is triggerred when character is at Hero's Castle
+     * 
+     * else do nothing
+     */
+    public void switchToShopMenu() {
+        pause();
+        shopMenuSwitcher.switchMenu();
     }
 
     /**
