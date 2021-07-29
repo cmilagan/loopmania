@@ -1,11 +1,19 @@
 package unsw.loopmania;
 
 import java.io.IOException;
+
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableBooleanValue;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WritableIntegerValue;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import unsw.loopmania.items.BattleItem;
 
 public class ShopMenuController {
     /**
@@ -21,18 +29,34 @@ public class ShopMenuController {
     private int healthPotionID = 7;
     private LoopManiaWorld world;
     private MenuSwitcher gameSwitcher;
+    private LoopManiaWorldController mainController;
+
+    @FXML
+    private Text playerGold;
 
     @FXML
     private Text statusField;
 
-    public ShopMenuController(LoopManiaWorld world) {
+    public ShopMenuController(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
+        this.mainController = mainController;
+
+        world.getCharacter().x().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable,
+                    Number oldValue, Number newValue) {
+                IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
+                playerGold.textProperty().bind(characterGold.asString());
+            }
+        });
     }
     
     @FXML
     private void swordBuy() {
-        if (world.buyItemByID(swordID)) {
+        BattleItem boughtItem = world.buyItemByID(swordID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Sword!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Sword!");
         }
@@ -45,8 +69,10 @@ public class ShopMenuController {
 
     @FXML
     private void staffBuy() {
-        if (world.buyItemByID(staffID)) {
+        BattleItem boughtItem = world.buyItemByID(staffID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Staff!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Staff!");
         }
@@ -59,8 +85,10 @@ public class ShopMenuController {
 
     @FXML
     private void stakeBuy() {
-        if (world.buyItemByID(stakeID)) {
+        BattleItem boughtItem = world.buyItemByID(stakeID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Stake!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Stake!");
         }
@@ -78,8 +106,10 @@ public class ShopMenuController {
 
     @FXML
     private void shieldBuy() {
-        if (world.buyItemByID(shieldID)) {
+        BattleItem boughtItem = world.buyItemByID(shieldID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Shield!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Shield!");
         }
@@ -92,8 +122,10 @@ public class ShopMenuController {
 
     @FXML
     private void helmetBuy() {
-        if (world.buyItemByID(helmetID)) {
+        BattleItem boughtItem = world.buyItemByID(helmetID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Helmet!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Helmet!");
         }
@@ -106,8 +138,10 @@ public class ShopMenuController {
 
     @FXML
     private void armourBuy() {
-        if (world.buyItemByID(swordID)) {
+        BattleItem boughtItem = world.buyItemByID(armorID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing Armour!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy Armour!");
         }
@@ -120,8 +154,10 @@ public class ShopMenuController {
 
     @FXML
     private void healthPotionBuy() {
-        if (world.buyItemByID(healthPotionID)) {
+        BattleItem boughtItem = world.buyItemByID(healthPotionID);
+        if (boughtItem != null) {
             statusField.setText("Thank you for purchasing a Health Potion!");
+            mainController.onLoad(boughtItem);
         } else {
             statusField.setText("Insufficient funds to buy a Health Potion!");
         }

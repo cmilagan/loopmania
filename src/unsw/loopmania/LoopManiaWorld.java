@@ -184,11 +184,10 @@ public class LoopManiaWorld {
      * 6 - One Ring
      * 7 - Health Potion
      */
-    public boolean buyItemByID(int itemID) {
+    public BattleItem buyItemByID(int itemID) {
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        BattleItem itemBought = null;
         List<BattleItem> battleItems = getBattleItems();
-        BattleItem itemBought = new BattleItem(null, null, 0, 0);
-        SimpleIntegerProperty newX = new SimpleIntegerProperty();
-        SimpleIntegerProperty newY = new SimpleIntegerProperty();
 
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
@@ -198,29 +197,37 @@ public class LoopManiaWorld {
             character.setGold(characterGold - itemCost);
 
             if (itemID == 0) {
-                itemBought = new Armor(newX, newY);
+                itemBought = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 1) {
-                itemBought = new Helmet(newX, newY);
+                itemBought = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 2) {
-                itemBought = new Shield(newX, newY);
+                itemBought = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 3) {
-                itemBought = new Staff(newX, newY);
+                itemBought = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 4) {
-                itemBought = new Stake(newX, newY);
+                itemBought = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 5) {
-                itemBought = new Sword(newX, newY);
+                itemBought = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 6) {
-                itemBought = new OneRing(newX, newY);
+                itemBought = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 7) {
-                itemBought = new HealthPotion(newX, newY);
+                itemBought = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
 
             unequippedInventoryItems.add(itemBought);
-            return true;
+            return itemBought;
         }
 
         // not enough gold to buy
-        return false;
+        return null;
     }
 
     /**

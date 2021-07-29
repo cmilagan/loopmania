@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 import org.javatuples.Pair;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.Helmet;
@@ -13,7 +14,7 @@ import unsw.loopmania.npcs.BasicEnemy;
  */
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
-    private int gold = 0;
+    private SimpleIntegerProperty gold = new SimpleIntegerProperty(100);
     private int health = 100;
     private int maxHealth = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
@@ -46,6 +47,10 @@ public class Character extends MovingEntity {
     }
 
     public int getGold() {
+        return gold.get();
+    }
+
+    public SimpleIntegerProperty getSimpleIntegerGold() {
         return gold;
     }
 
@@ -58,7 +63,7 @@ public class Character extends MovingEntity {
     }
 
     public void setGold(int newGold) {
-        gold = newGold;
+        gold.set(newGold);;
     }
 
     public void setMaxHealth(int newMaxHealth) {
