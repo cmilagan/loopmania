@@ -37,6 +37,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Doggie;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -342,7 +343,7 @@ public class LoopManiaWorld {
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
 
-        // spawning slugs
+        // spawning slugs and Doggies
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
 
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
@@ -351,6 +352,12 @@ public class LoopManiaWorld {
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
+
+            if (loopCounter % 20 == 0) {
+                Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
+                enemies.add(doggie);
+                spawningEnemies.add(doggie);
+            }
         }
 
         // spawning zombies and vampires
@@ -527,6 +534,8 @@ public class LoopManiaWorld {
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
 
+                e.applyEnemyEffects(character);
+
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
@@ -544,6 +553,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            if (e instanceof Doggie) { character.incrementDoggieCoin(); }
             character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;

@@ -21,6 +21,7 @@ public class Character extends MovingEntity {
     private Helmet equippedHelmet;
     private Armor equippedArmor;
     private Shield equippedShield;
+    private boolean stunned = false;
     private int damage = 1;
     private int xp = 0;
 
@@ -40,6 +41,14 @@ public class Character extends MovingEntity {
         else damageDealt = (int)(enemyDamage * this.getTotalDefenceMultiplier());
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
+    }
+
+    public void toggleStun() {
+        stunned = !stunned;
+    }
+
+    public boolean isStunned() {
+        return stunned;
     }
 
     public int getMaxHealth() {
@@ -132,6 +141,7 @@ public class Character extends MovingEntity {
     }
 
     public int getDamage() {
+        if (stunned) return 0;
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.inflictDamage();
     }
