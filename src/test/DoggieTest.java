@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.javatuples.Pair;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.npcs.Doggie;
 
 public class DoggieTest {
     private int slugPosition = 1;
@@ -78,7 +78,12 @@ public class DoggieTest {
      */
     @Test
     void testDoggieCoin() {
-        // TODO: test doggieCoin increase
+        initializeWorld();
+        assertEquals(0, newCharacter.getDoggieCoin());
+
+        testWorld.runBattles();
+
+        assertEquals(1, newCharacter.getDoggieCoin());
     }
 
     /**
