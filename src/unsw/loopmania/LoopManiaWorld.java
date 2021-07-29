@@ -343,7 +343,7 @@ public class LoopManiaWorld {
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
 
-        // spawning slugs
+        // spawning slugs and Doggies
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
 
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
@@ -352,6 +352,12 @@ public class LoopManiaWorld {
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
+
+            if (loopCounter % 20 == 0) {
+                Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
+                enemies.add(doggie);
+                spawningEnemies.add(doggie);
+            }
         }
 
         // spawning zombies and vampires
