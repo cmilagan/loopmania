@@ -37,6 +37,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Doggie;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -544,6 +545,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            if (e instanceof Doggie) { character.incrementDoggieCoin() }
             character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;
