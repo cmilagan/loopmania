@@ -79,7 +79,9 @@ public class ElanMuskeTest {
         assertEquals(expectedXP, newCharacter.getXP());
     }
 
-    // TODO: add test to check if enemies are healed
+    /**
+     * Test if Elan Muske heals other enemies in his support radius
+     */
     @Test
     void testCheckEnemiesHealed() {
         initializeWorld();
