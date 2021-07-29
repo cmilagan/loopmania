@@ -534,6 +534,8 @@ public class LoopManiaWorld {
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
 
+                e.applyEffects(character);
+
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
@@ -551,7 +553,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
-            if (e instanceof Doggie) { character.incrementDoggieCoin() }
+            if (e instanceof Doggie) { character.incrementDoggieCoin(); }
             character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;

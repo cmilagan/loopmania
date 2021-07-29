@@ -83,4 +83,8 @@ public class BasicEnemy extends MovingEntity {
     public boolean rollCrit() {
         return false;
     }
+
+    public void applyEffects(Character c) {
+        return;
+    }
 }

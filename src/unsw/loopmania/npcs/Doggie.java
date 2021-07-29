@@ -1,6 +1,7 @@
 package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.Character;
 
 public class Doggie extends BasicEnemy {
     public Doggie(PathPosition position) {
@@ -33,6 +34,16 @@ public class Doggie extends BasicEnemy {
             } else {
                 moveDownPath();
             }
+        }
+    }
+
+    /**
+     * Stuns the character
+     */
+    @Override
+    public void applyEffects(Character c) {
+        if (this.getHealth() > 0) {
+            c.toggleStun();
         }
     }
 }
