@@ -73,6 +73,10 @@ public class ElanMuskeTest {
         assertEquals(expectedXP, newCharacter.getXP());
     }
 
+    // TODO: add test to check if enemies are healed
+    // TODO: add test to check if the price of doggieCoin goes up on spawn
+    // TODO: add test to check if the price of doggieCoin goes down on defeat
+
     /**
      * Setup template world
      */
