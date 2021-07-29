@@ -12,8 +12,8 @@
    <children>
       <Label text="LOOP MANIA" />
       <!-- clicking button should start/resume the game -->
-      <Button fx:id="startGameButton" text="New Game" onAction="#switchToGame"/>
-      <Button fx:id="startGameButton" text="Load Game" onAction="#switchToGame"/>
+      <Button fx:id="startGameButton" text="New Game" onAction="#switchToNewGameMenu"/>
+      <Button fx:id="startGameButton" text="Load Game" onAction="#switchToNewGameMenu"/>
       <Button fx:id="startGameButton" text="Credits" onAction="#switchToGame"/>
       <Button fx:id="startGameButton" text="Exit Game" onAction="#switchToGame"/>
    </children>

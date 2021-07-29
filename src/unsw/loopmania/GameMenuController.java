@@ -22,7 +22,7 @@ public class GameMenuController {
      * @throws IOException
      */
     @FXML
-    private void switchToGame() throws IOException {
+    private void switchToNewGameMenu() throws IOException {
         gameSwitcher.switchMenu();
     }
 }

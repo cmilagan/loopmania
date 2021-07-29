@@ -60,6 +60,10 @@ public class LoopManiaApplication extends Application {
         });
         gameMenuController.setMenuSwitcher(() -> {switchToRoot(scene, gameMenuRoot, primaryStage);});
         
+        gameMenuController.setMenuSwitcher(() -> {
+            switchToRoot(scene, gameRoot, primaryStage);
+            mainController.startTimer();
+        });
         // deploy the main onto the stage
         gameRoot.requestFocus();
         primaryStage.setScene(scene);
