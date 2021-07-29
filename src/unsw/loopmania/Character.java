@@ -58,6 +58,10 @@ public class Character extends MovingEntity {
         return xp;
     }
 
+    public int getDoggieCoin() {
+        return doggieCoin;
+    }
+
     public void setGold(int newGold) {
         gold = newGold;
     }
