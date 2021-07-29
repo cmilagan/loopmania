@@ -1130,6 +1130,7 @@ public class LoopManiaWorld {
                     // Increment loop counter
                     // setLoopCount(getLoopCount() + 1);
                     // open shop pause the game
+                    
                 }
             } 
             if (b instanceof TrapBuilding) {
