@@ -41,6 +41,11 @@ public class ShopMenuController {
         this.world = world;
         this.mainController = mainController;
 
+        /**
+         * since character is set to null initially, we add a listener to character's x()
+         * when this value changes, we know that character is now initialized and so we can
+         * bi-directionally connect character's gold stats to the Text: playerGold field 
+         */
         world.getCharacter().x().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable,
