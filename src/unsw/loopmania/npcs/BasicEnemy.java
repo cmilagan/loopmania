@@ -1,7 +1,6 @@
 package unsw.loopmania.npcs;
 
 import java.util.List;
-import java.util.Random;
 
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
@@ -84,7 +83,7 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEffects(Character c) {
+    public void applyEnemyEffects(Character c) {
         return;
     }
 }
