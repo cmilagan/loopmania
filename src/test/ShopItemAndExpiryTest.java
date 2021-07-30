@@ -123,6 +123,12 @@ public class ShopItemAndExpiryTest {
                 armor1.useDefence();
                 armor2.useDefence();
                 assertTrue(testWorld.getHighestUsageItem(armorID) == armor1);
+
+                int orgCharGold = testWorld.getCharacter().getGold();
+                testWorld.sellItem(armor1);
+                assertFalse(testWorld.getCharacterInventory().contains(armor1));
+                assertEquals(orgCharGold + (int) Math.round(0.7 * armor2.getItemCost()), 
+                testWorld.getCharacter().getGold());
             }
         }
         assertTrue(itemPresent);
