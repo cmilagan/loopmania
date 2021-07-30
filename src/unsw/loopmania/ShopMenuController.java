@@ -3,15 +3,9 @@ package unsw.loopmania;
 import java.io.IOException;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableBooleanValue;
 import javafx.beans.value.ObservableValue;
-import javafx.beans.value.WritableIntegerValue;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
 
@@ -69,7 +63,13 @@ public class ShopMenuController {
 
     @FXML
     private void swordSell() {
-        
+        BattleItem item = world.getHighestUsageItem(swordID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Sword!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Sword to sell");
+        }
     }
 
     @FXML
@@ -85,7 +85,13 @@ public class ShopMenuController {
 
     @FXML
     private void staffSell() {
-        
+        BattleItem item = world.getHighestUsageItem(staffID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Staff!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Staff to sell");
+        }
     }
 
     @FXML
@@ -101,9 +107,18 @@ public class ShopMenuController {
 
     @FXML
     private void stakeSell() {
-        
+        BattleItem item = world.getHighestUsageItem(stakeID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Stake!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Stake to sell");
+        }
     }
 
+    /**
+     * doggiecoin have a usage?
+     */
     @FXML
     private void doggieCoinSell() {
         
@@ -122,7 +137,13 @@ public class ShopMenuController {
 
     @FXML
     private void shieldSell() {
-        
+        BattleItem item = world.getHighestUsageItem(shieldID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Shield!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Shield to sell");
+        }
     }
 
     @FXML
@@ -138,7 +159,13 @@ public class ShopMenuController {
 
     @FXML
     private void helmetSell() {
-        
+        BattleItem item = world.getHighestUsageItem(helmetID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Helmet!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Helmet to sell");
+        }
     }
 
     @FXML
@@ -154,7 +181,13 @@ public class ShopMenuController {
 
     @FXML
     private void armourSell() {
-        
+        BattleItem item = world.getHighestUsageItem(armorID);
+        if (item != null) {
+            statusField.setText("Thank you for selling Armour!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have Armour to sell");
+        }
     }
 
     @FXML
@@ -170,7 +203,13 @@ public class ShopMenuController {
 
     @FXML
     private void healthPotionSell() {
-        
+        BattleItem item = world.getHighestUsageItem(healthPotionID);
+        if (item != null) {
+            statusField.setText("Thank you for selling a Health Potion!");
+            world.sellItem(item);
+        } else {
+            statusField.setText("You don't have a Health Potion to sell");
+        }
     }
 
     /**
