@@ -74,7 +74,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(armor.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(armorID));
+                assertTrue(testWorld.buyItemByID(armorID) != null);
 
                 // item should appear in character's inventory
                 Armor addedArmor = (Armor) item;
@@ -88,7 +88,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(armorID));
+                assertFalse(testWorld.buyItemByID(armorID) != null);
 
                 // use for usage times
                 for (int i = 0; i < armor.getItemDurability(); i++) {
@@ -122,7 +122,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(healthPotion.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(healthPotionID));
+                assertTrue(testWorld.buyItemByID(healthPotionID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -136,7 +136,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(healthPotionID));
+                assertFalse(testWorld.buyItemByID(healthPotionID) != null);
 
                 // testing if Health Potion is working
 
@@ -191,7 +191,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(helmet.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(helmetID));
+                assertTrue(testWorld.buyItemByID(helmetID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -203,7 +203,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(helmetID));
+                assertFalse(testWorld.buyItemByID(helmetID) != null);
             }
         }
         assertTrue(itemPresent);
@@ -221,7 +221,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(ring.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(oneRingID));
+                assertTrue(testWorld.buyItemByID(oneRingID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -233,7 +233,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(oneRingID));
+                assertFalse(testWorld.buyItemByID(oneRingID) != null);
             }
         }
         assertTrue(itemPresent);
@@ -251,7 +251,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(shield.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(shieldID));
+                assertTrue(testWorld.buyItemByID(shieldID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -263,7 +263,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(shieldID));
+                assertFalse(testWorld.buyItemByID(shieldID) != null);
             }
         }
         assertTrue(itemPresent);
@@ -281,7 +281,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(staff.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(staffID));
+                assertTrue(testWorld.buyItemByID(staffID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -293,7 +293,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(staffID));
+                assertFalse(testWorld.buyItemByID(staffID) != null);
             }
         }
         assertTrue(itemPresent);
@@ -311,7 +311,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(stake.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(stakeID));
+                assertTrue(testWorld.buyItemByID(stakeID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -323,7 +323,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(stakeID));
+                assertFalse(testWorld.buyItemByID(stakeID) != null);
             }
         }
         assertTrue(itemPresent);
@@ -341,7 +341,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(sword.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(swordID));
+                assertTrue(testWorld.buyItemByID(swordID) != null);
 
                 // item should appear in character's inventory
                 Sword addedSword = (Sword) item;
@@ -355,7 +355,7 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item
-                assertFalse(testWorld.buyItemByID(swordID));
+                assertFalse(testWorld.buyItemByID(swordID) != null);
 
                 // use for usage times
                 for (int i = 0; i < sword.getItemDurability(); i++) {
