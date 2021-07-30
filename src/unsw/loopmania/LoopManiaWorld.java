@@ -238,7 +238,6 @@ public class LoopManiaWorld {
      * Given an item, remove the item from the character's 
      * inventory and recompensate with gold (selling item at shop). 
      * 
-     * TODO = add this assumptions
      * According to assumption, the item will be resold at 70% of its 
      * original value. 
      * 

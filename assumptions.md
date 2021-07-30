@@ -111,6 +111,7 @@
 - Health Potions (when acquired) will be displayed in Character's inventory. It can be used by simply clicking on it in the time of need or by pressing 'H'. When used, the potion item will disappear and the character's health will return to max. A sound effect will also be added to signify the usage of a Health Potion.
 - Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping. (this changes based on enemy type defeated)
 - Defeating higher level enemies increases the chance of dropping rare items (promotes placing zombie pit buildings)
+- Human Player can sell items (which are buy-able from the shop) which they have at the shop for a 70% refund of the original amount of the purchase
     
 ## Game State Related Assumptions:
 - The Game starts with the Vampire Castle and Zombie Pit already built
