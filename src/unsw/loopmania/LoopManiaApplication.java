@@ -43,10 +43,10 @@ public class LoopManiaApplication extends Application {
         Parent mainMenuRoot = menuLoader.load();
 
         // load the new game menu
-        // GameMenuController gameMenuController = new GameMenuController();
-        // FXMLLoader newGameMenuLoader = new FXMLLoader(getClass().getResource("NewGameMenuView.fxml"));
-        // newGameMenuLoader.setController(gameMenuController);
-        // Parent gameMenuRoot = newGameMenuLoader.load();
+        GameMenuController gameMenuController = new GameMenuController();
+        FXMLLoader newGameMenuLoader = new FXMLLoader(getClass().getResource("NewGameMenuView.fxml"));
+        newGameMenuLoader.setController(gameMenuController);
+        Parent gameMenuRoot = newGameMenuLoader.load();
         
         // load the item shop
         ShopMenuController shopMenuController = new ShopMenuController(mainController.getWorld());
@@ -61,10 +61,10 @@ public class LoopManiaApplication extends Application {
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
         mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRoot, primaryStage);});
-        // mainController.setMenuSwitcher(() -> {switchToRoot(scene, gameMenuRoot, primaryStage);});
+        mainController.setMenuSwitcher(() -> {switchToRoot(scene, gameMenuRoot, primaryStage);});
         
         mainMenuController.setGameSwitcher(() -> {
-            switchToRoot(scene, gameRoot, primaryStage);
+            switchToRoot(scene, gameMenuRoot, primaryStage);
             mainController.startTimer();
         });
 
@@ -74,10 +74,10 @@ public class LoopManiaApplication extends Application {
             mainController.startTimer();
         });
         
-        // gameMenuController.setMenuSwitcher(() -> {
-        //     switchToRoot(scene, gameRoot, primaryStage);
-        //     mainController.startTimer();
-        // });
+        gameMenuController.setMenuSwitcher(() -> {
+            switchToRoot(scene, gameRoot, primaryStage);
+            mainController.startTimer();
+        });
 
         // deploy the main onto the stage
         gameRoot.requestFocus();

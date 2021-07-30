@@ -66,12 +66,8 @@ public class GameMenuController {
         this.newGameMenuSwitcher = gameSwitcher;
     }
 
-    /**
-     * facilitates switching to main game upon button click
-     * @throws IOException
-     */
     @FXML
-    private void switchToNewGameMenu() throws IOException {
+    private void switchToGame() throws IOException {
         newGameMenuSwitcher.switchMenu();
     }
 }

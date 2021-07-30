@@ -16,10 +16,10 @@
       <Label text="Game File Name" />
       <Label text="Game Difficulty" />
       <!-- These are the modes, if no mode selected, standard mode is activated -->
-      <Button fx:id="startGameButton" text="Play Standard" onAction="#switchToGame"/>
-      <Button fx:id="startGameButton" text="Play Survival" onAction="#switchToGame"/>
-      <Button fx:id="startGameButton" text="Play Berserker" onAction="#switchToGame"/>
-      <Button fx:id="startGameButton" text="Play Confusing" onAction="#switchToGame"/>
+      <Button fx:id="selectStandard" text="Play Standard" onAction="#switchToGame"/>
+      <Button fx:id="selectSurvival" text="Play Survival" onAction="#switchToGame"/>
+      <Button fx:id="selectBerserker" text="Play Berserker" onAction="#switchToGame"/>
+      <Button fx:id="selectConfusing" text="Play Confusing" onAction="#switchToGame"/>
       <!-- Pressing this should start the game -->
       <Button fx:id="startGameButton" text="Start Game" onAction="#switchToGame"/>
    </children>
