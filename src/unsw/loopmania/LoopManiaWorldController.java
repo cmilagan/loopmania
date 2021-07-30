@@ -378,7 +378,7 @@ public class LoopManiaWorldController {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable,
                             Number oldValue, Number newValue) {
-                        if (character.getX() == 0 && character.getY() == 0) {
+                        if (character.getX() == 0 && character.getY() == 0 && canSwitch(world)) {
                             switchToShopMenu();
                         }
                     }
@@ -406,6 +406,23 @@ public class LoopManiaWorldController {
         draggedEntity.setVisible(false);
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
+    }
+
+    /**
+     * calculates if shop should open according to the
+     * last round shop was opened and current round 
+     */
+    private boolean canSwitch(LoopManiaWorld world) {
+        int currentRound = world.getLoopCount();
+        int shopCounter = world.getShopRoundCounter();
+
+        if (currentRound == world.getPreviousShopRound()) {
+            world.setShopRoundCounter(shopCounter + 1);
+            world.setPreviousShopRound(currentRound + (shopCounter + 1));
+            return true;
+        }
+
+        return false;
     }
 
     /**
