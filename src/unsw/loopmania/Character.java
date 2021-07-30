@@ -2,6 +2,7 @@ package unsw.loopmania;
 
 import org.javatuples.Pair;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.Helmet;
@@ -13,13 +14,15 @@ import unsw.loopmania.npcs.BasicEnemy;
  */
 public class Character extends MovingEntity {
     // TODO = potentially implement relationships between this class and other classes
-    private int gold = 0;
+    private SimpleIntegerProperty gold = new SimpleIntegerProperty(100);
+    private int doggieCoin = 0;
     private int health = 100;
     private int maxHealth = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
     private Helmet equippedHelmet;
     private Armor equippedArmor;
     private Shield equippedShield;
+    private boolean stunned = false;
     private int damage = 1;
     private int xp = 0;
 
@@ -41,11 +44,23 @@ public class Character extends MovingEntity {
         return health;
     }
 
+    public void toggleStun() {
+        stunned = !stunned;
+    }
+
+    public boolean isStunned() {
+        return stunned;
+    }
+
     public int getMaxHealth() {
         return maxHealth;
     }
 
     public int getGold() {
+        return gold.get();
+    }
+
+    public SimpleIntegerProperty getSimpleIntegerGold() {
         return gold;
     }
 
@@ -57,8 +72,16 @@ public class Character extends MovingEntity {
         return xp;
     }
 
+    public int getDoggieCoin() {
+        return doggieCoin;
+    }
+
     public void setGold(int newGold) {
-        gold = newGold;
+        gold.set(newGold);;
+    }
+
+    public void incrementDoggieCoin() {
+        doggieCoin += 1;
     }
 
     public void setMaxHealth(int newMaxHealth) {
@@ -123,6 +146,7 @@ public class Character extends MovingEntity {
     }
 
     public int getDamage() {
+        if (stunned) return 0;
         if (equippedWeapon == null) return 1;
         else return equippedWeapon.inflictDamage();
     }
