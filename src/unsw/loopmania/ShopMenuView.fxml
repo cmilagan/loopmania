@@ -154,7 +154,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Text layoutX="339.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="62.13671875">
+      <Text fx:id="playerGold" layoutX="339.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="62.13671875">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
