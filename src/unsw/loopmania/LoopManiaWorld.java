@@ -237,8 +237,12 @@ public class LoopManiaWorld {
     /**
      * Given an item, remove the item from the character's 
      * inventory and recompensate with gold (selling item at shop). 
+     * 
+     * TODO = add this assumptions
      * According to assumption, the item will be resold at 70% of its 
-     * original value. Note that all values will be returned as an integer.
+     * original value. 
+     * 
+     * Note that all values will be returned as an integer.
      */
     public void sellItem(BattleItem item) {
         double discount = 0.7;
@@ -1207,12 +1211,6 @@ public class LoopManiaWorld {
     
                         alliedSoldiers.add(a);
                     }
-                } else if (b instanceof HeroCastleBuilding) {
-                    // TODO add building effects of hero castle
-                    // Increment loop counter
-                    // setLoopCount(getLoopCount() + 1);
-                    // open shop pause the game
-                    
                 }
             } 
             if (b instanceof TrapBuilding) {
