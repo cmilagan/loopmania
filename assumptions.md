@@ -45,6 +45,9 @@
     - if the character is within the battle radius of an enemy, a battle is engaged.
 - If the One Ring is in the character's inventory, the character respawns automatically on defeat.
 - If character has Staff equipped, the chance for trance is 40%.
+- The trance for a Staff will last for 20 ticks of the world. I.e., the enemy which was turned into an allied
+soldier will return back into its original enemy form after 20 ticks of the world. Given that it was still alive 
+in the allied soldier state.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop

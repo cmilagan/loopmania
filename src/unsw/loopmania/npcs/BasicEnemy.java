@@ -1,6 +1,9 @@
 package unsw.loopmania.npcs;
 
+import java.lang.management.ThreadInfo;
 import java.util.List;
+
+import org.javatuples.Pair;
 
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
@@ -84,14 +87,35 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEnemyEffects(Character c, LoopManiaWorld world) {
+    public void applyEnemyEffects(Character character, LoopManiaWorld world, List<Pair<Integer, Integer>> orderedPath) {
         /**
          * if character has a Staff, can apply trance if chance permits
          * 
          * Note: strategy pattern used here
          */
-        if ()
+        if (character.inflictStaffTrance()) {
+            /**
+             * before we switch this enemy with an allied soldier,
+             * 
+             * we must first store this enemy into the allied soldier class
+             * so that after the duration of trance ends, the allied soldier can
+             * turn back into the original enemy it was
+             * 
+             * Note: allied soldier will spawn at the exact spot the zombie was there
+             */
+            AlliedSoldier transformedSoldier = new AlliedSoldier(new PathPosition(this.getCurrentPositionIndex(), orderedPath));
 
-        return;
+            /**
+             * Note that we do the unbinding because if we dont, the enemies position 
+             * remains tracked and hence the enemy appears stationary, despite of death.
+             */
+            this.x().unbind();
+            this.y().unbind();
+            transformedSoldier.setOriginalEnemy(this);
+
+            world.getBattleEnemies().remove(this);
+            world.addAlliedSoldier(transformedSoldier);
+            world.killEnemy(this);
+        }
     }
 }
