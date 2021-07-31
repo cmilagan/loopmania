@@ -41,6 +41,7 @@ import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Doggie;
+import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -428,10 +429,18 @@ public class LoopManiaWorld {
             enemies.add(enemy);
             spawningEnemies.add(enemy);
 
+            // Spawn Doggie every 20 rounds
             if (loopCounter % 20 == 0) {
                 Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
                 enemies.add(doggie);
                 spawningEnemies.add(doggie);
+            }
+
+            // Spawn Elan every 40 rounds
+            if (loopCounter % 40 == 0) {
+                ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
+                enemies.add(elan);
+                spawningEnemies.add(elan);
             }
         }
 
