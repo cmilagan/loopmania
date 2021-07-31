@@ -1,6 +1,5 @@
 package unsw.loopmania.npcs;
 
-import java.lang.management.ThreadInfo;
 import java.util.List;
 
 import org.javatuples.Pair;
@@ -19,6 +18,7 @@ public class BasicEnemy extends MovingEntity {
     private int experience;
     private int battleRadius;
     private int supportRadius;
+    private int maxHealth;
 
     /**
      * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
@@ -36,6 +36,7 @@ public class BasicEnemy extends MovingEntity {
         this.experience = experience;
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
+        this.maxHealth = health;
     }
 
     /**
@@ -87,7 +88,7 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEnemyEffects(Character character, LoopManiaWorld world, List<Pair<Integer, Integer>> orderedPath) {
+    public void applyWeaponEffects(Character character, LoopManiaWorld world, List<Pair<Integer, Integer>> orderedPath) {
         /**
          * if character has a Staff, can apply trance if chance permits
          * 
@@ -117,5 +118,16 @@ public class BasicEnemy extends MovingEntity {
             world.addAlliedSoldier(transformedSoldier);
             world.killEnemy(this);
         }
+    }
+    
+    public void heal() {
+        health = maxHealth;
+    }
+
+    /**
+     * Apply any effects an Enemy may have during battle.
+     * @param character
+     */
+    public void applyEnemyEffects(Character character, boolean inBattle, List<BasicEnemy> enemies) {
     }
 }
