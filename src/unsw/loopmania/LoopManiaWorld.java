@@ -1395,6 +1395,8 @@ public class LoopManiaWorld {
             Helmet helmetItem = (Helmet) equip;
             if (!helmetItem.getAppropiateSlot().equals(target)) return null;
         } else {
+            System.out.println(3);
+
             return null;
         }
         System.out.println(2);

@@ -36,6 +36,6 @@ public class AttackItem extends BattleItem implements EquipItem {
 
     @Override
     public Pair<Integer,Integer> getAppropiateSlot() {
-        return new Pair<Integer,Integer>(0, 1);
+        return new Pair<Integer,Integer>(0, 2);
     }
 }
