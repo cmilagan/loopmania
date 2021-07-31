@@ -171,18 +171,4 @@ public class Character extends MovingEntity {
     public Pair getCoordinatePair() {
         return new Pair<Integer, Integer>(this.getX(), this.getY());
     }
-
-    public boolean useOneRing() {
-        for (Entity entity : inventoryItems) {
-            if (entity instanceof OneRing) {
-                OneRing ring = (OneRing) entity;
-                ring.use(this);
-                inventoryItems.remove(ring);
-                ring.destroy();
-                return true;
-            }
-        }
-        
-        return false;
-    }
 }
