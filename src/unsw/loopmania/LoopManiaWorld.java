@@ -96,6 +96,21 @@ public class LoopManiaWorld {
     private int shopCounter;
     private int previousShopRound;
 
+    private int doggieCoinPrice = 100;
+
+    /**
+     * Keeps track of Elan to vary DoggieCoin prices.
+     * 0  =>  Elan hasn't spawned yet or it's been more than 5 rounds since his defeat
+     *        DoggieCoin varies from 100 - 500 (normal)
+     * 
+     * 1  =>  Elan is currently alive
+     *        DoggieCoin varies from 3,000 - 10,000
+     * 
+     * < 0 => Elan has been defeated in the last 5 rounds
+     *        DoggieCoin varies from 0 - 10
+     */
+    private int elanTimer = 0;
+
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -196,6 +211,10 @@ public class LoopManiaWorld {
 
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
+    public int getDoggieCoinPrice() {
+        return doggieCoinPrice;
     }
 
     /**
@@ -583,6 +602,7 @@ public class LoopManiaWorld {
                 ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
                 enemies.add(elan);
                 spawningEnemies.add(elan);
+                elanTimer = 1;                    // elan timer = 1 => Elan is alive and Doggie coin price should go up.
             }
         }
 
@@ -767,6 +787,10 @@ public class LoopManiaWorld {
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
+                    
+                    if (e instanceof ElanMuske) {
+                        elanTimer = -5;                        // DoggieCoin price should go down for the next 5 rounds.
+                    }
                     System.out.println("enemy killed");
                 }
             }
@@ -1109,6 +1133,43 @@ public class LoopManiaWorld {
     }
     
     /**
+     * Update the value of Elan timer
+     */
+    public void updateElanTimer() {
+        if (elanTimer < 0) {
+            elanTimer++;
+        }
+    }
+
+    /**
+     * Update the value doggie coin based on the state of Elan
+     */
+    public void varyDoggieCoinPrice() {
+        Random random = new Random();
+        int maximum = 500;
+        int minimum = 10;
+
+        // if Elan hasn't spawned yet
+        if (elanTimer == 0) {
+            maximum = 500;
+            minimum = 10;
+        }
+        // if Elan is in the game
+        else if (elanTimer == 1) {
+            maximum = 10000;
+            minimum = 3000;
+        }
+        // if Elan has been defeated
+        else if (elanTimer < 0) {
+            maximum = 10;
+            minimum = 0;
+        }
+
+        int range = maximum - minimum + 1;
+        doggieCoinPrice = random.nextInt(range) + minimum;
+    }
+
+    /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
      */
@@ -1133,6 +1194,9 @@ public class LoopManiaWorld {
         
         removeExpiredBuildings();
         removeExpiredItems();
+
+        varyDoggieCoinPrice();
+
     }
 
     /**
