@@ -8,14 +8,10 @@ import org.codefx.libfx.listener.handle.ListenerHandles;
 
 import java.util.Random;
 
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Label;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -33,8 +29,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import unsw.loopmania.buildings.Building;
@@ -67,11 +61,8 @@ import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
-import unsw.loopmania.npcs.AlliedSoldier;
 
 import java.util.EnumMap;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
 /**
@@ -229,7 +220,6 @@ public class LoopManiaWorldController {
      * the image currently being dragged, if there is one, otherwise null.
      * Holding the ImageView being dragged allows us to spawn it again in the drop location if appropriate.
      */
-    // TODO = it would be a good idea for you to instead replace this with the building/item which should be dropped
     private ImageView currentlyDraggedImage;
     
     /**
@@ -277,6 +267,11 @@ public class LoopManiaWorldController {
      * object handling switching to the win screen
      */
     private MenuSwitcher winScreenSwitcher;
+
+    /**
+     * object handling switching to the end game screen
+     */
+    private MenuSwitcher endScreenSwitcher;
 
     /**
      * @param world world object loaded from file
@@ -335,8 +330,6 @@ public class LoopManiaWorldController {
 
     @FXML
     public void initialize() {
-        // TODO = load more images/entities during initialization
-        
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -388,13 +381,16 @@ public class LoopManiaWorldController {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable,
                             Number oldValue, Number newValue) {
-                        if (character.getX() == 0 && character.getY() == 0) {
+                        if (character.getX() == 0 && character.getY() == 0 && canSwitch(world)) {
                             switchToShopMenu();
                         }
                     }
                 });
             }
         });
+
+
+        
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -419,16 +415,31 @@ public class LoopManiaWorldController {
     }
 
     /**
+     * calculates if shop should open according to the
+     * last round shop was opened and current round 
+     */
+    private boolean canSwitch(LoopManiaWorld world) {
+        int currentRound = world.getLoopCount();
+        int shopCounter = world.getShopRoundCounter();
+
+        if (currentRound == world.getPreviousShopRound()) {
+            world.setShopRoundCounter(shopCounter + 1);
+            world.setPreviousShopRound(currentRound + (shopCounter + 1));
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * create and run the timer
      */
-    public void startTimer(){
-        // TODO = handle more aspects of the behaviour required by the specification
+    public void startTimer() {
         Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         System.out.println("starting timer");
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         // basically a loop
-        // TODO = change back 0.1 to 0.3
         timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             world.runTickMoves();
             int numAlliedSoldiers = world.getAlliedSoldiersNumber();
@@ -452,6 +463,7 @@ public class LoopManiaWorldController {
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+
             // display the experience of the hero
             String charXP = Integer.toString(world.getCharacter().getXP());
             xp.setText(charXP);
@@ -468,6 +480,16 @@ public class LoopManiaWorldController {
                     && (world.getWinLoops() >= world.getWinLoops())) {
                 switchToWinScreen();
             } 
+            
+            // Check to see if the character has died, if so, end the game
+            if (world.getCharacter().getHealth() == 0) {
+                // check if has one ring & consume
+                // if not trigger end game screen
+                if (!world.getCharacter().useOneRing()) {
+                    switchToGameOver();
+                }
+            }
+
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -507,7 +529,6 @@ public class LoopManiaWorldController {
      * load a vampire card from the world, and pair it with an image in the GUI
      */
     private void loadVampireCard() {
-        // TODO = load more types of card
         VampireCastleCard vampireCastleCard = world.loadVampireCard();
         onLoad(vampireCastleCard);
     }
@@ -565,7 +586,6 @@ public class LoopManiaWorldController {
      * load a sword from the world, and pair it with an image in the GUI
      */
     private void loadLoot(double rareBound){
-        // TODO = load more types of weapon
         // start by getting first available coordinates        
         Item loot = world.addUnequippedItem(rareBound);
         onLoad(loot);
@@ -578,15 +598,9 @@ public class LoopManiaWorldController {
     private void reactToEnemyDefeat(BasicEnemy enemy){
         // react to character defeating an enemy
         // in starter code, spawning extra card/weapon...
-        // TODO = provide different benefits to defeating the enemy based on the type of enemy
 
-
-        // TODO: add RNG
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
-
-
-
 
         Random rd = new Random();
         if (rd.nextDouble() > 0.51) {
@@ -603,11 +617,11 @@ public class LoopManiaWorldController {
         } else {
             // RNG for card drops
             // if a card slots are full, discard and reward
+            double rgen = rd.nextDouble();
             if (world.getNumCards() >= world.getWidth()) {
                 Item itemReward = world.rewardDiscard();
                 onLoad(itemReward);
             }
-            double rgen = rd.nextDouble();
             Random rd2 = new Random();
             if (rgen > 0.9) {
                 // epic items
@@ -780,13 +794,11 @@ public class LoopManiaWorldController {
      * @param sourceGridPane the gridpane being dragged from
      * @param targetGridPane the gridpane the human player should be dragging to (but we of course cannot guarantee they will do so)
      */
-    private void buildNonEntityDragHandlers(DRAGGABLE_TYPE draggableType, GridPane sourceGridPane, GridPane targetGridPane){
-        // TODO = be more selective about where something can be dropped
+    private void buildNonEntityDragHandlers(DRAGGABLE_TYPE draggableType, GridPane sourceGridPane, GridPane targetGridPane) {
         // for example, in the specification, villages can only be dropped on path, whilst vampire castles cannot go on the path
         
         gridPaneSetOnDragDropped.put(draggableType, new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                // TODO = for being more selective about where something can be dropped, consider applying additional if-statement logic
                 /*
                  *you might want to design the application so dropping at an invalid location drops at the most recent valid location hovered over,
                  * or simply allow the card/item to return to its slot (the latter is easier, as you won't have to store the last valid drop location!)
@@ -821,14 +833,12 @@ public class LoopManiaWorldController {
                                     return;
                                 }
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
-                                // TODO = spawn a building here of different types done in LoopManiaWorld.java
                             
                                 Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 onLoad(newBuilding);
                                 break;
                             case ITEM:
                                 // if item is d
-                                // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
                                 // get the currently dragged item
                                 Item newItem = world.getItem(nodeX, nodeY);
                                 if (newItem == null) {
@@ -1011,7 +1021,6 @@ public class LoopManiaWorldController {
                     // these do not affect visibility of original image...
                     // https://stackoverflow.com/questions/41088095/javafx-drag-and-drop-to-gridpane
                     gridPaneNodeSetOnDragEntered.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = be more selective about whether highlighting changes - if it cannot be dropped in the location, the location shouldn't be highlighted!
                         public void handle(DragEvent event) {
                             if (currentlyDraggedType == draggableType){
                             //The drag-and-drop gesture entered the target
@@ -1024,7 +1033,6 @@ public class LoopManiaWorldController {
                         }
                     });
                     gridPaneNodeSetOnDragExited.put(draggableType, new EventHandler<DragEvent>() {
-                        // TODO = since being more selective about whether highlighting changes, you could program the game so if the new highlight location is invalid the highlighting doesn't change, or leave this as-is
                         public void handle(DragEvent event) {
                             if (currentlyDraggedType == draggableType){
                                 n.setOpacity(1);
@@ -1068,7 +1076,6 @@ public class LoopManiaWorldController {
      */
     @FXML
     public void handleKeyPress(KeyEvent event) {
-        // TODO = handle additional key presses, e.g. for consuming a health potion
         switch (event.getCode()) {
         case SPACE:
             if (isPaused){
@@ -1152,6 +1159,24 @@ public class LoopManiaWorldController {
         winScreenSwitcher.switchMenu();
     }
 
+    //////////////////////////////////////////////////////////////////////
+    //                          Game over UI                            //
+    //////////////////////////////////////////////////////////////////////
+
+    public void setGameOverSwitcher(MenuSwitcher endScreenSwitcher) {
+        this.endScreenSwitcher = endScreenSwitcher;
+    }
+
+    /**
+     * 
+     * Switch to game over screen if hero dies
+     * and does not have a onering available in his inventory
+     */
+    public void switchToGameOver() {
+        pause();
+        endScreenSwitcher.switchMenu();
+    }
+
     /**
      * Set a node in a GridPane to have its position track the position of an
      * entity in the world.
@@ -1168,7 +1193,6 @@ public class LoopManiaWorldController {
      * @param node
      */
     private void trackPosition(Entity entity, Node node) {
-        // TODO = tweak this slightly to remove items from the equipped inventory?
         GridPane.setColumnIndex(node, entity.getX());
         GridPane.setRowIndex(node, entity.getY());
 

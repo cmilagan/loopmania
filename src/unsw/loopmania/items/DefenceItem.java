@@ -29,7 +29,13 @@ public class DefenceItem extends BattleItem {
         return critDefencePercentage;
     }
 
-    public double useDefence() { return 0; }
+    public double useDefence() { 
+        this.incrementUsage();
+        return defencePercentage;
+    }
 
-    public double useCritDefence() { return 0; }
+    public double useCritDefence() { 
+        this.incrementUsage();
+        return critDefencePercentage;
+    }
 }

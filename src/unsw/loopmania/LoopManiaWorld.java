@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -10,7 +12,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
@@ -26,7 +27,6 @@ import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
-import unsw.loopmania.items.DefenceItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -53,8 +53,6 @@ import unsw.loopmania.npcs.Zombie;
  * can occupy the same square.
  */
 public class LoopManiaWorld {
-    // TODO = add additional backend functionality
-
     public static final int unequippedInventoryWidth = 4;
     public static final int unequippedInventoryHeight = 4;
 
@@ -91,6 +89,11 @@ public class LoopManiaWorld {
     private boolean survivalMode;
     private boolean berserkerMode;
     private boolean confusingMode;
+    /** 
+     * Keeps track of the previous time Shop was opened
+     */
+    private int shopCounter;
+    private int previousShopRound;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -99,24 +102,13 @@ public class LoopManiaWorld {
 
     private Character character;
 
-    // TODO = add more lists for other entities, for equipped inventory items,
-    // etc...
-    private List<Item> equippedInventoryItems;
-
-    // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
 
-    // TODO = expand the range of cards
     private List<Card> cardEntities;
 
-    // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
 
-    // TODO = expand the range of buildings
     private List<Building> buildingEntities;
-
-    // a list of battle items available at the Shop
-    private List<BattleItem> battleItems;
 
     // a list of allied soldiers
     private List<AlliedSoldier> alliedSoldiers;
@@ -151,12 +143,13 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
-        battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
         standardMode = false;
         survivalMode = false;
         berserkerMode = false;
         confusingMode = false;
+        previousShopRound = 1;
+        shopCounter = 1;
     }
 
     public int getWidth() {
@@ -169,6 +162,22 @@ public class LoopManiaWorld {
 
     public int getLoopCount() {
         return loopCounter;
+    }
+
+    public int getShopRoundCounter() {
+        return shopCounter;
+    }
+
+    public int getPreviousShopRound() {
+        return previousShopRound;
+    }
+
+    public void setShopRoundCounter(int count) {
+        shopCounter = count;
+    }
+
+    public void setPreviousShopRound(int round) {
+        previousShopRound = round;
     }
 
     public void setLoopCount(int num) {
@@ -330,11 +339,11 @@ public class LoopManiaWorld {
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         BattleItem itemBought = null;
         List<BattleItem> battleItems = getBattleItems();
-
+        
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
         int characterGold = character.getGold();
-        // add item to character's inventory and return true 
+        // add item to character's inventory and return the item 
         if (characterGold >= itemCost) {
             character.setGold(characterGold - itemCost);
 
@@ -373,12 +382,77 @@ public class LoopManiaWorld {
     }
 
     /**
+     * Given an item, remove the item from the character's 
+     * inventory and recompensate with gold (selling item at shop). 
+     * 
+     * According to assumption, the item will be resold at 70% of its 
+     * original value. 
+     * 
+     * Note that all values will be returned as an integer.
+     */
+    public void sellItem(BattleItem item) {
+        double discount = 0.7;
+        int itemCost = item.getItemCost();
+        int characterGold = character.getGold();
+
+        // add sold item amount to character's total gold
+        character.setGold(characterGold + (int) Math.round(discount * itemCost));
+        
+        // remove item from unequipped inventory
+        unequippedInventoryItems.remove(item);
+        item.destroy();
+    }
+
+    /**
+     * Given an itemID, refer to the corresponding BattleItem
+     * and return the item of that class which has the highest uses
+     */
+    public BattleItem getHighestUsageItem(int itemID) {
+        List<BattleItem> items = new ArrayList<>();
+
+        // add all items of the desired type in an array
+        for (Entity entity : unequippedInventoryItems) {
+            if (itemID == 0 && entity instanceof Armor) {
+                items.add((Armor) entity);
+            } else if (itemID == 1 && entity instanceof Helmet) {
+                items.add((Helmet) entity);
+            } else if (itemID == 2 && entity instanceof Shield) {
+                items.add((Shield) entity);
+            } else if (itemID == 3 && entity instanceof Staff) {
+                items.add((Staff) entity);
+            } else if (itemID == 4 && entity instanceof Stake) {
+                items.add((Stake) entity);
+            } else if (itemID == 5 && entity instanceof Sword) {
+                items.add((Sword) entity);
+            } else if (itemID == 6 && entity instanceof OneRing) {
+                items.add((OneRing) entity);
+            } else if (itemID == 7 && entity instanceof HealthPotion) {
+                items.add((HealthPotion) entity);
+            }
+        }
+
+        // there is no such item type present in array
+        if (items.isEmpty()) return null;
+
+        // only one item of desired type
+        if (items.size() == 1) return items.get(0);
+
+        // return the item that has the highest usage
+        items.sort(Comparator.comparing(BattleItem::getUsage));
+        Collections.reverse(items);
+        return items.get(0);
+    }
+
+    /**
      * Used for testing ShopItemTest.
      */
     public List<Entity> getCharacterInventory() {
         return unequippedInventoryItems;
     }
 
+    /**
+     * returns a list of all BattleItems used for shop
+     */
     public List<BattleItem> getBattleItems() {
         // organize items into their respective weapon styles
         List<BattleItem> shopItems = new ArrayList<>();
@@ -419,6 +493,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        character.setInventory(unequippedInventoryItems);
     }
 
     /**
@@ -429,8 +504,6 @@ public class LoopManiaWorld {
      */
     public void addEntity(Entity entity) {
         // for adding non-specific entities (ones without another dedicated list)
-        // TODO = if more specialised types being added from main menu, add more methods
-        // like this with specific input types...
         nonSpecifiedEntities.add(entity);
     }
 
@@ -641,6 +714,7 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
+                        character.destroy();
                         break;
                     }
                 } else {
@@ -959,7 +1033,6 @@ public class LoopManiaWorld {
      * @param y y coordinate from 0 to height-1
      */
     public void removeEquippedInventoryItemByCoordinates(int x, int y) {
-        // TODO: Inventory Frontend Code
         Entity item = getEquippedInventoryItembyCoordinates(x, y);
         // Setting Character Equipment Slot
         if (item instanceof AttackItem) character.setWeapon(null);
@@ -1140,11 +1213,8 @@ public class LoopManiaWorld {
 
     /**
      * move all enemies
-     * 
-     * TODO: Use observer pattern here
      */
     private void moveBasicEnemies() {
-        // TODO = expand to more types of enemy
         for (BasicEnemy e : enemies) {
             e.move();
         }
@@ -1157,13 +1227,10 @@ public class LoopManiaWorld {
      *         possible, or random coordinate pair if should go ahead
      */
     private Pair<Integer, Integer> possiblyGetBasicEnemySpawnPosition() {
-        // TODO = modify this
-
         // has a chance spawning a basic enemy on a tile the character isn't on or
         // immediately before or after (currently space required = 2)...
         Random rand = new Random();
-        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
-        // TODO = change based on spec
+        int choice = rand.nextInt(2);
         if ((choice == 0) && (enemies.size() < 2)) {
             List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
             int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
@@ -1208,7 +1275,6 @@ public class LoopManiaWorld {
 
         // now spawn building
         Building newBuilding = null;
-        // TODO: Adding other Card Types
         if (card instanceof VampireCastleCard) {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
@@ -1241,7 +1307,6 @@ public class LoopManiaWorld {
 
     // 
     public void applyBuildingEffects() {
-        // TODO Add building effects for village:
         int cX = character.getX();
         int cY = character.getY();
         Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
@@ -1278,12 +1343,6 @@ public class LoopManiaWorld {
     
                         alliedSoldiers.add(a);
                     }
-                } else if (b instanceof HeroCastleBuilding) {
-                    // TODO add building effects of hero castle
-                    // Increment loop counter
-                    // setLoopCount(getLoopCount() + 1);
-                    // open shop pause the game
-                    
                 }
             } 
             if (b instanceof TrapBuilding) {
@@ -1425,20 +1484,19 @@ public class LoopManiaWorld {
         }
     }
 
+    /**
+     * Gets this worlds character
+     * @return Character
+     */
     public Character getCharacter() {
         return this.character;
     }
 
+    /**
+     * Consumes a potion in the character inventory
+     */
     public void consumePotion() {
-        for (Entity i: getCharacterInventory()) {
-            if (i instanceof HealthPotion) {
-                HealthPotion potion = (HealthPotion) i;
-                potion.use(character);
-                potion.destroy();
-                unequippedInventoryItems.remove(potion);
-                break;                
-            }
-        }
+        character.useHealthPotion();
     }
 
     /**
