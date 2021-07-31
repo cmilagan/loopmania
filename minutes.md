@@ -265,3 +265,81 @@ Milestone 3:
 * confusing mode -> Tam
 
 ### Meeting Duration: 9:00pm - 11:00pm
+
+## ----------------------------------------------------------------------------------
+
+## Date: 1/08/21
+
+### Attendees:
+- Christian Ilagan
+- Prathamesh Jagtap (Praths)
+- Subrat Shrestha
+- Tam Do
+
+### Taken by: Tam
+
+### Outcomes:
+
+- Going over the difficulties of previous meetings
+- Meeting to talk and solve difficulties
+- Agreeing on extensions
+- Finding extra features to add
+- Delegating extra tasks to people
+- Checking where every member is at on their assigned tasks
+
+### Updates:
+
+What has been completed so far:
+
+* Implement OneRing -> Prats
+	* use a Strategy Pattern
+	* implement OneRing addition via Strategy Pattern
+
+* Implement staff trance => rare chance that when zombie is hit by staff, turns into allied soldier -> Prats *COMPLETED*
+
+* Game modes test -> Tam
+	* use strategy pattern *COMPLETED*
+
+* After another 2 full cycles of the path, the Human Player will be able to access the Hero's castle again to purchase items, then again after another 3 full cycles, etc (a full cycle is where the Character moves throughout the path once, as in this example in separate file:moving through path)... -> Subrat/Prats *COMPLETED*
+
+* new game function -> Subrat
+
+* Frontend:
+	* health bar -> Christian *COMPLETED*
+	* xp -> Christian *COMPLETED*
+	* gold -> Christian *COMPLETED*
+	* potion -> Christian *COMPLETED*
+	* cards limit reached => get gold/xp/item -> Christian *COMPLETED*
+	* fix opacity bug on tiles -> Christian *COMPLETED*
+	* character death - no game over screen -> Christian *COMPLETED*
+	* shop frontend -> Prats *COMPLETED*
+	* mode selection -> Tam *COMPLETED*
+	* Adding OneRing to world configuration before start -> Prats *COMPLETED*
+	* Adding Tree stump frontend -> Prats
+	* Adding Anduril, Flame of the West -> Prats
+	* Equipping items -> Christian
+	* main menus -> Tam *COMPLETED*
+		* new game leads to:
+			* mode selection *COMPLETED*
+			* config (one ring, tree stump, flame of the west) 
+		* load game does what "start game" does currently *COMPLETED*
+
+
+Milestone 3:
+* doggie enemy -> Subrat *COMPLETED*
+* Elan Muske -> Subrat *COMPLETED*
+* doge coin -> Subrat *COMPLETED*
+* Anduril, Flame of the West -> Subrat
+* Tree Stump -> Subrat
+* confusing mode -> Tam *COMPLETED*
+
+*NOTE* Everything else still needs to be completed as well
+
+*Additional elements to be added*
+* New game function (reseting the game)
+* Adding to the shop so that it displays quantity
+* Implement new maps as a feature for the game
+* Adjust to the new feedback from milestone 1
+* Fix up and change the design and board on gitlab to reflect the new changes
+
+### Meeting Duration: 9:00pm - 12:30pm
