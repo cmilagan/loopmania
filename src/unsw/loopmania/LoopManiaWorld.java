@@ -618,7 +618,7 @@ public class LoopManiaWorld {
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
 
-                e.applyEnemyEffects(character);
+                e.applyEnemyBattleEffects(character);
 
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);

@@ -41,7 +41,7 @@ public class Doggie extends BasicEnemy {
      * Stuns the character
      */
     @Override
-    public void applyEnemyEffects(Character c) {
+    public void applyEnemyBattleEffects(Character c) {
         if (this.getHealth() > 0) {
             c.toggleStun();
         }

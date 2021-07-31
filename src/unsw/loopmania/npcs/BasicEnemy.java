@@ -83,7 +83,7 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEnemyEffects(Character c) {
+    public void applyEnemyBattleEffects(Character c) {
         return;
     }
 }
