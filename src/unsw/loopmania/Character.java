@@ -1,11 +1,16 @@
 package unsw.loopmania;
 
+import java.util.List;
+
 import org.javatuples.Pair;
 
+import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.Helmet;
+import unsw.loopmania.items.Item;
+import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.npcs.BasicEnemy;
 
@@ -13,7 +18,6 @@ import unsw.loopmania.npcs.BasicEnemy;
  * represents the main character in the backend of the game world
  */
 public class Character extends MovingEntity {
-    // TODO = potentially implement relationships between this class and other classes
     private SimpleIntegerProperty gold = new SimpleIntegerProperty(100);
     private int doggieCoin = 0;
     private int health = 100;
@@ -25,6 +29,7 @@ public class Character extends MovingEntity {
     private boolean stunned = false;
     private int damage = 1;
     private int xp = 0;
+    private List<Entity> inventoryItems;
 
     public Character(PathPosition position) {
         super(position);
@@ -90,6 +95,10 @@ public class Character extends MovingEntity {
 
     public void setHealth(int newHealth) {
         health = newHealth;
+    }
+
+    public void setInventory(List<Entity> itemInventory) {
+        inventoryItems = itemInventory;
     }
 
     public void setXP(int newXP) {
@@ -161,5 +170,19 @@ public class Character extends MovingEntity {
 
     public Pair getCoordinatePair() {
         return new Pair<Integer, Integer>(this.getX(), this.getY());
+    }
+
+    public boolean useOneRing() {
+        for (Entity entity : inventoryItems) {
+            if (entity instanceof OneRing) {
+                OneRing ring = (OneRing) entity;
+                ring.use(this);
+                inventoryItems.remove(ring);
+                ring.destroy();
+                return true;
+            }
+        }
+        
+        return false;
     }
 }

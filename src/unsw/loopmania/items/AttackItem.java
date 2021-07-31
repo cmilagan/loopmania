@@ -24,5 +24,13 @@ public class AttackItem extends BattleItem {
         return this.damage;
     }
 
-    public int inflictDamage() { return 0; }
+    /**
+     * Inflicts damage on enemy, and increases usage.
+     * 
+     * If usage reaches item durability, return item damage as 0.
+     */
+    public int inflictDamage() {
+        this.incrementUsage();
+        return damage;
+    }
 }

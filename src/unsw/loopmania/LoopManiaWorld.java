@@ -90,10 +90,6 @@ public class LoopManiaWorld {
 
     private Character character;
 
-    // TODO = add more lists for other entities, for equipped inventory items,
-    // etc...
-    private List<Item> equippedInventoryItems;
-
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
 
@@ -105,9 +101,6 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
-
-    // a list of battle items available at the Shop
-    private List<BattleItem> battleItems;
 
     // a list of allied soldiers
     private List<AlliedSoldier> alliedSoldiers;
@@ -138,7 +131,6 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
-        battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
     }
 
@@ -348,6 +340,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        character.setInventory(unequippedInventoryItems);
     }
 
     /**
