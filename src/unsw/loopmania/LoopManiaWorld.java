@@ -1,8 +1,11 @@
 package unsw.loopmania;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import org.javatuples.Pair;
 
@@ -37,6 +40,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Doggie;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -184,43 +188,112 @@ public class LoopManiaWorld {
      * 6 - One Ring
      * 7 - Health Potion
      */
-    public boolean buyItemByID(int itemID) {
+    public BattleItem buyItemByID(int itemID) {
+        Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
+        BattleItem itemBought = null;
         List<BattleItem> battleItems = getBattleItems();
-        BattleItem itemBought = new BattleItem(null, null, 0, 0);
-        SimpleIntegerProperty newX = new SimpleIntegerProperty();
-        SimpleIntegerProperty newY = new SimpleIntegerProperty();
-
+        
         // get character's total gold and item cost
         int itemCost = battleItems.get(itemID).getItemCost();
         int characterGold = character.getGold();
-        // add item to character's inventory and return true 
+        // add item to character's inventory and return the item 
         if (characterGold >= itemCost) {
             character.setGold(characterGold - itemCost);
 
             if (itemID == 0) {
-                itemBought = new Armor(newX, newY);
+                itemBought = new Armor(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 1) {
-                itemBought = new Helmet(newX, newY);
+                itemBought = new Helmet(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 2) {
-                itemBought = new Shield(newX, newY);
+                itemBought = new Shield(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 3) {
-                itemBought = new Staff(newX, newY);
+                itemBought = new Staff(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 4) {
-                itemBought = new Stake(newX, newY);
+                itemBought = new Stake(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 5) {
-                itemBought = new Sword(newX, newY);
+                itemBought = new Sword(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 6) {
-                itemBought = new OneRing(newX, newY);
+                itemBought = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 7) {
-                itemBought = new HealthPotion(newX, newY);
+                itemBought = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
 
             unequippedInventoryItems.add(itemBought);
-            return true;
+            return itemBought;
         }
 
         // not enough gold to buy
-        return false;
+        return null;
+    }
+
+    /**
+     * Given an item, remove the item from the character's 
+     * inventory and recompensate with gold (selling item at shop). 
+     * 
+     * According to assumption, the item will be resold at 70% of its 
+     * original value. 
+     * 
+     * Note that all values will be returned as an integer.
+     */
+    public void sellItem(BattleItem item) {
+        double discount = 0.7;
+        int itemCost = item.getItemCost();
+        int characterGold = character.getGold();
+
+        // add sold item amount to character's total gold
+        character.setGold(characterGold + (int) Math.round(discount * itemCost));
+        
+        // remove item from unequipped inventory
+        unequippedInventoryItems.remove(item);
+        item.destroy();
+    }
+
+    /**
+     * Given an itemID, refer to the corresponding BattleItem
+     * and return the item of that class which has the highest uses
+     */
+    public BattleItem getHighestUsageItem(int itemID) {
+        List<BattleItem> items = new ArrayList<>();
+
+        // add all items of the desired type in an array
+        for (Entity entity : unequippedInventoryItems) {
+            if (itemID == 0 && entity instanceof Armor) {
+                items.add((Armor) entity);
+            } else if (itemID == 1 && entity instanceof Helmet) {
+                items.add((Helmet) entity);
+            } else if (itemID == 2 && entity instanceof Shield) {
+                items.add((Shield) entity);
+            } else if (itemID == 3 && entity instanceof Staff) {
+                items.add((Staff) entity);
+            } else if (itemID == 4 && entity instanceof Stake) {
+                items.add((Stake) entity);
+            } else if (itemID == 5 && entity instanceof Sword) {
+                items.add((Sword) entity);
+            } else if (itemID == 6 && entity instanceof OneRing) {
+                items.add((OneRing) entity);
+            } else if (itemID == 7 && entity instanceof HealthPotion) {
+                items.add((HealthPotion) entity);
+            }
+        }
+
+        // there is no such item type present in array
+        if (items.isEmpty()) return null;
+
+        // only one item of desired type
+        if (items.size() == 1) return items.get(0);
+
+        // return the item that has the highest usage
+        items.sort(Comparator.comparing(BattleItem::getUsage));
+        Collections.reverse(items);
+        return items.get(0);
     }
 
     /**
@@ -230,6 +303,9 @@ public class LoopManiaWorld {
         return unequippedInventoryItems;
     }
 
+    /**
+     * returns a list of all BattleItems used for shop
+     */
     public List<BattleItem> getBattleItems() {
         // organize items into their respective weapon styles
         List<BattleItem> shopItems = new ArrayList<>();
@@ -342,7 +418,7 @@ public class LoopManiaWorld {
     public List<BasicEnemy> possiblySpawnEnemies() {
         // TODO = expand this very basic version
 
-        // spawning slugs
+        // spawning slugs and Doggies
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
 
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
@@ -351,6 +427,12 @@ public class LoopManiaWorld {
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
             enemies.add(enemy);
             spawningEnemies.add(enemy);
+
+            if (loopCounter % 20 == 0) {
+                Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
+                enemies.add(doggie);
+                spawningEnemies.add(doggie);
+            }
         }
 
         // spawning zombies and vampires
@@ -527,6 +609,8 @@ public class LoopManiaWorld {
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
 
+                e.applyEnemyEffects(character);
+
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
@@ -544,6 +628,7 @@ public class LoopManiaWorld {
             // java.util.ConcurrentModificationException
             // due to mutating list we're iterating over
             killEnemy(e);
+            if (e instanceof Doggie) { character.incrementDoggieCoin(); }
             character.setXP(character.getXP() + e.getExperience());
         }
         return defeatedEnemies;
@@ -1125,11 +1210,6 @@ public class LoopManiaWorld {
     
                         alliedSoldiers.add(a);
                     }
-                } else if (b instanceof HeroCastleBuilding) {
-                    // TODO add building effects of hero castle
-                    // Increment loop counter
-                    // setLoopCount(getLoopCount() + 1);
-                    // open shop pause the game
                 }
             } 
             if (b instanceof TrapBuilding) {
