@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
+
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
@@ -72,6 +73,7 @@ public class ElanMuskeTest {
     public void testElanXP() {
         initializeWorld();
         addElan();
+        elan.setHealth(1);
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 500;
 
@@ -85,6 +87,7 @@ public class ElanMuskeTest {
     @Test
     public void testCheckEnemiesHealed() {
         initializeWorld();
+        addElan();
 
         // spawn Zombie with reduced health
         PathPosition zombiePathPosition = new PathPosition(elanPosition, orderedPath);

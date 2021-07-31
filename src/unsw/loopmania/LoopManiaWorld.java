@@ -981,6 +981,9 @@ public class LoopManiaWorld {
         }
 
         character.moveDownPath();
+        for (BasicEnemy e : enemies) {
+            e.applyEnemyEffects(character, false, enemies);
+        }
         applyBuildingEffects();
         moveBasicEnemies();
         
