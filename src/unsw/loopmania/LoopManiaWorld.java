@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 import org.javatuples.Pair;
 
@@ -13,7 +12,6 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
 import unsw.loopmania.buildings.BarracksBuilding;
 import unsw.loopmania.buildings.CampfireBuilding;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 import unsw.loopmania.buildings.TowerBuilding;
 import unsw.loopmania.buildings.TrapBuilding;
 import unsw.loopmania.buildings.VampireCastleBuilding;
@@ -29,7 +27,6 @@ import unsw.loopmania.cards.ZombieGraveyardCard;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
-import unsw.loopmania.items.DefenceItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
@@ -38,9 +35,14 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.modes.BerserkerMode;
+import unsw.loopmania.modes.ConfusingMode;
+import unsw.loopmania.modes.StandardMode;
+import unsw.loopmania.modes.SurvivalMode;
 import unsw.loopmania.npcs.AlliedSoldier;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Doggie;
+import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -52,8 +54,6 @@ import unsw.loopmania.npcs.Zombie;
  * can occupy the same square.
  */
 public class LoopManiaWorld {
-    // TODO = add additional backend functionality
-
     public static final int unequippedInventoryWidth = 4;
     public static final int unequippedInventoryHeight = 4;
 
@@ -79,16 +79,37 @@ public class LoopManiaWorld {
     private int prevLoop;
 
     /**
-     * 
      * Current number of ticks;
      */
     private int tickCounter;
 
     /**
+     * Boolean to determine what mode the game is playing at
+     */
+    private boolean standardMode;
+    private boolean survivalMode;
+    private boolean berserkerMode;
+    private boolean confusingMode;
+    /** 
      * Keeps track of the previous time Shop was opened
      */
     private int shopCounter;
     private int previousShopRound;
+
+    private int doggieCoinPrice = 100;
+
+    /**
+     * Keeps track of Elan to vary DoggieCoin prices.
+     * 0  =>  Elan hasn't spawned yet or it's been more than 5 rounds since his defeat
+     *        DoggieCoin varies from 100 - 500 (normal)
+     * 
+     * 1  =>  Elan is currently alive
+     *        DoggieCoin varies from 3,000 - 10,000
+     * 
+     * < 0 => Elan has been defeated in the last 5 rounds
+     *        DoggieCoin varies from 0 - 10
+     */
+    private int elanTimer = 0;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -97,18 +118,18 @@ public class LoopManiaWorld {
 
     private Character character;
 
+<<<<<<< HEAD
     private List<Item> equippedInventoryItems; // attack: 0, shield: 1, armour:2, helmet: 3 
 
     // TODO = expand the range of enemies
+=======
+>>>>>>> master
     private List<BasicEnemy> enemies;
 
-    // TODO = expand the range of cards
     private List<Card> cardEntities;
 
-    // TODO = expand the range of items
     private List<Entity> unequippedInventoryItems;
 
-    // TODO = expand the range of buildings
     private List<Building> buildingEntities;
 
     // a list of allied soldiers
@@ -120,6 +141,10 @@ public class LoopManiaWorld {
      * them
      */
     private List<Pair<Integer, Integer>> orderedPath;
+
+    /**
+     * Determines the winning conditions and the restrictions or effect on the game
+     */
 
     /**
      * create the world (constructor)
@@ -142,6 +167,10 @@ public class LoopManiaWorld {
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
         alliedSoldiers = new ArrayList<>();
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = false;
         previousShopRound = 1;
         shopCounter = 1;
     }
@@ -189,6 +218,131 @@ public class LoopManiaWorld {
 
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
+    public int getDoggieCoinPrice() {
+        return doggieCoinPrice;
+    }
+
+    /**
+     * Setters for the different modes
+     */
+    public boolean getStandard() {
+        return standardMode;
+    }
+
+    public boolean getSurvival() {
+        return survivalMode;
+    }
+
+    public boolean getBerserker() {
+        return berserkerMode;
+    }
+
+    public boolean getConfusing() {
+        return confusingMode;
+    }
+
+    /**
+     * Setters for the modes
+     */
+    public void playStandard() {
+        standardMode = true;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = false;
+    }
+
+    public void playSurvival() {
+        standardMode = false;
+        survivalMode = true;
+        berserkerMode = false;
+        confusingMode = false;
+    }
+
+    public void playBerserker() {
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = true;
+        confusingMode = false;
+    }
+    
+    public void playConfusing() {
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = true;
+    }
+
+    // If a mode isn't selected from the new game screen, it will automatically have standard
+    // mode conditions
+    /**
+     * Gives the corresponding amount of xp needed to win
+     * @return the amount of xp needed to win
+     */
+    public int getWinXp() {
+        if (standardMode) {
+            StandardMode mode = new StandardMode();
+            return mode.getWinXP();
+        } else if (survivalMode) {
+            SurvivalMode mode = new SurvivalMode();
+            return mode.getWinXP();
+        } else if (berserkerMode) {
+            BerserkerMode mode = new BerserkerMode();
+            return mode.getWinXP();
+        } else if (confusingMode) {
+            ConfusingMode mode = new ConfusingMode();
+            return mode.getWinXP();
+        } else {
+            StandardMode mode = new StandardMode();
+            return mode.getWinXP();
+        }
+    }
+
+    /**
+     * Gives the corresponding amount of gold needed to win
+     * @return the amount of gold needed to win
+     */
+    public int getWinGold() {
+        if (standardMode) {
+            StandardMode mode = new StandardMode();
+            return mode.getWinGold();
+        } else if (survivalMode) {
+            SurvivalMode mode = new SurvivalMode();
+            return mode.getWinGold();
+        } else if (berserkerMode) {
+            BerserkerMode mode = new BerserkerMode();
+            return mode.getWinGold();
+        } else if (confusingMode) {
+            ConfusingMode mode = new ConfusingMode();
+            return mode.getWinGold();
+        } else {
+            StandardMode mode = new StandardMode();
+            return mode.getWinGold();
+        }
+    }
+
+    /**
+     * Gives the corresponding amount of loops needed to win
+     * @return the amount of loops needed to win
+     */
+    public int getWinLoops() {
+        if (standardMode) {
+            StandardMode m = new StandardMode();
+            return m.getWinLoop();
+        } else if (survivalMode) {
+            SurvivalMode m = new SurvivalMode();
+            return m.getWinLoop();
+        } else if (berserkerMode) {
+            BerserkerMode m = new BerserkerMode();
+            return m.getWinLoop();
+        } else if (confusingMode) {
+            ConfusingMode m = new ConfusingMode();
+            return m.getWinLoop();
+        } else {
+            StandardMode m = new StandardMode();
+            return m.getWinLoop();
+        }
     }
 
     /**
@@ -330,8 +484,6 @@ public class LoopManiaWorld {
         // organize items into their respective weapon styles
         List<BattleItem> shopItems = new ArrayList<>();
 
-        // TODO: what should the values of x and y be? 
-        // Should we initialize a new pair for each item?
         SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
         SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
         
@@ -379,8 +531,6 @@ public class LoopManiaWorld {
      */
     public void addEntity(Entity entity) {
         // for adding non-specific entities (ones without another dedicated list)
-        // TODO = if more specialised types being added from main menu, add more methods
-        // like this with specific input types...
         nonSpecifiedEntities.add(entity);
     }
 
@@ -437,8 +587,6 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
-        // TODO = expand this very basic version
-
         // spawning slugs and Doggies
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
 
@@ -449,10 +597,19 @@ public class LoopManiaWorld {
             enemies.add(enemy);
             spawningEnemies.add(enemy);
 
-            if (loopCounter % 20 == 0) {
+            // Spawn Doggie every 20 rounds
+            if (loopCounter > 0 && loopCounter % 20 == 0) {
                 Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
                 enemies.add(doggie);
                 spawningEnemies.add(doggie);
+            }
+
+            // Spawn Elan every 40 rounds
+            if (loopCounter > 0 && loopCounter % 40 == 0) {
+                ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
+                enemies.add(elan);
+                spawningEnemies.add(elan);
+                elanTimer = 1;                    // elan timer = 1 => Elan is alive and Doggie coin price should go up.
             }
         }
 
@@ -577,6 +734,7 @@ public class LoopManiaWorld {
                 if (e.getHealth() <= 0) {
                     killEnemy(e);
                     killedEnemies.add(e);
+                    character.setGold(goldReward());
                 }
             }
             battleEnemies.removeAll(killedEnemies);
@@ -631,11 +789,15 @@ public class LoopManiaWorld {
                 // Calculate Enemy
                 int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
 
-                e.applyEnemyEffects(character);
+                e.applyEnemyEffects(character, true, enemies);
 
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
+                    
+                    if (e instanceof ElanMuske) {
+                        elanTimer = -5;                        // DoggieCoin price should go down for the next 5 rounds.
+                    }
                     System.out.println("enemy killed");
                 }
             }
@@ -652,6 +814,7 @@ public class LoopManiaWorld {
             killEnemy(e);
             if (e instanceof Doggie) { character.incrementDoggieCoin(); }
             character.setXP(character.getXP() + e.getExperience());
+            character.setGold(goldReward());
         }
         return defeatedEnemies;
     }
@@ -665,8 +828,9 @@ public class LoopManiaWorld {
     public int goldReward() {
         Random rand = new Random(); 
         int upperbound = 10;
-        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 1000);
+        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 100);
         int giveGold = character.getGold() + goldGained;
+        System.out.println(giveGold);
         return giveGold;
     }
 
@@ -711,7 +875,7 @@ public class LoopManiaWorld {
         // Assign XP (amount in the assumptions)
         character.setXP(character.getXP() + 200);
         // Assign gold randomly (formula in assumptions)
-        character.setGold(goldReward());
+        character.setGold(goldReward() + character.getGold());
         // Assign an item reward
         Item loot = addUnequippedItem(1);
         unequippedInventoryItems.add(loot);
@@ -824,7 +988,6 @@ public class LoopManiaWorld {
      * @return an item to be spawned in the controller as a JavaFX node
      */
     public Item addUnequippedItem(double rareBound) {
-        // TODO = expand this - we would like to be able to add multiple types of items,
         // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
@@ -910,7 +1073,6 @@ public class LoopManiaWorld {
      * @param y y coordinate from 0 to height-1
      */
     public void removeEquippedInventoryItemByCoordinates(int x, int y) {
-        // TODO: Inventory Frontend Code
         Entity item = getEquippedInventoryItembyCoordinates(x, y);
         // Setting Character Equipment Slot
         if (item instanceof AttackItem) character.setWeapon(null);
@@ -978,6 +1140,43 @@ public class LoopManiaWorld {
     }
     
     /**
+     * Update the value of Elan timer
+     */
+    public void updateElanTimer() {
+        if (elanTimer < 0) {
+            elanTimer++;
+        }
+    }
+
+    /**
+     * Update the value doggie coin based on the state of Elan
+     */
+    public void varyDoggieCoinPrice() {
+        Random random = new Random();
+        int maximum = 500;
+        int minimum = 10;
+
+        // if Elan hasn't spawned yet
+        if (elanTimer == 0) {
+            maximum = 500;
+            minimum = 10;
+        }
+        // if Elan is in the game
+        else if (elanTimer == 1) {
+            maximum = 10000;
+            minimum = 3000;
+        }
+        // if Elan has been defeated
+        else if (elanTimer < 0) {
+            maximum = 10;
+            minimum = 0;
+        }
+
+        int range = maximum - minimum + 1;
+        doggieCoinPrice = random.nextInt(range) + minimum;
+    }
+
+    /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
      */
@@ -994,13 +1193,16 @@ public class LoopManiaWorld {
         }
 
         character.moveDownPath();
+        for (BasicEnemy e : enemies) {
+            e.applyEnemyEffects(character, false, enemies);
+        }
         applyBuildingEffects();
         moveBasicEnemies();
         
         removeExpiredBuildings();
         removeExpiredItems();
 
-        //e.g if loopCounter = 20 win game
+        varyDoggieCoinPrice();
 
     }
 
@@ -1094,11 +1296,8 @@ public class LoopManiaWorld {
 
     /**
      * move all enemies
-     * 
-     * TODO: Use observer pattern here
      */
     private void moveBasicEnemies() {
-        // TODO = expand to more types of enemy
         for (BasicEnemy e : enemies) {
             e.move();
         }
@@ -1111,13 +1310,10 @@ public class LoopManiaWorld {
      *         possible, or random coordinate pair if should go ahead
      */
     private Pair<Integer, Integer> possiblyGetBasicEnemySpawnPosition() {
-        // TODO = modify this
-
         // has a chance spawning a basic enemy on a tile the character isn't on or
         // immediately before or after (currently space required = 2)...
         Random rand = new Random();
-        int choice = rand.nextInt(2); // TODO = change based on spec... currently low value for dev purposes...
-        // TODO = change based on spec
+        int choice = rand.nextInt(2);
         if ((choice == 0) && (enemies.size() < 2)) {
             List<Pair<Integer, Integer>> orderedPathSpawnCandidates = new ArrayList<>();
             int indexPosition = orderedPath.indexOf(new Pair<Integer, Integer>(character.getX(), character.getY()));
@@ -1162,7 +1358,6 @@ public class LoopManiaWorld {
 
         // now spawn building
         Building newBuilding = null;
-        // TODO: Adding other Card Types
         if (card instanceof VampireCastleCard) {
             newBuilding = new VampireCastleBuilding(new SimpleIntegerProperty(buildingNodeX), new SimpleIntegerProperty(buildingNodeY));
         } else if (card instanceof TrapCard) {
@@ -1195,7 +1390,6 @@ public class LoopManiaWorld {
 
     // 
     public void applyBuildingEffects() {
-        // TODO Add building effects for village:
         int cX = character.getX();
         int cY = character.getY();
         Pair<Integer, Integer> characterPos = new Pair<Integer, Integer>(cX, cY);
@@ -1454,31 +1648,7 @@ public class LoopManiaWorld {
      * Consumes a potion in the character inventory
      */
     public void consumePotion() {
-        for (Entity i: getCharacterInventory()) {
-            if (i instanceof HealthPotion) {
-                HealthPotion potion = (HealthPotion) i;
-                potion.use(character);
-                potion.destroy();
-                unequippedInventoryItems.remove(potion);
-                break;                
-            }
-        }
-    }
-
-    public boolean consumeOneRing() {
-        boolean consumed = false;
-        for (Entity i: getCharacterInventory()) {
-            if (i instanceof OneRing) {
-                OneRing ring = (OneRing) i;
-                // TODO apply ring effects
-                character.setHealth(character.getMaxHealth());
-                ring.destroy();
-                unequippedInventoryItems.remove(ring);
-                consumed = true;
-                break;                
-            }
-        }
-        return consumed;
+        character.useHealthPotion();
     }
 
     /**
