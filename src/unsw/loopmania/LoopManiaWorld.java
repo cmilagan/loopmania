@@ -91,6 +91,8 @@ public class LoopManiaWorld {
     private int shopCounter;
     private int previousShopRound;
 
+    private int doggieCoinPrice = 100;
+
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -187,6 +189,14 @@ public class LoopManiaWorld {
 
     public void addAlliedSoldier(AlliedSoldier s) {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
+    }
+
+    public int getDoggieCoinPrice() {
+        return doggieCoinPrice;
+    }
+
+    public void setDoggieCoinPrice(int newPrice) {
+        doggieCoinPrice = newPrice;
     }
 
     /**
