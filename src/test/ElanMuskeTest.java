@@ -36,7 +36,7 @@ public class ElanMuskeTest {
      * Test if the Elan deals 25 damage
      */
     @Test
-    void testElanDamage() {
+    public void testElanDamage() {
         initializeWorld();
         addElan();
         int initialDamage = 25;
@@ -47,7 +47,7 @@ public class ElanMuskeTest {
      * Test if the Elan spawns with a battle radius of 1 (same as the Slug)
      */
     @Test
-    void testElanBattleRadius() {
+    public void testElanBattleRadius() {
         initializeWorld();
         addElan();
         int initialBattleRadius = 1;
@@ -58,7 +58,7 @@ public class ElanMuskeTest {
      * Test if the Elan spawns with a support radius of 1 (same as the Slug)
      */
     @Test
-    void testElanSupportRadius() {
+    public void testElanSupportRadius() {
         initializeWorld();
         addElan();
         int initialSupportRadius = 1;
@@ -69,7 +69,7 @@ public class ElanMuskeTest {
      * Test if the Elan gives 500 XP on defeat
      */
     @Test
-    void testElanXP() {
+    public void testElanXP() {
         initializeWorld();
         addElan();
         int currentXP = newCharacter.getXP();
@@ -83,7 +83,7 @@ public class ElanMuskeTest {
      * Test if Elan Muske heals other enemies in his support radius
      */
     @Test
-    void testCheckEnemiesHealed() {
+    public void testCheckEnemiesHealed() {
         initializeWorld();
 
         // spawn Zombie with reduced health
