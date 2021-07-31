@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
  */
 public class Staff extends AttackItem {
     private static int damage = 3;
-    private static int itemCost = 8;
+    private static int itemCost = 25;
     private static int itemDurability = 8;
 
     public Staff(SimpleIntegerProperty x, SimpleIntegerProperty y) {
