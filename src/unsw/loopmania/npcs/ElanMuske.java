@@ -8,7 +8,7 @@ import unsw.loopmania.PathPosition;
 public class ElanMuske extends BasicEnemy {
 
     public ElanMuske(PathPosition position) {
-        super(position, 25, 40, 500, 1, 1, 40);
+        super(position, 25, 40, 500, 1, 1);
     }
 
     private int distanceTravelled = 0;

@@ -27,14 +27,14 @@ public class BasicEnemy extends MovingEntity {
      * @param battleRadius
      * @param supportRadius
      */
-    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius, int maxHealth) {
+    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius) {
         super(position);
         this.damage = damage;
         this.health = health;
         this.experience = experience;
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
-        this.maxHealth = maxHealth;
+        this.maxHealth = health;
     }
 
     /**
