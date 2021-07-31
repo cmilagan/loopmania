@@ -507,6 +507,7 @@ public class LoopManiaWorldController {
     }
 
     public void terminate(){
+        System.out.println("Game Finished");
         pause();
     }
 

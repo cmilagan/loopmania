@@ -110,6 +110,7 @@ public class LoopManiaApplication extends Application {
         // Return to main menu for win screen
         winController.setMainMenuSwitcher(() -> {
             switchToRoot(scene, mainMenuRoot, primaryStage);
+            stop();
         });
 
         // when exit button is pressed, the screen shown switches to map
@@ -117,6 +118,7 @@ public class LoopManiaApplication extends Application {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
         });
+
         // when special items button is pressed, the screen switches to shop screen two
         shopMenuControllerOne.setShopScreenTwo(() -> {
             switchToRoot(scene, shopMenuRootTwo, primaryStage);
@@ -129,7 +131,7 @@ public class LoopManiaApplication extends Application {
         // when main menu button is pressed, screen switches to main menu
         GameOverController.setGameSwitcher(()-> {
             switchToRoot(scene, mainMenuRoot, primaryStage);
-            mainController.terminate();
+            stop();
         });
         
         gameMenuController.setMenuSwitcher(() -> {
