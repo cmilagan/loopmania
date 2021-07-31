@@ -18,7 +18,7 @@ import unsw.loopmania.npcs.BasicEnemy;
  * represents the main character in the backend of the game world
  */
 public class Character extends MovingEntity {
-    private SimpleIntegerProperty gold = new SimpleIntegerProperty(100);
+    private SimpleIntegerProperty gold = new SimpleIntegerProperty(500);
     private int doggieCoin = 0;
     private int health = 100;
     private int maxHealth = 100;
@@ -170,5 +170,20 @@ public class Character extends MovingEntity {
 
     public Pair getCoordinatePair() {
         return new Pair<Integer, Integer>(this.getX(), this.getY());
+    }
+
+    public boolean useOneRing() {
+        boolean consumed = false;
+        for (Entity entity: inventoryItems) {
+            if (entity instanceof OneRing) {
+                OneRing ring = (OneRing) entity;
+                this.setHealth(maxHealth);
+                inventoryItems.remove(ring);
+                ring.destroy();
+                consumed = true;
+                break;                
+            }
+        }
+        return consumed;
     }
 }

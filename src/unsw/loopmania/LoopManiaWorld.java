@@ -1393,22 +1393,6 @@ public class LoopManiaWorld {
         }
     }
 
-    public boolean consumeOneRing() {
-        boolean consumed = false;
-        for (Entity i: getCharacterInventory()) {
-            if (i instanceof OneRing) {
-                OneRing ring = (OneRing) i;
-                // TODO apply ring effects
-                character.setHealth(character.getMaxHealth());
-                ring.destroy();
-                unequippedInventoryItems.remove(ring);
-                consumed = true;
-                break;                
-            }
-        }
-        return consumed;
-    }
-
     /**
      * the amount of cards the user currently has
      * @return int
