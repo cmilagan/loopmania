@@ -44,6 +44,10 @@ public abstract class MovingEntity extends Entity {
         position.setNewPosition(newPathPosition);
     }
 
+    public PathPosition getPathPosition() {
+        return position;
+    }
+
     /**
      * Move enemy to specified location 
      * 

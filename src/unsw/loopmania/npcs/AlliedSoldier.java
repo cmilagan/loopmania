@@ -7,12 +7,16 @@ public class AlliedSoldier extends MovingEntity {
     private int health = 3;
     private int damage = 5;
 
+    /**
+     * this field stores the original enemy which turned into an allied soldier
+     * due to staff trance. This is done so that when the duration of trance finishes
+     * the allied soldier turns back into the enemy it was before
+     */
+    private BasicEnemy originalEnemy;
+
     public AlliedSoldier(PathPosition position) {
         super(position);
-    }
-
-    public void setHealth(int health) {
-        this.health = health;
+        originalEnemy = null;
     }
 
     public int getHealth() {
@@ -21,6 +25,18 @@ public class AlliedSoldier extends MovingEntity {
 
     public int getDamage() {
         return damage;
+    }
+
+    public BasicEnemy getOriginalEnemy() {
+        return originalEnemy;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    public void setOriginalEnemy(BasicEnemy enemyClass) {
+        this.originalEnemy = enemyClass;
     }
 
     /**
