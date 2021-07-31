@@ -13,6 +13,7 @@ import unsw.loopmania.PathPosition;
 import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Zombie;
 
+
 public class ElanMuskeTest {
     private int elanPosition = 1;
     private int characterPosition = 0;
@@ -131,4 +132,4 @@ public class ElanMuskeTest {
         elan = new ElanMuske(elanPathPosition);
         testWorld.addEnemy(elan);
     }
-}
+} 
