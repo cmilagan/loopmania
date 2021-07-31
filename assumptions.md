@@ -10,6 +10,8 @@
     - Campfire Support Radius: 2
     - Doggie Battle Radius: 1
     - Doggie Support Radius: 1
+    - Elan Muske Battle Radius: 1
+    - Elan Muske Support Radius: 1
     - Circular Support Radius calculation done by starter code
 - Characters and enemies do not keep moving in battle
     - Notification and sound effects to show the initiation/engagement of battle and when the character dies
@@ -27,6 +29,7 @@
     - Vampire Damage: 20, 20, 200
     - Ally Damage   : 5, 5, 0
     - Doggie        : 0, 20, 100
+    - Elan Muske    : 25, 40, 500
 - When the main character defeats enemies, the character gains the specified amount of XP from the enemy. When an allied soldier defeats an enemy, that XP is redirected to the main character.
 - The more the XP, the increased damage/defence stats of weapons available from loot and Hero's Castle, enhanced enemy and ally health and damage
     - Health Formula: initialHealth * (1 + XP / 1000)
@@ -161,4 +164,4 @@
 - Every round the price of DCN will vary randomly from 100 - 500 Gold
 - Once Elan Muske joins the game, the price of DCN varies between 3,000 - 10,000 Gold
     - This is because it's unlikely that the Hero gets to the shop before killing Elan
-- Once Elan Muske is defeated, the price of DCN varies from 0 - 10 Gold
+- Once Elan Muske is defeated, the price of DCN varies from 0 - 10 Gold for the next 5 rounds, after which it will go back to varying from 100 - 500.
