@@ -1001,7 +1001,19 @@ public class LoopManiaWorld {
             }
         }
     }
-   
+    
+    /**
+     * Update the value of Elan timer
+     */
+    public void updateElanTimer() {
+        if (elanTimer < 0) {
+            elanTimer++;
+        }
+    }
+
+    /**
+     * Update the value doggie coin based on the state of Elan
+     */
     public void varyDoggieCoinPrice() {
         Random random = new Random();
         int maximum = 500;
