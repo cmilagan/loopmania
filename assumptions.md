@@ -8,6 +8,8 @@
     - Vampire Support Radius: 3
     - Tower Support Radius: 2
     - Campfire Support Radius: 2
+    - Doggie Battle Radius: 1
+    - Doggie Support Radius: 1
     - Circular Support Radius calculation done by starter code
 - Characters and enemies do not keep moving in battle
     - Notification and sound effects to show the initiation/engagement of battle and when the character dies
@@ -24,6 +26,7 @@
     - Zombie Damage : 8, 10, 100
     - Vampire Damage: 20, 20, 200
     - Ally Damage   : 5, 5, 0
+    - Doggie        : 0, 20, 100
 - When the main character defeats enemies, the character gains the specified amount of XP from the enemy. When an allied soldier defeats an enemy, that XP is redirected to the main character.
 - The more the XP, the increased damage/defence stats of weapons available from loot and Hero's Castle, enhanced enemy and ally health and damage
     - Health Formula: initialHealth * (1 + XP / 1000)
@@ -44,6 +47,10 @@
 - Support and Battle radii are calculated by the pythagoras theorem
     - if the character is within the battle radius of an enemy, a battle is engaged.
 - If the One Ring is in the character's inventory, the character respawns automatically on defeat.
+- The new Doggie Enemy cannot damage the character, only stun him
+- The Doggie enemy attacks the character last (to prevent OP behaviour of stun)
+- The Doggie can stun the character every other turn
+    - This is so that the Doggie cannot have an infintely long battle where it keeps stunning the character.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
