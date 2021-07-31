@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.javatuples.Pair;
 import org.junit.jupiter.api.Test;
+
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
@@ -37,7 +38,7 @@ public class ElanMuskeTest {
      * Test if the Elan deals 25 damage
      */
     @Test
-    void testElanDamage() {
+    public void testElanDamage() {
         initializeWorld();
         addElan();
         int initialDamage = 25;
@@ -48,7 +49,7 @@ public class ElanMuskeTest {
      * Test if the Elan spawns with a battle radius of 1 (same as the Slug)
      */
     @Test
-    void testElanBattleRadius() {
+    public void testElanBattleRadius() {
         initializeWorld();
         addElan();
         int initialBattleRadius = 1;
@@ -59,7 +60,7 @@ public class ElanMuskeTest {
      * Test if the Elan spawns with a support radius of 1 (same as the Slug)
      */
     @Test
-    void testElanSupportRadius() {
+    public void testElanSupportRadius() {
         initializeWorld();
         addElan();
         int initialSupportRadius = 1;
@@ -70,9 +71,10 @@ public class ElanMuskeTest {
      * Test if the Elan gives 500 XP on defeat
      */
     @Test
-    void testElanXP() {
+    public void testElanXP() {
         initializeWorld();
         addElan();
+        elan.setHealth(1);
         int currentXP = newCharacter.getXP();
         int expectedXP = currentXP + 500;
 
@@ -84,8 +86,9 @@ public class ElanMuskeTest {
      * Test if Elan Muske heals other enemies in his support radius
      */
     @Test
-    void testCheckEnemiesHealed() {
+    public void testCheckEnemiesHealed() {
         initializeWorld();
+        addElan();
 
         // spawn Zombie with reduced health
         PathPosition zombiePathPosition = new PathPosition(elanPosition, orderedPath);

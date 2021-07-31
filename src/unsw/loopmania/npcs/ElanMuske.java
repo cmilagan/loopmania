@@ -1,27 +1,29 @@
 package unsw.loopmania.npcs;
 
-import unsw.loopmania.PathPosition;
-
 import java.util.List;
 
 import unsw.loopmania.Character;
+import unsw.loopmania.PathPosition;
 
-public class Doggie extends BasicEnemy {
-    public Doggie(PathPosition position) {
-        super(position, 0, 20, 100, 1, 1);
+public class ElanMuske extends BasicEnemy {
+
+    public ElanMuske(PathPosition position) {
+        super(position, 25, 40, 500, 1, 1);
     }
 
     private int distanceTravelled = 0;
     private boolean travellingUpwards = true;
 
     /**
-     * Movement similar to Slug.
+     * move up until upper bound is reached
+     * 
+     * move down until lower bound is reached
      */
     @Override
     public void move() {
         distanceTravelled++;
 
-        // check if Doggie is at either bound
+        // check if ElanMuske is at either bound
         if ((distanceTravelled % 2) == 0) {
             if (travellingUpwards) {
                 travellingUpwards = false;
@@ -40,13 +42,15 @@ public class Doggie extends BasicEnemy {
         }
     }
 
-    /**
-     * Stuns the character
-     */
     @Override
-    public void applyEnemyEffects(Character c, boolean inBattle, List<BasicEnemy> enemies) {
-        if (inBattle && this.getHealth() > 0) {
-            c.toggleStun();
+    public void applyEnemyEffects(Character character, boolean inBattle, List<BasicEnemy> enemies) {
+        if (!inBattle) {
+            for (BasicEnemy e : enemies) {
+                boolean isInSupportRadius = Math.sqrt(Math.pow((e.getX() - this.getX()), 2) + Math.pow((e.getY() - this.getY()), 2)) <= this.getSupportRadius();
+                if (!e.equals(this) && isInSupportRadius) {
+                    e.heal();
+                }
+            }
         }
     }
 }

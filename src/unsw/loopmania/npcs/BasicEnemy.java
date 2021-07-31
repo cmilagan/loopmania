@@ -1,5 +1,6 @@
 package unsw.loopmania.npcs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import unsw.loopmania.MovingEntity;
@@ -15,6 +16,7 @@ public class BasicEnemy extends MovingEntity {
     private int experience;
     private int battleRadius;
     private int supportRadius;
+    private int maxHealth;
 
     /**
      * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
@@ -32,6 +34,7 @@ public class BasicEnemy extends MovingEntity {
         this.experience = experience;
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
+        this.maxHealth = health;
     }
 
     /**
@@ -83,7 +86,14 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEnemyEffects(Character c) {
-        return;
+    public void heal() {
+        health = maxHealth;
+    }
+
+    /**
+     * Apply any effects an Enemy may have during battle.
+     * @param character
+     */
+    public void applyEnemyEffects(Character character, boolean inBattle, List<BasicEnemy> enemies) {
     }
 }
