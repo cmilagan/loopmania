@@ -134,6 +134,7 @@ public class LoopManiaWorld {
         character = null;
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
+        equippedInventoryItems = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
@@ -571,6 +572,7 @@ public class LoopManiaWorld {
                     // Calculate Character
                     int characterHealth = character.applyEnemyDamage(e);
                     if (characterHealth == 0) {
+                        character.destroy();
                         break;
                     }
                 } else {
@@ -1000,7 +1002,7 @@ public class LoopManiaWorld {
      * @param y y index from 0 to height-1
      * @return unequipped inventory item at the input position
      */
-    public Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
+    private Entity getUnequippedInventoryItemEntityByCoordinates(int x, int y) {
         for (Entity e : unequippedInventoryItems) {
             if ((e.getX() == x) && (e.getY() == y)) {
                 return e;
@@ -1323,42 +1325,16 @@ public class LoopManiaWorld {
         
     }
 
-    
-    Pair<Item, Item> equipItemByCoordinates(int itemNodeX, int itemNodeY, int slotX, int slotY) {
-        Item equip = null;
-        // getting the appropiate item
-        for (Entity e: getCharacterInventory()) {
-            if (e instanceof Item) {
-                if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
-                    equip = (Item) e;
-                }
-            }
-        }
-        // equipable items
-        if (equip instanceof AttackItem) {
-            AttackItem attackItem = (AttackItem) equip;
-            if (!attackItem.equipToCoordinates(slotX, slotY)) {
-                return null;
-            }
-        } else if (equip instanceof Shield) {
-            Shield shieldItem = (Shield) equip;
-            if (!shieldItem.equipToCoordinates(slotX, slotY)) {
-                return null;
-            }
-        } else if (equip instanceof Armor) {
-            Armor armourItem = (Armor) equip;
-            if (!armourItem.equipToCoordinates(slotX, slotY)) {
-                return null;
-            }
-        } else if (equip instanceof Helmet) {
-            Helmet helmetItem = (Helmet) equip;
-            if (!helmetItem.equipToCoordinates(slotX, slotY)) {
-                return null;
-            }
-        } else {
-            return null;
-        }
-
+    /**
+     * 
+     * @param itemNodeX
+     * @param itemNodeY
+     * @return Item
+     */
+    public Item getItem(int itemNodeX, int itemNodeY) {
+        // get the item
+        Item item = (Item) getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
+        return item;
     }
 
     /**
@@ -1377,10 +1353,17 @@ public class LoopManiaWorld {
         }
     }
 
+    /**
+     * Gets this worlds character
+     * @return Character
+     */
     public Character getCharacter() {
         return this.character;
     }
 
+    /**
+     * Consumes a potion in the character inventory
+     */
     public void consumePotion() {
         for (Entity i: getCharacterInventory()) {
             if (i instanceof HealthPotion) {
@@ -1391,6 +1374,22 @@ public class LoopManiaWorld {
                 break;                
             }
         }
+    }
+
+    public boolean consumeOneRing() {
+        boolean consumed = false;
+        for (Entity i: getCharacterInventory()) {
+            if (i instanceof OneRing) {
+                OneRing ring = (OneRing) i;
+                // TODO apply ring effects
+                character.setHealth(character.getMaxHealth());
+                ring.destroy();
+                unequippedInventoryItems.remove(ring);
+                consumed = true;
+                break;                
+            }
+        }
+        return consumed;
     }
 
     /**
