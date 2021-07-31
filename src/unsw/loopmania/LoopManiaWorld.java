@@ -478,6 +478,7 @@ public class LoopManiaWorld {
                 ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
                 enemies.add(elan);
                 spawningEnemies.add(elan);
+                elanTimer = 1;                    // elan timer = 1 => Elan is alive and Doggie coin price should go up.
             }
         }
 
@@ -661,6 +662,10 @@ public class LoopManiaWorld {
                 if (enemyHealth == 0) {
                     defeatedEnemies.add(e);
                     battleEnemies.remove(e);
+                    
+                    if (e instanceof ElanMuske) {
+                        elanTimer = -5;                        // DoggieCoin price should go down for the next 5 rounds.
+                    }
                     System.out.println("enemy killed");
                 }
             }
