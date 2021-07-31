@@ -94,6 +94,19 @@ public class LoopManiaWorld {
     private int doggieCoinPrice = 100;
 
     /**
+     * Keeps track of Elan to vary DoggieCoin prices.
+     * 0  =>  Elan hasn't spawned yet or it's been more than 5 rounds since his defeat
+     *        DoggieCoin varies from 100 - 500 (normal)
+     * 
+     * 1  =>  Elan is currently alive
+     *        DoggieCoin varies from 3,000 - 10,000
+     * 
+     * < 0 => Elan has been defeated in the last 5 rounds
+     *        DoggieCoin varies from 0 - 10
+     */
+    private int elanTimer = 0;
+
+    /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
     private List<Entity> nonSpecifiedEntities;
@@ -193,10 +206,6 @@ public class LoopManiaWorld {
 
     public int getDoggieCoinPrice() {
         return doggieCoinPrice;
-    }
-
-    public void setDoggieCoinPrice(int newPrice) {
-        doggieCoinPrice = newPrice;
     }
 
     /**
@@ -992,7 +1001,32 @@ public class LoopManiaWorld {
             }
         }
     }
-    
+   
+    public void varyDoggieCoinPrice() {
+        Random random = new Random();
+        int maximum = 500;
+        int minimum = 10;
+
+        // if Elan hasn't spawned yet
+        if (elanTimer == 0) {
+            maximum = 500;
+            minimum = 10;
+        }
+        // if Elan is in the game
+        else if (elanTimer == 1) {
+            maximum = 10000;
+            minimum = 3000;
+        }
+        // if Elan has been defeated
+        else if (elanTimer < 0) {
+            maximum = 10;
+            minimum = 0;
+        }
+
+        int range = maximum - minimum + 1;
+        doggieCoinPrice = random.nextInt(range) + minimum;
+    }
+
     /**
      * run moves which occur with every tick without needing to spawn anything
      * immediately
@@ -1019,7 +1053,7 @@ public class LoopManiaWorld {
         removeExpiredBuildings();
         removeExpiredItems();
 
-        //e.g if loopCounter = 20 win game
+        varyDoggieCoinPrice();
 
     }
 
