@@ -10,12 +10,11 @@
 <!-- vertically stacked label and button -->
 <VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="LOOP MANIA" />
-      <!-- clicking button should start/resume the game -->
-      <Button fx:id="startGameButton" text="New Game" onAction="#switchToNewGameMenu"/>
-      <Button fx:id="startGameButton" text="Load Game" onAction="#switchToGame"/>
-      <Button fx:id="startGameButton" text="Credits" onAction="#switchToCredits"/>
-      <Button fx:id="startGameButton" text="Exit Game" onAction="#exitGame"/>
+      <Label text="PRATHAMESH" />
+      <Label text="SUBRAT" />
+      <Label text="CHRISTIAN" />
+      <Label text="TAM" />
+      <Button fx:id="backButton" onAction="#backButton" text="Back" />
    </children>
    <padding>
       <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
