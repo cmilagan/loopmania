@@ -15,7 +15,6 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.modes.BerserkerMode;
 import unsw.loopmania.modes.ConfusingMode;
-import unsw.loopmania.modes.GameDifficulty;
 import unsw.loopmania.modes.StandardMode;
 import unsw.loopmania.modes.SurvivalMode;
 
@@ -24,11 +23,10 @@ public class GameDifficultyTest {
     private Character newCharacter;
     private int characterPosition = 0;
     private LoopManiaWorld testWorld;
-    private GameDifficulty mode = new GameDifficulty();
-    private StandardMode standard = new StandardMode();
-    private SurvivalMode survival = new SurvivalMode();
-    private BerserkerMode berserker = new BerserkerMode();
-    private ConfusingMode confusing = new ConfusingMode();
+    private StandardMode standard;
+    private SurvivalMode survival;
+    private BerserkerMode berserker;
+    private ConfusingMode confusing;
     
     /**
      * Check that the game difficulty is standard
@@ -38,11 +36,11 @@ public class GameDifficultyTest {
         System.out.println("TEST - Standard Mode");
         initializeWorld();
         // Set it to standard
-        mode.playStandard();
-        assertTrue(mode.getStandard());
-        assertFalse(mode.getBerserker());
-        assertFalse(mode.getSurvival());
-        assertFalse(mode.getConfusing());
+        testWorld.playStandard();
+        assertTrue(testWorld.getStandard());
+        assertFalse(testWorld.getBerserker());
+        assertFalse(testWorld.getSurvival());
+        assertFalse(testWorld.getConfusing());
         assertEquals(standard.getWinGold(), testWorld.getWinGold());
         assertEquals(standard.getWinLoop(), testWorld.getWinLoops());
         assertEquals(standard.getWinXP(), testWorld.getWinXp());
@@ -57,11 +55,14 @@ public class GameDifficultyTest {
         System.out.println("TEST - Survival Mode");
         initializeWorld();
         // Set it to survival
-        mode.playSurvival();
-        assertTrue(mode.getSurvival());
-        assertFalse(mode.getBerserker());
-        assertFalse(mode.getStandard());
-        assertFalse(mode.getConfusing());
+        testWorld.playSurvival();
+        assertTrue(testWorld.getSurvival());
+        assertFalse(testWorld.getBerserker());
+        assertFalse(testWorld.getStandard());
+        assertFalse(testWorld.getConfusing());
+        assertEquals(survival.getWinGold(), testWorld.getWinGold());
+        assertEquals(survival.getWinLoop(), testWorld.getWinLoops());
+        assertEquals(survival.getWinXP(), testWorld.getWinXp());
         System.out.println("--- Passed ---\n");
     }
 
@@ -73,11 +74,33 @@ public class GameDifficultyTest {
         System.out.println("TEST - Berserker Mode");
         initializeWorld();
         // Set it to survival
-        mode.playBerserker();
-        assertTrue(mode.getBerserker());
-        assertFalse(mode.getStandard());
-        assertFalse(mode.getSurvival());
-        assertFalse(mode.getConfusing());
+        testWorld.playBerserker();
+        assertTrue(testWorld.getBerserker());
+        assertFalse(testWorld.getStandard());
+        assertFalse(testWorld.getSurvival());
+        assertFalse(testWorld.getConfusing());
+        assertEquals(berserker.getWinGold(), testWorld.getWinGold());
+        assertEquals(berserker.getWinLoop(), testWorld.getWinLoops());
+        assertEquals(berserker.getWinXP(), testWorld.getWinXp());
+        System.out.println("--- Passed ---\n");
+    }
+
+    /**
+     * Check that the game difficulty is confusing
+     */
+    @Test
+    public void confusingTest() {
+        System.out.println("TEST - Standard Mode");
+        initializeWorld();
+        // Set it to standard
+        testWorld.playConfusing();
+        assertTrue(testWorld.getConfusing());
+        assertFalse(testWorld.getBerserker());
+        assertFalse(testWorld.getSurvival());
+        assertFalse(testWorld.getStandard());
+        assertEquals(confusing.getWinGold(), testWorld.getWinGold());
+        assertEquals(confusing.getWinLoop(), testWorld.getWinLoops());
+        assertEquals(confusing.getWinXP(), testWorld.getWinXp());
         System.out.println("--- Passed ---\n");
     }
 
@@ -102,5 +125,11 @@ public class GameDifficultyTest {
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
+
+        // initalising the modes
+        standard = new StandardMode();
+        survival = new SurvivalMode();
+        berserker = new BerserkerMode();
+        confusing = new ConfusingMode();
     }
 }

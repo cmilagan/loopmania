@@ -274,6 +274,11 @@ public class LoopManiaWorldController {
     private MenuSwitcher newGameMenuSwitcher;
 
     /**
+     * object handling switching to the win screen
+     */
+    private MenuSwitcher winScreenSwitcher;
+
+    /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
      */
@@ -456,6 +461,13 @@ public class LoopManiaWorldController {
             // display the health of the hero
             String charHealth = Integer.toString(world.getCharacter().getHealth());
             health.setText(charHealth);
+
+            // Check to see if the win conditions are met
+            if ((world.getCharacter().getGold() >= world.getWinGold())
+                    && (world.getCharacter().getXP() >= world.getWinXp())
+                    && (world.getWinLoops() >= world.getWinLoops())) {
+                switchToWinScreen();
+            } 
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -1097,13 +1109,7 @@ public class LoopManiaWorldController {
     }
 
     /**
-     * 
-     * switch to shop screen if character is at (0, 0)
-     * which is the location of Hero's Castle
-     *
-     * this method is triggerred when character is at Hero's Castle
-     * 
-     * else do nothing
+     * Method to switch to the new game screen
      */
     public void switchToNewGameMenu() {
         newGameMenuSwitcher.switchMenu();
@@ -1129,6 +1135,21 @@ public class LoopManiaWorldController {
     public void switchToShopMenu() {
         pause();
         shopMenuSwitcher.switchMenu();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                         Win Screen UI                            //
+    //////////////////////////////////////////////////////////////////////
+
+    public void setWinSwitcher(MenuSwitcher gameSwitcher) {
+        this.winScreenSwitcher = gameSwitcher;
+    }
+
+    /**
+     * Method to switch to the win screen when the game is won
+     */
+    public void switchToWinScreen() {
+        winScreenSwitcher.switchMenu();
     }
 
     /**

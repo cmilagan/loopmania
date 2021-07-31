@@ -37,7 +37,6 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.modes.BerserkerMode;
 import unsw.loopmania.modes.ConfusingMode;
-import unsw.loopmania.modes.GameDifficulty;
 import unsw.loopmania.modes.StandardMode;
 import unsw.loopmania.modes.SurvivalMode;
 import unsw.loopmania.npcs.AlliedSoldier;
@@ -79,11 +78,19 @@ public class LoopManiaWorld {
      * Previous loop count
      */
     private int prevLoop;
+
     /**
-     * 
      * Current number of ticks;
      */
     private int tickCounter;
+
+    /**
+     * Boolean to determine what mode the game is playing at
+     */
+    private boolean standardMode;
+    private boolean survivalMode;
+    private boolean berserkerMode;
+    private boolean confusingMode;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -124,7 +131,6 @@ public class LoopManiaWorld {
     /**
      * Determines the winning conditions and the restrictions or effect on the game
      */
-    private GameDifficulty mode;
 
     /**
      * create the world (constructor)
@@ -147,7 +153,10 @@ public class LoopManiaWorld {
         this.loopCounter = 0;
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
-        mode = new GameDifficulty();
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = false;
     }
 
     public int getWidth() {
@@ -179,6 +188,56 @@ public class LoopManiaWorld {
         if (alliedSoldiers.size() < 5) alliedSoldiers.add(s);
     }
 
+    /**
+     * Setters for the different modes
+     */
+    public boolean getStandard() {
+        return standardMode;
+    }
+
+    public boolean getSurvival() {
+        return survivalMode;
+    }
+
+    public boolean getBerserker() {
+        return berserkerMode;
+    }
+
+    public boolean getConfusing() {
+        return confusingMode;
+    }
+
+    /**
+     * Setters for the modes
+     */
+    public void playStandard() {
+        standardMode = true;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = false;
+    }
+
+    public void playSurvival() {
+        standardMode = false;
+        survivalMode = true;
+        berserkerMode = false;
+        confusingMode = false;
+    }
+
+    public void playBerserker() {
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = true;
+        confusingMode = false;
+    }
+    
+    public void playConfusing() {
+        standardMode = false;
+        survivalMode = false;
+        berserkerMode = false;
+        confusingMode = true;
+    }
+
     // If a mode isn't selected from the new game screen, it will automatically have standard
     // mode conditions
     /**
@@ -186,24 +245,22 @@ public class LoopManiaWorld {
      * @return the amount of xp needed to win
      */
     public int getWinXp() {
-        if (mode.getStandard()) {
-            StandardMode m = new StandardMode();
-            return m.getWinXP();
+        if (standardMode) {
+            StandardMode mode = new StandardMode();
+            return mode.getWinXP();
+        } else if (survivalMode) {
+            SurvivalMode mode = new SurvivalMode();
+            return mode.getWinXP();
+        } else if (berserkerMode) {
+            BerserkerMode mode = new BerserkerMode();
+            return mode.getWinXP();
+        } else if (confusingMode) {
+            ConfusingMode mode = new ConfusingMode();
+            return mode.getWinXP();
+        } else {
+            StandardMode mode = new StandardMode();
+            return mode.getWinXP();
         }
-        if (mode.getSurvival()) {
-            SurvivalMode m = new SurvivalMode();
-            return m.getWinXP();
-        }
-        if (mode.getBerserker()) {
-            BerserkerMode m = new BerserkerMode();
-            return m.getWinXP();
-        }
-        if (mode.getConfusing()) {
-            ConfusingMode m = new ConfusingMode();
-            return m.getWinXP();
-        }
-        StandardMode m = new StandardMode();
-        return m.getWinXP();
     }
 
     /**
@@ -211,24 +268,22 @@ public class LoopManiaWorld {
      * @return the amount of gold needed to win
      */
     public int getWinGold() {
-        if (mode.getStandard()) {
-            StandardMode m = new StandardMode();
-            return m.getWinGold();
+        if (standardMode) {
+            StandardMode mode = new StandardMode();
+            return mode.getWinGold();
+        } else if (survivalMode) {
+            SurvivalMode mode = new SurvivalMode();
+            return mode.getWinGold();
+        } else if (berserkerMode) {
+            BerserkerMode mode = new BerserkerMode();
+            return mode.getWinGold();
+        } else if (confusingMode) {
+            ConfusingMode mode = new ConfusingMode();
+            return mode.getWinGold();
+        } else {
+            StandardMode mode = new StandardMode();
+            return mode.getWinGold();
         }
-        if (mode.getSurvival()) {
-            SurvivalMode m = new SurvivalMode();
-            return m.getWinGold();
-        }
-        if (mode.getBerserker()) {
-            BerserkerMode m = new BerserkerMode();
-            return m.getWinGold();
-        }
-        if (mode.getConfusing()) {
-            ConfusingMode m = new ConfusingMode();
-            return m.getWinGold();
-        }
-        StandardMode m = new StandardMode();
-        return m.getWinGold();
     }
 
     /**
@@ -236,24 +291,22 @@ public class LoopManiaWorld {
      * @return the amount of loops needed to win
      */
     public int getWinLoops() {
-        if (mode.getStandard()) {
+        if (standardMode) {
+            StandardMode m = new StandardMode();
+            return m.getWinLoop();
+        } else if (survivalMode) {
+            SurvivalMode m = new SurvivalMode();
+            return m.getWinLoop();
+        } else if (berserkerMode) {
+            BerserkerMode m = new BerserkerMode();
+            return m.getWinLoop();
+        } else if (confusingMode) {
+            ConfusingMode m = new ConfusingMode();
+            return m.getWinLoop();
+        } else {
             StandardMode m = new StandardMode();
             return m.getWinLoop();
         }
-        if (mode.getSurvival()) {
-            SurvivalMode m = new SurvivalMode();
-            return m.getWinLoop();
-        }
-        if (mode.getBerserker()) {
-            BerserkerMode m = new BerserkerMode();
-            return m.getWinLoop();
-        }
-        if (mode.getConfusing()) {
-            ConfusingMode m = new ConfusingMode();
-            return m.getWinLoop();
-        }
-        StandardMode m = new StandardMode();
-        return m.getWinLoop();
     }
 
     /**
@@ -330,8 +383,6 @@ public class LoopManiaWorld {
         // organize items into their respective weapon styles
         List<BattleItem> shopItems = new ArrayList<>();
 
-        // TODO: what should the values of x and y be? 
-        // Should we initialize a new pair for each item?
         SimpleIntegerProperty newX = new SimpleIntegerProperty(0);
         SimpleIntegerProperty newY = new SimpleIntegerProperty(0);
         
@@ -436,8 +487,6 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
-        // TODO = expand this very basic version
-
         // spawning slugs and Doggies
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
 
@@ -825,7 +874,6 @@ public class LoopManiaWorld {
      * @return an item to be spawned in the controller as a JavaFX node
      */
     public Item addUnequippedItem(double rareBound) {
-        // TODO = expand this - we would like to be able to add multiple types of items,
         // apart from swords
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
         if (firstAvailableSlot == null) {
@@ -1000,9 +1048,6 @@ public class LoopManiaWorld {
         
         removeExpiredBuildings();
         removeExpiredItems();
-
-        //e.g if loopCounter = 20 win game
-
     }
 
     /**
