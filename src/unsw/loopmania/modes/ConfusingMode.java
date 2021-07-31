@@ -1,18 +1,16 @@
 package unsw.loopmania.modes;
 
-public class SurvivalMode {
+public class ConfusingMode {
     // We can add more conditions for winning and other restrictions
     private int winLoop;
     private int winXP;
     private int winGold;
-    private int maxHealthPotion;
 
     // Numbers are found in the assumptions
-    public SurvivalMode() {
-        this.winLoop = 20;
-        this.winXP = 10000;
-        this.winGold = 1000;
-        this.maxHealthPotion = 1;
+    public ConfusingMode() {
+        this.winLoop = 69;
+        this.winXP = 420000;
+        this.winGold = 6969;
     }
 
     /**
@@ -37,13 +35,5 @@ public class SurvivalMode {
      */
     public int getWinGold() {
         return this.winGold;
-    }
-
-    /**
-     * Gets the max health potion condition
-     * @return int
-     */
-    public int getMaxHealthPotion() {
-        return this.maxHealthPotion;
     }
 }
