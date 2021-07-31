@@ -1382,15 +1382,7 @@ public class LoopManiaWorld {
      * Consumes a potion in the character inventory
      */
     public void consumePotion() {
-        for (Entity i: getCharacterInventory()) {
-            if (i instanceof HealthPotion) {
-                HealthPotion potion = (HealthPotion) i;
-                potion.use(character);
-                potion.destroy();
-                unequippedInventoryItems.remove(potion);
-                break;                
-            }
-        }
+        character.useHealthPotion();
     }
 
     /**

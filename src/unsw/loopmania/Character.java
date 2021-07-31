@@ -8,6 +8,7 @@ import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
+import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
 import unsw.loopmania.items.OneRing;
@@ -177,7 +178,7 @@ public class Character extends MovingEntity {
         for (Entity entity: inventoryItems) {
             if (entity instanceof OneRing) {
                 OneRing ring = (OneRing) entity;
-                this.setHealth(maxHealth);
+                ring.use(this);
                 inventoryItems.remove(ring);
                 ring.destroy();
                 consumed = true;
@@ -185,5 +186,17 @@ public class Character extends MovingEntity {
             }
         }
         return consumed;
+    }
+
+    public void useHealthPotion() {
+        for (Entity entity: inventoryItems) {
+            if (entity instanceof HealthPotion) {
+                HealthPotion potion = (HealthPotion) entity;
+                potion.use(this);
+                inventoryItems.remove(potion);
+                potion.destroy();
+                break;                
+            }
+        }
     }
 }
