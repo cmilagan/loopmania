@@ -62,7 +62,7 @@ public class ShopMenuControllerTwo {
             statusField.setText("Thank you for selling The One Ring!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't The One Ring to sell");
+            statusField.setText("You don't have The One Ring to sell");
         }
     }
 
