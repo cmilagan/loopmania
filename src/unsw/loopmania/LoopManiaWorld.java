@@ -821,7 +821,7 @@ public class LoopManiaWorld {
     public int goldReward() {
         Random rand = new Random(); 
         int upperbound = 10;
-        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 100);
+        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 1000);
         int giveGold = character.getGold() + goldGained;
         System.out.println(giveGold);
         return giveGold;
