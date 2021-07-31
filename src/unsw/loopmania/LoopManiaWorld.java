@@ -572,14 +572,14 @@ public class LoopManiaWorld {
             spawningEnemies.add(enemy);
 
             // Spawn Doggie every 20 rounds
-            if (loopCounter % 20 == 0) {
+            if (loopCounter > 0 && loopCounter % 20 == 0) {
                 Doggie doggie = new Doggie(new PathPosition(indexInPath, orderedPath));
                 enemies.add(doggie);
                 spawningEnemies.add(doggie);
             }
 
             // Spawn Elan every 40 rounds
-            if (loopCounter % 40 == 0) {
+            if (loopCounter > 0 && loopCounter % 40 == 0) {
                 ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
                 enemies.add(elan);
                 spawningEnemies.add(elan);
