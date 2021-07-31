@@ -1,6 +1,7 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import org.javatuples.Pair;
 
 /**
  * groups all Attack Items together
@@ -23,12 +24,18 @@ public class AttackItem extends BattleItem implements EquipItem {
     public int getDamage() {
         return this.damage;
     }
-
-    public int inflictDamage() { return 0; }
+    /**
+     * Inflicts damage on enemy, and increases usage.
+     * 
+     * If usage reaches item durability, return item damage as 0.
+     */
+    public int inflictDamage() {
+        this.incrementUsage();
+        return damage;
+    }
 
     @Override
-    public boolean equipToCoordinates(int targetX, int targetY) {
-        if (targetX == 0 && targetY == 1) return true;
-        return false;
+    public Pair<Integer,Integer> getAppropiateSlot() {
+        return new Pair<Integer,Integer>(0, 1);
     }
 }

@@ -1,6 +1,7 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import org.javatuples.Pair;
 /**
  * represents an equipped or unequipped shield in the backend world
  */
@@ -33,8 +34,7 @@ public class Shield extends DefenceItem implements EquipItem {
     }
 
     @Override
-    public boolean equipToCoordinates(int targetX, int targetY) {
-        if (targetX == 3 && targetY == 2) return true;
-        return false;
+    public Pair<Integer,Integer> getAppropiateSlot() {
+        return new Pair<Integer,Integer>(3, 2);
     }
 }

@@ -1,11 +1,13 @@
 package unsw.loopmania.items;
 
+import org.javatuples.Pair;
+
 public interface EquipItem {
     /**
      * 
      * @param targetX
      * @param targetY
-     * @return boolean: if item can be placed in targeted slot
+     * @return the coordinates of the slot to be placed
      */
-    public boolean equipToCoordinates(int targetX, int targetY);
+    public Pair<Integer,Integer> getAppropiateSlot();
 }

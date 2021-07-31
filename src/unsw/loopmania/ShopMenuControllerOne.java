@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
 
-public class ShopMenuController {
+public class ShopMenuControllerOne {
     /**
      * facilitates switching to main game
      */
@@ -19,10 +19,10 @@ public class ShopMenuController {
     private int staffID = 3;
     private int stakeID = 4;
     private int swordID = 5;
-    private int oneRingID = 6;
     private int healthPotionID = 7;
     private LoopManiaWorld world;
     private MenuSwitcher gameSwitcher;
+    private MenuSwitcher shopScreenTwoSwitcher;
     private LoopManiaWorldController mainController;
 
     @FXML
@@ -31,7 +31,7 @@ public class ShopMenuController {
     @FXML
     private Text statusField;
 
-    public ShopMenuController(LoopManiaWorld world, LoopManiaWorldController mainController) {
+    public ShopMenuControllerOne(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
         this.mainController = mainController;
 
@@ -227,5 +227,22 @@ public class ShopMenuController {
     @FXML
     private void switchToGameMenu() throws IOException {
         gameSwitcher.switchMenu();
+    }
+
+    /**
+     * remembers the shop screen to return back to
+     * @param shopSwitcher
+     */
+    public void setShopScreenTwo(MenuSwitcher shopSwitcher){
+        this.shopScreenTwoSwitcher = shopSwitcher;
+    }
+
+    /**
+     * facilitates switching to shop screen two upon button click
+     * @throws IOException
+     */
+    @FXML
+    private void switchToShopScreenTwo() throws IOException {
+        shopScreenTwoSwitcher.switchMenu();
     }
 }

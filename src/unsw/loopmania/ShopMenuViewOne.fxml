@@ -146,7 +146,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="backToMapButton" layoutX="240.0" layoutY="350.0" mnemonicParsing="false" onAction="#switchToGameMenu" text="Back To Map">
+      <Button fx:id="backToMapButton" layoutX="14.0" layoutY="350.0" mnemonicParsing="false" onAction="#switchToGameMenu" text="Back To Map">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -269,6 +269,14 @@
          </effect>
       </Button>
       <Button fx:id="sellHealthPotion" layoutX="531.0" layoutY="293.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="switchToShopScreenTwoButton" layoutX="445.0" layoutY="350.0" mnemonicParsing="false" onAction="#switchToShopScreenTwo" prefHeight="35.0" prefWidth="137.0" text="Special Items -&gt;">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>

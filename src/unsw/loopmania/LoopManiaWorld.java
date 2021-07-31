@@ -77,11 +77,18 @@ public class LoopManiaWorld {
      * Previous loop count
      */
     private int prevLoop;
+
     /**
      * 
      * Current number of ticks;
      */
     private int tickCounter;
+
+    /**
+     * Keeps track of the previous time Shop was opened
+     */
+    private int shopCounter;
+    private int previousShopRound;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -90,9 +97,7 @@ public class LoopManiaWorld {
 
     private Character character;
 
-    // TODO = add more lists for other entities, for equipped inventory items,
-    // etc...
-    private List<Item> equippedInventoryItems;
+    private List<Item> equippedInventoryItems; // attack: 0, shield: 1, armour:2, helmet: 3 
 
     // TODO = expand the range of enemies
     private List<BasicEnemy> enemies;
@@ -105,9 +110,6 @@ public class LoopManiaWorld {
 
     // TODO = expand the range of buildings
     private List<Building> buildingEntities;
-
-    // a list of battle items available at the Shop
-    private List<BattleItem> battleItems;
 
     // a list of allied soldiers
     private List<AlliedSoldier> alliedSoldiers;
@@ -139,8 +141,9 @@ public class LoopManiaWorld {
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
-        battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
+        previousShopRound = 1;
+        shopCounter = 1;
     }
 
     public int getWidth() {
@@ -153,6 +156,22 @@ public class LoopManiaWorld {
 
     public int getLoopCount() {
         return loopCounter;
+    }
+
+    public int getShopRoundCounter() {
+        return shopCounter;
+    }
+
+    public int getPreviousShopRound() {
+        return previousShopRound;
+    }
+
+    public void setShopRoundCounter(int count) {
+        shopCounter = count;
+    }
+
+    public void setPreviousShopRound(int round) {
+        previousShopRound = round;
     }
 
     public void setLoopCount(int num) {
@@ -349,6 +368,7 @@ public class LoopManiaWorld {
      */
     public void setCharacter(Character character) {
         this.character = character;
+        character.setInventory(unequippedInventoryItems);
     }
 
     /**
@@ -1337,21 +1357,88 @@ public class LoopManiaWorld {
         return item;
     }
 
+
     /**
      * Equips the item
      * @param item
      */
-    public void equipItem(Item item) {
-        if (item instanceof Helmet) {
-            character.setHelmet((Helmet)item);
-        } else if (item instanceof Armor) {
-            character.setArmor((Armor)item);
-        } else if (item instanceof AttackItem) {
-            character.setWeapon((AttackItem)item);
-        } else if (item instanceof Shield) {
-            character.setShield((Shield)item);
+    public Pair<Item, Item> equipItemByCoordinates(int itemNodeX, int itemNodeY, int slotX, int slotY) {
+        Item equip = null;
+        // getting the appropiate item
+        for (Entity e: getCharacterInventory()) {
+            if (e instanceof Item) {
+                if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
+                    equip = (Item) e;
+                }
+            }
         }
+
+        Pair<Integer, Integer>target = new Pair<Integer, Integer>(slotX, slotY);
+
+        // check if drag request is to a appropiate slot
+        System.out.println(1);
+        int equippedIdx;
+        if (equip instanceof AttackItem) {
+            equippedIdx = 0;
+            AttackItem attackItem = (AttackItem) equip;
+            if (!attackItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Shield) {
+            equippedIdx = 1;
+            Shield shieldItem = (Shield) equip;
+            if (!shieldItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Armor) {
+            equippedIdx = 2;
+            Armor armourItem = (Armor) equip;
+            if (!armourItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Helmet) {
+            equippedIdx = 3;
+            Helmet helmetItem = (Helmet) equip;
+            if (!helmetItem.getAppropiateSlot().equals(target)) return null;
+        } else {
+            return null;
+        }
+        System.out.println(2);
+
+        equip.setX(slotX);
+        equip.setY(slotY);
+
+        Item unequipped = null;
+        if (equippedIdx == 0) {
+            if (character.getWeapon() != null) {
+                System.out.println("got here");
+                unequipped = character.getWeapon();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setWeapon((AttackItem) equip);
+        } else if (equippedIdx == 1) {
+            if (character.getShield() != null) {
+                System.out.println("got here");
+                unequipped = character.getShield();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setShield((Shield) equip);
+        } else if (equippedIdx == 2) {
+            if (character.getArmor() != null) {
+                System.out.println("got here");
+                unequipped = character.getArmor();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setArmor((Armor) equip);
+        } else if (equippedIdx == 3) {
+            if (character.getHelmet() != null) {
+                System.out.println("got here");
+                unequipped = character.getHelmet();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setHelmet((Helmet) equip);
+        }
+        System.out.println("got here");
+        
+
+        return new Pair<Item,Item>(equip, unequipped);
+
     }
+
 
     /**
      * Gets this worlds character

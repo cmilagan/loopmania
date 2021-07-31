@@ -1,6 +1,7 @@
 package unsw.loopmania.items;
 
 import javafx.beans.property.SimpleIntegerProperty;
+import org.javatuples.Pair;
 
 /**
  * represents an equipped or unequipped armor in the backend world
@@ -14,27 +15,19 @@ public class Armor extends DefenceItem implements EquipItem {
 
     public Armor(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage);
-    }    
-
-    @Override
-    public int getUsage() {
-        return usage;
     }
 
-    @Override
-    public double useDefence() {
-        usage++;
-        return defencePercentage;
-    }
-
+    /**
+     * Method is overridden here because the crit
+     * defence is 0 so we should not increment usage
+     */
     @Override
     public double useCritDefence() {
-        return critDefencePercentage;
+        return this.getCritDefence(); 
     }
     
     @Override
-    public boolean equipToCoordinates(int targetX, int targetY) {
-        if (targetX == 1 && targetY == 2) return true;
-        return false;
+    public Pair<Integer,Integer> getAppropiateSlot() {
+        return new Pair<Integer,Integer>(1, 2);
     }
 }

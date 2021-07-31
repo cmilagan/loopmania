@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import org.javatuples.Pair;
 
 import java.util.Random;
 
@@ -16,6 +17,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -269,6 +272,11 @@ public class LoopManiaWorldController {
     private MenuSwitcher shopMenuSwitcher;
 
     /**
+     * object handling switching to the end game screen
+     */
+    private MenuSwitcher endScreenSwitcher;
+
+    /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
      */
@@ -378,13 +386,16 @@ public class LoopManiaWorldController {
                     @Override
                     public void changed(ObservableValue<? extends Number> observable,
                             Number oldValue, Number newValue) {
-                        if (character.getX() == 0 && character.getY() == 0) {
+                        if (character.getX() == 0 && character.getY() == 0 && canSwitch(world)) {
                             switchToShopMenu();
                         }
                     }
                 });
             }
         });
+
+
+        
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -406,6 +417,23 @@ public class LoopManiaWorldController {
         draggedEntity.setVisible(false);
         draggedEntity.setOpacity(0.7);
         anchorPaneRoot.getChildren().add(draggedEntity);
+    }
+
+    /**
+     * calculates if shop should open according to the
+     * last round shop was opened and current round 
+     */
+    private boolean canSwitch(LoopManiaWorld world) {
+        int currentRound = world.getLoopCount();
+        int shopCounter = world.getShopRoundCounter();
+
+        if (currentRound == world.getPreviousShopRound()) {
+            world.setShopRoundCounter(shopCounter + 1);
+            world.setPreviousShopRound(currentRound + (shopCounter + 1));
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -442,6 +470,7 @@ public class LoopManiaWorldController {
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+
             // display the experience of the hero
             String charXP = Integer.toString(world.getCharacter().getXP());
             xp.setText(charXP);
@@ -451,6 +480,14 @@ public class LoopManiaWorldController {
             // display the health of the hero
             String charHealth = Integer.toString(world.getCharacter().getHealth());
             health.setText(charHealth);
+            if (world.getCharacter().getHealth() == 0) {
+                // check if has one ring & consume
+                // if not trigger end game screen
+                if (!world.consumeOneRing()) {
+                    switchToGameOver();
+                }
+            }
+
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -568,9 +605,6 @@ public class LoopManiaWorldController {
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
 
-
-
-
         Random rd = new Random();
         if (rd.nextDouble() > 0.51) {
             if (enemy instanceof Slug) {
@@ -586,11 +620,11 @@ public class LoopManiaWorldController {
         } else {
             // RNG for card drops
             // if a card slots are full, discard and reward
+            double rgen = rd.nextDouble();
             if (world.getNumCards() >= world.getWidth()) {
                 Item itemReward = world.rewardDiscard();
                 onLoad(itemReward);
             }
-            double rgen = rd.nextDouble();
             Random rd2 = new Random();
             if (rgen > 0.9) {
                 // epic items
@@ -654,6 +688,44 @@ public class LoopManiaWorldController {
         cards.getChildren().add(view);
     }
 
+    public void onLoadEquipped(Item item, int x, int y) {
+        ImageView view = null;
+        if (item instanceof Sword) {
+            System.out.println("sword");
+            view = new ImageView(swordImage);
+        } else if (item instanceof Armor) {
+            System.out.println("armor");
+            view = new ImageView(armourImage);
+        } else if (item instanceof Helmet) {
+            System.out.println("helmet");
+            view = new ImageView(helmetImage);
+        } else if (item instanceof Shield) {
+            System.out.println("shield");
+            view = new ImageView(shieldImage);
+        } else if (item instanceof Staff) {
+            System.out.println("staff");
+            view = new ImageView(staffImage);
+        } else if (item instanceof Stake) {
+            System.out.println("stak");
+            view = new ImageView(stakeImage);
+        } else if (item instanceof HealthPotion) {
+            System.out.println("pot");
+            view = new ImageView(potionImage);
+        } else if (item instanceof OneRing) {
+            view = new ImageView(ringImage);
+        } else {
+            try {
+                throw new Exception("Invalid Item");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, equippedItems, unequippedInventory);
+        addEntity(item, view);
+        equippedItems.add(view, x, y);
+    }
     /**
      * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
@@ -810,13 +882,20 @@ public class LoopManiaWorldController {
                                 onLoad(newBuilding);
                                 break;
                             case ITEM:
-                                // if item is d
-                                // TODO = spawn an item in the new location. The above code for spawning a building will help, it is very similar
-                                // get the currently dragged item
-                                Item newItem = getUnequippedInventoryItemEntityByCoordinates(nodeX, nodeY);
+                                Pair<Item,Item> items = world.equipItemByCoordinates(nodeX, nodeY, x, y);
+                                if (items == null) {
+                                    return;
+                                }
+
+                                Item equipped = items.getValue0();
+                                Item unequipped = items.getValue1();
+
+                                onLoadEquipped(equipped, equipped.getX(), equipped.getY());
+                                onLoad(unequipped);
+
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
-                                targetGridPane.add(image, x, y, 1, 1);
+                                // targetGridPane.add(image, x, y, 1, 1);
                                 break;
                             default:
                                 break;
@@ -894,16 +973,6 @@ public class LoopManiaWorldController {
      */
     private Building convertCardToBuildingByCoordinates(int cardNodeX, int cardNodeY, int buildingNodeX, int buildingNodeY) {
         return world.convertCardToBuildingByCoordinates(cardNodeX, cardNodeY, buildingNodeX, buildingNodeY);
-    }
-
-    /**
-     * 
-     * @param itemNodeX the x coordinate the item was dragged from in the unequipped inventory slot
-     * @param itemNodeY the y coordinate the item was dragged from in the unequipped inventory slot
-     * @return
-     */
-    private Item getUnequippedInventoryItemEntityByCoordinates(int itemNodeX, int itemNodeY) {
-        return (Item) world.getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
     }
 
     /**
@@ -1077,6 +1146,24 @@ public class LoopManiaWorldController {
     public void switchToShopMenu() {
         pause();
         shopMenuSwitcher.switchMenu();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                          Game over UI                            //
+    //////////////////////////////////////////////////////////////////////
+
+    public void setGameOverSwitcher(MenuSwitcher endScreenSwitcher) {
+        this.endScreenSwitcher = endScreenSwitcher;
+    }
+
+    /**
+     * 
+     * Switch to game over screen if hero dies
+     * and does not have a onering available in his inventory
+     */
+    public void switchToGameOver() {
+        pause();
+        endScreenSwitcher.switchMenu();
     }
 
     /**
