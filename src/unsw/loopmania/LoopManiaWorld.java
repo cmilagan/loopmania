@@ -77,11 +77,18 @@ public class LoopManiaWorld {
      * Previous loop count
      */
     private int prevLoop;
+
     /**
      * 
      * Current number of ticks;
      */
     private int tickCounter;
+
+    /**
+     * Keeps track of the previous time Shop was opened
+     */
+    private int shopCounter;
+    private int previousShopRound;
 
     /**
      * generic entitites - i.e. those which don't have dedicated fields
@@ -140,6 +147,8 @@ public class LoopManiaWorld {
         this.loopCounter = 0;
         battleItems = new ArrayList<>();
         alliedSoldiers = new ArrayList<>();
+        previousShopRound = 1;
+        shopCounter = 1;
     }
 
     public int getWidth() {
@@ -152,6 +161,22 @@ public class LoopManiaWorld {
 
     public int getLoopCount() {
         return loopCounter;
+    }
+
+    public int getShopRoundCounter() {
+        return shopCounter;
+    }
+
+    public int getPreviousShopRound() {
+        return previousShopRound;
+    }
+
+    public void setShopRoundCounter(int count) {
+        shopCounter = count;
+    }
+
+    public void setPreviousShopRound(int round) {
+        previousShopRound = round;
     }
 
     public void setLoopCount(int num) {
