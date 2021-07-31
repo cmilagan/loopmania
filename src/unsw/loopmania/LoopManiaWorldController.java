@@ -563,8 +563,6 @@ public class LoopManiaWorldController {
         onLoad(campfireCard);
     }
 
-
-
     /**
      * load a sword from the world, and pair it with an image in the GUI
      */
@@ -678,7 +676,7 @@ public class LoopManiaWorldController {
      * and load the image into the unequippedInventory GridPane.
      * @param item
      */
-    private void onLoad(Item item) {
+    public void onLoad(Item item) {
         ImageView view = null;
         if (item instanceof Sword) {
             System.out.println("sword");

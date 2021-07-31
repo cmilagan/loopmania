@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(armor.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(armorID));
+                assertTrue(testWorld.buyItemByID(armorID) != null);
 
                 // item should appear in character's inventory
                 Armor addedArmor = (Armor) item;
@@ -87,8 +88,8 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(armorID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(armorID) != null);
 
                 // use for usage times
                 for (int i = 0; i < armor.getItemDurability(); i++) {
@@ -105,6 +106,29 @@ public class ShopItemAndExpiryTest {
                     }
                 }   
                 assertFalse(equipmentContains);
+                
+                // initially no armor item exists in character inventory
+                assertNull(testWorld.getHighestUsageItem(armorID));
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(armor.getItemCost() * 2);
+                Armor armor1 = (Armor) testWorld.buyItemByID(armorID);
+
+                // highest usage armor is armor bought above
+                assertTrue(testWorld.getHighestUsageItem(armorID) == armor1);
+
+                // testing highest usage armor is returned for two pieces
+                Armor armor2 = (Armor) testWorld.buyItemByID(armorID);
+                armor1.useDefence();
+                armor1.useDefence();
+                armor2.useDefence();
+                assertTrue(testWorld.getHighestUsageItem(armorID) == armor1);
+
+                int orgCharGold = testWorld.getCharacter().getGold();
+                testWorld.sellItem(armor1);
+                assertFalse(testWorld.getCharacterInventory().contains(armor1));
+                assertEquals(orgCharGold + (int) Math.round(0.7 * armor2.getItemCost()), 
+                testWorld.getCharacter().getGold());
             }
         }
         assertTrue(itemPresent);
@@ -122,7 +146,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(healthPotion.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(healthPotionID));
+                assertTrue(testWorld.buyItemByID(healthPotionID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -135,8 +159,8 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(healthPotionID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(healthPotionID) != null);
 
                 // testing if Health Potion is working
 
@@ -174,6 +198,18 @@ public class ShopItemAndExpiryTest {
 
                 // check if health is back to max
                 assertEquals(mainCharacterHealth, newCharacter.getHealth());
+
+                testWorld.runTickMoves();
+
+                // initially no health potion exists in character inventory
+                assertNull(testWorld.getHighestUsageItem(healthPotionID));
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(healthPotion.getItemCost() * 2);
+                HealthPotion hp1 = (HealthPotion) testWorld.buyItemByID(healthPotionID);
+
+                // highest usage hp is hp bought above
+                assertTrue(testWorld.getHighestUsageItem(healthPotionID) == hp1);
             }
         }
         assertTrue(itemPresent);
@@ -191,7 +227,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(helmet.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(helmetID));
+                Helmet orgHelmet = (Helmet) testWorld.buyItemByID(helmetID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -202,8 +238,18 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(helmetID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(helmetID) != null);
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(helmet.getItemCost() * 2);
+                Helmet helmet1 = (Helmet) testWorld.buyItemByID(helmetID);
+
+                // testing highest usage armor is returned for two pieces
+                orgHelmet.useDefence();
+                orgHelmet.useDefence();
+                helmet1.useDefence();
+                assertTrue(testWorld.getHighestUsageItem(helmetID) == orgHelmet);
             }
         }
         assertTrue(itemPresent);
@@ -221,7 +267,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(ring.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(oneRingID));
+                OneRing orgOneRing = (OneRing) testWorld.buyItemByID(oneRingID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -232,8 +278,11 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(oneRingID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(oneRingID) != null);
+
+                // checking that oneRing highest usage is still 1
+                assertTrue(testWorld.getHighestUsageItem(oneRingID) == orgOneRing);
             }
         }
         assertTrue(itemPresent);
@@ -251,7 +300,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(shield.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(shieldID));
+                Shield shield1 = (Shield) testWorld.buyItemByID(shieldID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -262,8 +311,18 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(shieldID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(shieldID) != null);
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(shield1.getItemCost() * 2);
+                Shield shield2 = (Shield) testWorld.buyItemByID(shieldID);
+
+                // testing highest usage armor is returned for two pieces
+                shield1.useDefence();
+                shield1.useDefence();
+                shield2.useDefence();
+                assertTrue(testWorld.getHighestUsageItem(shieldID) == shield1);
             }
         }
         assertTrue(itemPresent);
@@ -281,7 +340,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(staff.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(staffID));
+                Staff staff1 = (Staff) testWorld.buyItemByID(staffID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -292,8 +351,18 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(staffID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(staffID) != null);
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(staff1.getItemCost() * 2);
+                Staff staff2 = (Staff) testWorld.buyItemByID(staffID);
+
+                // testing highest usage armor is returned for two pieces
+                staff1.inflictDamage();
+                staff1.inflictDamage();
+                staff2.inflictDamage();
+                assertTrue(testWorld.getHighestUsageItem(staffID) == staff1);
             }
         }
         assertTrue(itemPresent);
@@ -311,7 +380,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(stake.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(stakeID));
+                Stake stake1 = (Stake) testWorld.buyItemByID(stakeID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -322,8 +391,18 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(stakeID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(stakeID) != null);
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(stake1.getItemCost() * 2);
+                Stake stake2 = (Stake) testWorld.buyItemByID(stakeID);
+
+                // testing highest usage armor is returned for two pieces
+                stake1.inflictDamage();
+                stake1.inflictDamage();
+                stake2.inflictDamage();
+                assertTrue(testWorld.getHighestUsageItem(stakeID) == stake1);
             }
         }
         assertTrue(itemPresent);
@@ -341,7 +420,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(sword.getItemCost());
 
                 // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(swordID));
+                assertTrue(testWorld.buyItemByID(swordID) != null);
 
                 // item should appear in character's inventory
                 Sword addedSword = (Sword) item;
@@ -354,8 +433,8 @@ public class ShopItemAndExpiryTest {
                 }   
                 assertTrue(equipmentContains);
 
-                // cant buy another item
-                assertFalse(testWorld.buyItemByID(swordID));
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(swordID) != null);
 
                 // use for usage times
                 for (int i = 0; i < sword.getItemDurability(); i++) {
@@ -371,6 +450,20 @@ public class ShopItemAndExpiryTest {
                     }
                 }   
                 assertFalse(equipmentContains);
+
+                // character has enough gold to buy two items
+                newCharacter.setGold(sword.getItemCost() * 2);
+                Sword sword1 = (Sword) testWorld.buyItemByID(swordID);
+
+                // highest usage armor is armor bought above
+                assertTrue(testWorld.getHighestUsageItem(swordID) == sword1);
+
+                // testing highest usage armor is returned for two pieces
+                Sword sword2 = (Sword) testWorld.buyItemByID(swordID);
+                sword1.inflictDamage();
+                sword1.inflictDamage();
+                sword2.inflictDamage();
+                assertTrue(testWorld.getHighestUsageItem(swordID) == sword1);
             }
         }
         assertTrue(itemPresent);
