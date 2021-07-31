@@ -1,11 +1,14 @@
 package unsw.loopmania.npcs;
 
 import unsw.loopmania.PathPosition;
+
+import java.util.List;
+
 import unsw.loopmania.Character;
 
 public class Doggie extends BasicEnemy {
     public Doggie(PathPosition position) {
-        super(position, 0, 20, 100, 1, 1);
+        super(position, 0, 20, 100, 1, 1, 20);
     }
 
     private int distanceTravelled = 0;
@@ -41,8 +44,8 @@ public class Doggie extends BasicEnemy {
      * Stuns the character
      */
     @Override
-    public void applyEnemyBattleEffects(Character c) {
-        if (this.getHealth() > 0) {
+    public void applyEnemyEffects(Character c, boolean inBattle, List<BasicEnemy> enemies) {
+        if (inBattle && this.getHealth() > 0) {
             c.toggleStun();
         }
     }
