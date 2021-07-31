@@ -16,6 +16,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -269,6 +271,11 @@ public class LoopManiaWorldController {
     private MenuSwitcher shopMenuSwitcher;
 
     /**
+     * object handling switching to the end game screen
+     */
+    private MenuSwitcher endScreenSwitcher;
+
+    /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
      */
@@ -385,6 +392,9 @@ public class LoopManiaWorldController {
                 });
             }
         });
+
+
+        
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -442,6 +452,7 @@ public class LoopManiaWorldController {
                 ImageView soldier = new ImageView(soldierImage);
                 soldiers.add(soldier, i, 1);
             }
+
             // display the experience of the hero
             String charXP = Integer.toString(world.getCharacter().getXP());
             xp.setText(charXP);
@@ -451,6 +462,14 @@ public class LoopManiaWorldController {
             // display the health of the hero
             String charHealth = Integer.toString(world.getCharacter().getHealth());
             health.setText(charHealth);
+            if (world.getCharacter().getHealth() == 0) {
+                // check if has one ring & consume
+                // if not trigger end game screen
+                if (!world.consumeOneRing()) {
+                    switchToGameOver();
+                }
+            }
+
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -568,9 +587,6 @@ public class LoopManiaWorldController {
         System.out.println("Rewarding user\n");
         // 50/50 either item or card
 
-
-
-
         Random rd = new Random();
         if (rd.nextDouble() > 0.51) {
             if (enemy instanceof Slug) {
@@ -586,11 +602,11 @@ public class LoopManiaWorldController {
         } else {
             // RNG for card drops
             // if a card slots are full, discard and reward
+            double rgen = rd.nextDouble();
             if (world.getNumCards() >= world.getWidth()) {
                 Item itemReward = world.rewardDiscard();
                 onLoad(itemReward);
             }
-            double rgen = rd.nextDouble();
             Random rd2 = new Random();
             if (rgen > 0.9) {
                 // epic items
@@ -1103,6 +1119,24 @@ public class LoopManiaWorldController {
     public void switchToShopMenu() {
         pause();
         shopMenuSwitcher.switchMenu();
+    }
+
+    //////////////////////////////////////////////////////////////////////
+    //                          Game over UI                            //
+    //////////////////////////////////////////////////////////////////////
+
+    public void setGameOverSwitcher(MenuSwitcher endScreenSwitcher) {
+        this.endScreenSwitcher = endScreenSwitcher;
+    }
+
+    /**
+     * 
+     * Switch to game over screen if hero dies
+     * and does not have a onering available in his inventory
+     */
+    public void switchToGameOver() {
+        pause();
+        endScreenSwitcher.switchMenu();
     }
 
     /**

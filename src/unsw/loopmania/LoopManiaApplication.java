@@ -30,6 +30,12 @@ public class LoopManiaApplication extends Application {
         // alternatively, you could allow rescaling of the game (you'd have to program resizing of the JavaFX nodes)
         primaryStage.setResizable(false);
 
+        // load game over screen
+        GameOverController GameOverController = new GameOverController();
+        FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOverView.fxml"));
+        gameOverLoader.setController(GameOverController);
+        Parent gameOverRoot = gameOverLoader.load();
+
         // load the main game
         LoopManiaWorldControllerLoader loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
         mainController = loopManiaLoader.loadController();
@@ -60,7 +66,8 @@ public class LoopManiaApplication extends Application {
         // set functions which are activated when button click to switch menu is pressed
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
-        mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRootOne, primaryStage);});
+        mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRoot, primaryStage);});
+        mainController.setGameOverSwitcher(() -> {switchToRoot(scene, gameOverRoot, primaryStage);});
         mainMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
@@ -77,6 +84,12 @@ public class LoopManiaApplication extends Application {
         // when normal items button is pressed, the screen switches to shop screen one
         shopMenuControllerTwo.setShopScreenOne(() -> {
             switchToRoot(scene, shopMenuRootOne, primaryStage);
+        });
+        
+        // when main menu button is pressed, screen switches to main menu
+        GameOverController.setGameSwitcher(()-> {
+            switchToRoot(scene, mainMenuRoot, primaryStage);
+            mainController.terminate();
         });
         
         // deploy the main onto the stage
