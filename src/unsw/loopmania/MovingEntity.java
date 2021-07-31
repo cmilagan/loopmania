@@ -35,6 +35,28 @@ public abstract class MovingEntity extends Entity {
         position.moveUpPath();
     }
 
+    /**
+     * Move enemy to specified location 
+     * 
+     * Note: Used for helping enemies within support radius (by moving)
+     */
+    public void moveTo(int newPathPosition) {
+        position.setNewPosition(newPathPosition);
+    }
+
+    public PathPosition getPathPosition() {
+        return position;
+    }
+
+    /**
+     * Move enemy to specified location 
+     * 
+     * Note: Used for helping enemies within support radius (by moving)
+     */
+    public int getCurrentPositionIndex() {
+        return position.getPositionIndex();
+    }
+
     public SimpleIntegerProperty x() {
         return position.getX();
     }
