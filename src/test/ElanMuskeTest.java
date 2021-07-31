@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +74,7 @@ public class ElanMuskeTest {
     @Test
     public void testElanXP() {
         initializeWorld();
+        addCharacter();
         addElan();
         elan.setHealth(1);
         int currentXP = newCharacter.getXP();
@@ -88,6 +90,7 @@ public class ElanMuskeTest {
     @Test
     public void testCheckEnemiesHealed() {
         initializeWorld();
+        addCharacter();
         addElan();
 
         // spawn Zombie with reduced health
@@ -103,8 +106,67 @@ public class ElanMuskeTest {
         assertEquals(10, zombie.getHealth());
     }
 
-    // TODO: add test to check if the price of doggieCoin goes up on spawn
-    // TODO: add test to check if the price of doggieCoin goes down on defeat
+    /**
+     * Test if the value of Doggie coin is 100 in the beginning
+     */
+    @Test
+    public void testDoggieCoinInitial() {
+        initializeWorld();
+        assertEquals(100, testWorld.getDoggieCoinPrice());
+    }
+
+    /**
+     * Test if the value of Doggie coin varies between 100 and 500 when Elan isn't
+     * around
+     */
+    public void testDoggieCoinPriceNoElan() {
+        initializeWorld();
+        int min = 100;
+        int max = 500;
+
+        for (int i = 0; i < 50; i++) {
+            assertTrue(testWorld.getDoggieCoinPrice() >= min && testWorld.getDoggieCoinPrice() <= max);
+        }
+    }
+    
+    /**
+     * Test to check if the value of doggieCoin varies between 3000 and 10000
+     * when Elan has spawned.
+     */
+    public void testDoggieCoinPriceElan() {
+        initializeWorld();
+        addElan();
+        int min = 3000;
+        int max = 10000;
+
+        for (int i = 0; i < 50; i++) {
+            assertTrue(testWorld.getDoggieCoinPrice() >= min && testWorld.getDoggieCoinPrice() <= max);
+        }
+    }
+
+    /**
+     * Test to check if the price of doggieCoin varies from 0 and 10 for 5 rounds
+     * once Elan is defeated.
+     */
+    public void testDoggieCoinPriceElanDefeat() {
+        initializeWorld();
+        addCharacter();     
+        int min = 0;
+        int max = 10;
+
+        PathPosition elanPathPosition = new PathPosition(elanPosition, orderedPath);
+        ElanMuske weakElan = new ElanMuske(elanPathPosition);
+        weakElan.setHealth(5);
+        testWorld.addEnemy(weakElan);
+
+        testWorld.runBattles();
+
+        // decreased price
+        for (int i = 0; i < 5; i++) {
+            testWorld.runTickMoves();
+            assertTrue(testWorld.getDoggieCoinPrice() >= min && testWorld.getDoggieCoinPrice() <= max);
+        }
+    }
 
     /**
      * Setup template world
@@ -122,7 +184,9 @@ public class ElanMuskeTest {
         orderedPath.add(Pair.with(0, 2));
         orderedPath.add(Pair.with(0, 1));
         testWorld = new LoopManiaWorld(LOOP_SIZE, LOOP_SIZE, orderedPath);
+    }
 
+    public void addCharacter() {
         // initializing and adding the character
         PathPosition characterPathPosition = new PathPosition(characterPosition, orderedPath);
         newCharacter = new Character(characterPathPosition);
