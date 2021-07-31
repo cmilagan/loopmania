@@ -342,6 +342,16 @@ public class LoopManiaWorld {
     }
 
     /**
+     * checks if inventory is full. I.e., there are 
+     * inventory width times height many items
+     * @return
+     */
+    public boolean checkInventoryFull() {
+        return unequippedInventoryItems.size() == 
+        unequippedInventoryHeight * unequippedInventoryHeight;
+    }
+
+    /**
      * Given an ID that maps to an item in the shop, add the 
      * respective item to the MC's unquipped inventory given 
      * that the MC has sufficient gold to buy the item.
@@ -402,6 +412,23 @@ public class LoopManiaWorld {
 
         // not enough gold to buy
         return null;
+    }
+
+    /**
+     * Sell Doggie Coin.
+     * 
+     * Note: This will only sell one Doggie Coin per activation. 
+     * 
+     * If transaction is successful, return true, else false.
+     */
+    public boolean sellDoggieCoin() {
+        if (character.getDoggieCoin() > 0) {
+            character.decrementDoggieCoin();
+            int characterGold = character.getGold();
+            character.setGold(characterGold + getDoggieCoinPrice());   
+            return true;
+        }
+        return false;
     }
 
     /**

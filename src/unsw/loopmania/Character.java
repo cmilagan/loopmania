@@ -5,13 +5,11 @@ import java.util.Random;
 
 import org.javatuples.Pair;
 
-import javafx.beans.binding.BooleanExpression;
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
-import unsw.loopmania.items.Item;
 import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
@@ -22,7 +20,7 @@ import unsw.loopmania.npcs.BasicEnemy;
  */
 public class Character extends MovingEntity {
     private SimpleIntegerProperty gold = new SimpleIntegerProperty(500);
-    private int doggieCoin = 0;
+    private SimpleIntegerProperty doggieCoin = new SimpleIntegerProperty(0);
     private int health = 100;
     private int maxHealth = 100;
     private AttackItem equippedWeapon;            // a list of items that are equipped by the user
@@ -100,8 +98,12 @@ public class Character extends MovingEntity {
         return false;
     }
 
+    /**
+     * returns the number of DoggieCoins character has
+     * @return
+     */
     public int getDoggieCoin() {
-        return doggieCoin;
+        return doggieCoin.get();
     }
 
     public void setGold(int newGold) {
@@ -109,7 +111,17 @@ public class Character extends MovingEntity {
     }
 
     public void incrementDoggieCoin() {
-        doggieCoin += 1;
+        doggieCoin.subtract(1);
+    }
+
+    public void decrementDoggieCoin() {
+        if (doggieCoin.get() > 0) {
+            doggieCoin.subtract(1);
+        }
+    }
+
+    public SimpleIntegerProperty getSimpleIntegerDoggieCoin() {
+        return doggieCoin;
     }
 
     public void setMaxHealth(int newMaxHealth) {

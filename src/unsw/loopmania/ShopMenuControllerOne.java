@@ -29,6 +29,9 @@ public class ShopMenuControllerOne {
     private Text playerGold;
 
     @FXML
+    private Text doggieCoinValue;
+
+    @FXML
     private Text statusField;
 
     public ShopMenuControllerOne(LoopManiaWorld world, LoopManiaWorldController mainController) {
@@ -45,19 +48,25 @@ public class ShopMenuControllerOne {
             public void changed(ObservableValue<? extends Number> observable,
                     Number oldValue, Number newValue) {
                 IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
+                IntegerProperty doggieCoin = world.getCharacter().getSimpleIntegerDoggieCoin();
                 playerGold.textProperty().bind(characterGold.asString());
+                doggieCoinValue.textProperty().bind(doggieCoin.asString());
             }
         });
     }
     
     @FXML
     private void swordBuy() {
-        BattleItem boughtItem = world.buyItemByID(swordID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Sword!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(swordID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Sword!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Sword!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Sword!");
+            statusField.setText("You can't buy a Sword, inventory is full!");
         }
     }
 
@@ -68,18 +77,22 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Sword!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Sword to sell");
+            statusField.setText("You don't have a Sword to sell!");
         }
     }
 
     @FXML
     private void staffBuy() {
-        BattleItem boughtItem = world.buyItemByID(staffID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Staff!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(staffID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Staff!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Staff!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Staff!");
+            statusField.setText("You can't buy a Staff, inventory is full!");
         }
     }
 
@@ -90,18 +103,22 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Staff!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Staff to sell");
+            statusField.setText("You don't have a Staff to sell!");
         }
     }
 
     @FXML
     private void stakeBuy() {
-        BattleItem boughtItem = world.buyItemByID(stakeID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Stake!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(stakeID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Stake!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Stake!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Stake!");
+            statusField.setText("You can't buy a Stake, inventory is full!");
         }
     }
 
@@ -112,16 +129,17 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Stake!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Stake to sell");
+            statusField.setText("You don't have a Stake to sell!");
         }
     }
 
-    /**
-     * doggiecoin have a usage?
-     */
     @FXML
     private void doggieCoinSell() {
-        
+        if (world.sellDoggieCoin()) {
+            statusField.setText("Congratulations, you have sold one Doggie Coin!");
+        } else {
+            statusField.setText("You don't have a Doggie Coin to sell!");
+        }     
     }
 
     @FXML
@@ -142,7 +160,7 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Shield!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Shield to sell");
+            statusField.setText("You don't have a Shield to sell!");
         }
     }
 
@@ -164,7 +182,7 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Helmet!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Helmet to sell");
+            statusField.setText("You don't have a Helmet to sell!");
         }
     }
 
@@ -186,7 +204,7 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling Armour!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have Armour to sell");
+            statusField.setText("You don't have Armour to sell!");
         }
     }
 
@@ -208,7 +226,7 @@ public class ShopMenuControllerOne {
             statusField.setText("Thank you for selling a Health Potion!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have a Health Potion to sell");
+            statusField.setText("You don't have a Health Potion to sell!");
         }
     }
 
