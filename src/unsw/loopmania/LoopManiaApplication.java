@@ -29,6 +29,12 @@ public class LoopManiaApplication extends Application {
         // alternatively, you could allow rescaling of the game (you'd have to program resizing of the JavaFX nodes)
         primaryStage.setResizable(false);
 
+        // load game over screen
+        GameOverController GameOverController = new GameOverController();
+        FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOverView.fxml"));
+        gameOverLoader.setController(GameOverController);
+        Parent gameOverRoot = gameOverLoader.load();
+
         // load the main game
         LoopManiaWorldControllerLoader loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
         mainController = loopManiaLoader.loadController();
@@ -55,6 +61,7 @@ public class LoopManiaApplication extends Application {
         // e.g. from main menu to start the game, or from the game to return to main menu
         mainController.setMainMenuSwitcher(() -> {switchToRoot(scene, mainMenuRoot, primaryStage);});
         mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRoot, primaryStage);});
+        mainController.setGameOverSwitcher(() -> {switchToRoot(scene, gameOverRoot, primaryStage);});
         mainMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
@@ -63,6 +70,12 @@ public class LoopManiaApplication extends Application {
         shopMenuController.setGameSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
+        });
+        
+        // when main menu button is pressed, screen switches to main menu
+        GameOverController.setGameSwitcher(()-> {
+            switchToRoot(scene, mainMenuRoot, primaryStage);
+            mainController.terminate();
         });
         
         // deploy the main onto the stage
