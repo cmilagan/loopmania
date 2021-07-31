@@ -5,6 +5,7 @@ import java.util.List;
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.Character;
+import unsw.loopmania.LoopManiaWorld;
 
 /**
  * a basic form of enemy in the world
@@ -66,7 +67,7 @@ public class BasicEnemy extends MovingEntity {
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
         int damageDealt = character.getDamage();
         
-        for (AlliedSoldier s: alliedSoldiers) {
+         for (AlliedSoldier s: alliedSoldiers) {
             damageDealt += s.getDamage();
         }
 
@@ -83,7 +84,14 @@ public class BasicEnemy extends MovingEntity {
         return false;
     }
 
-    public void applyEnemyEffects(Character c) {
+    public void applyEnemyEffects(Character c, LoopManiaWorld world) {
+        /**
+         * if character has a Staff, can apply trance if chance permits
+         * 
+         * Note: strategy pattern used here
+         */
+        if ()
+
         return;
     }
 }

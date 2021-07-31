@@ -584,10 +584,10 @@ public class LoopManiaWorld {
             // Continuously fight until character loses or all enemies are defeated
             List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
             // Newly added zombies can't attack until next phase
-            for (BasicEnemy e : currentBattleEnemies) {
+            for (BasicEnemy enemy : currentBattleEnemies) {
                 if (alliedSoldiers.size() == 0) {
                     // Calculate Character
-                    int characterHealth = character.applyEnemyDamage(e);
+                    int characterHealth = character.applyEnemyDamage(enemy);
                     if (characterHealth == 0) {
                         character.destroy();
                         break;
@@ -600,7 +600,7 @@ public class LoopManiaWorld {
                      * If statement for testing purposes only. The health of Allied Soldier should
                      * never initially be -1 unless specifically set to be.
                      */
-                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(e);
+                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(enemy);
 
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {                    
                         int alliedSoldierHealth = alliedSoldier.getHealth();
@@ -622,17 +622,18 @@ public class LoopManiaWorld {
 
                     // remaining allied soldiers should attack the enemy
                     for (AlliedSoldier a : alliedSoldiers) {
-                        e.applyBuildingDamage(a.getDamage());
+                        enemy.applyBuildingDamage(a.getDamage());
                     }
                 }
-                // Calculate Enemy
-                int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
+                // Calculate enemy health
+                int enemyHealth = enemy.applyCharacterDamage(character, alliedSoldiers);
 
-                e.applyEnemyEffects(character);
+                // if character has a special weapon on hand, calculate the effect
+                enemy.applyEnemyEffects(character, this);
 
                 if (enemyHealth == 0) {
-                    defeatedEnemies.add(e);
-                    battleEnemies.remove(e);
+                    defeatedEnemies.add(enemy);
+                    battleEnemies.remove(enemy);
                     System.out.println("enemy killed");
                 }
             }

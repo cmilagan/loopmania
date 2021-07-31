@@ -88,7 +88,7 @@ public class ItemStatsTest {
     @Test
     public void testStaffStats() {
         Staff staff = new Staff(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        assertEquals(8, staff.getItemCost());
+        assertEquals(25, staff.getItemCost());
         assertEquals(8, staff.getItemDurability());
         assertEquals(3, staff.inflictDamage());
 
