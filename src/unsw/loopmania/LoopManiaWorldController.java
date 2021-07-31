@@ -490,6 +490,11 @@ public class LoopManiaWorldController {
                 }
             }
 
+            // remove expired highlights
+            for(Node n : squares.getChildren()) {
+                n.setOpacity(1);
+            }
+
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -1026,9 +1031,20 @@ public class LoopManiaWorldController {
                             if (currentlyDraggedType == draggableType){
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
+                                int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
+                                int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+                                Integer cIndex = GridPane.getColumnIndex(n);
+                                Integer rIndex = GridPane.getRowIndex(n);
+                                int x = cIndex == null ? 0 : cIndex;
+                                int y = rIndex == null ? 0 : rIndex;
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    n.setOpacity(0.7);
-                                }
+                                    boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                    if (!canPlace) {
+                                        n.setOpacity(1);
+                                    } else {
+                                        n.setOpacity(0.7);
+                                    }
+                                } 
                             }
                             event.consume();
                         }
