@@ -13,7 +13,7 @@ import unsw.loopmania.PathPosition;
 import unsw.loopmania.npcs.Doggie;
 
 public class DoggieTest {
-    private int slugPosition = 1;
+    private int doggiePosition = 1;
     private int characterPosition = 0;
     private Doggie doggie;
     private Character newCharacter;
@@ -108,8 +108,8 @@ public class DoggieTest {
         newCharacter = new Character(characterPathPosition);
         testWorld.setCharacter(newCharacter);
 
-        // initializing slug
-        PathPosition doggiePathPosition = new PathPosition(slugPosition, orderedPath);
+        // initializing Doggie 
+        PathPosition doggiePathPosition = new PathPosition(doggiePosition, orderedPath);
         doggie = new Doggie(doggiePathPosition);
         testWorld.addEnemy(doggie);
     }

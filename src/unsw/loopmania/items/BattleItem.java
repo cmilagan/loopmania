@@ -17,6 +17,7 @@ public class BattleItem extends Item {
         super(x, y);
         this.itemCost = itemCost;
         this.itemDurability = itemDurability;
+        this.usage = 0;
     }
 
     public int getItemCost() {
@@ -29,6 +30,10 @@ public class BattleItem extends Item {
 
     public int getUsage() {
         return usage;
+    }
+
+    public void incrementUsage() {
+        this.usage++;
     }
 }
 
