@@ -148,3 +148,10 @@
     - 8 tiles x 6 tiles
 - What is the size of the settings screen?
     - 8 tiles x 6 tiles
+
+## Doggie Coin Related Assumptions:
+- 1 DCN = 100 Gold in the beginning of the game (since it can only be gained by defeating Doggie)
+- Every round the price of DCN will vary randomly from 100 - 500 Gold
+- Once Elan Muske joins the game, the price of DCN varies between 3,000 - 10,000 Gold
+    - This is because it's unlikely that the Hero gets to the shop before killing Elan
+- Once Elan Muske is defeated, the price of DCN varies from 0 - 10 Gold
