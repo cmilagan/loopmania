@@ -50,7 +50,7 @@
 - Support and Battle radii are calculated by the pythagoras theorem
     - if the character is within the battle radius of an enemy, a battle is engaged.
 - If the One Ring is in the character's inventory, the character respawns automatically on defeat.
-- If character has Staff equipped, the chance for trance is 40%.
+- If character has Staff equipped, the chance for inflicting a trance is 20%.
 - The trance for a Staff will last for 20 ticks of the world. I.e., the enemy which was turned into an allied
 soldier will return back into its original enemy form after 20 ticks of the world. Given that it was still alive 
 in the allied soldier state.
@@ -98,7 +98,7 @@ in the allied soldier state.
     - Staff: 3, 8
     - Stake Damage: 4, 8
         - Stake has damage = 12 on Vampires.
-- Item Costs at the Hero’s Castle:
+- Item Costs (in Gold) at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
     - Staff: 25
@@ -106,7 +106,8 @@ in the allied soldier state.
     - Shield: 10
     - Helmet: 10
     - Health Potion: 20
-    - The One Ring: 500
+- As part of extending the project with ideas, rare items can be bought from the Item Shop with the costs (in Gold):
+    - The One Ring: 5000
 - Item rarity (since some items cost more) - excluding rare items
     common 60%, uncommon 40%
     - Sword: common
@@ -127,6 +128,7 @@ in the allied soldier state.
 - Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping. (this changes based on enemy type defeated)
 - Defeating higher level enemies increases the chance of dropping rare items (promotes placing zombie pit buildings)
 - Human Player can sell items (which are buy-able from the shop) which they have at the shop for a 70% refund of the original amount of the purchase
+- When the Human Player wants to sell an item and has multiple quantities of it, when the player sells the item, the shop backend will choose the item which has the highest number of uses to remove in exchange for 70% refund of original amount
     
 ## Game State Related Assumptions:
 - The Game starts with the Vampire Castle and Zombie Pit already built

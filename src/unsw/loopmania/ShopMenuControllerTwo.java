@@ -1,4 +1,4 @@
-package unsw;
+package unsw.loopmania;
 
 import java.io.IOException;
 
@@ -7,9 +7,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
-import unsw.loopmania.LoopManiaWorld;
-import unsw.loopmania.LoopManiaWorldController;
-import unsw.loopmania.MenuSwitcher;
 import unsw.loopmania.items.BattleItem;
 
 public class ShopMenuControllerTwo {
@@ -23,7 +20,6 @@ public class ShopMenuControllerTwo {
 
     @FXML
     private Text statusField;
-
 
     public ShopMenuControllerTwo(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
@@ -46,12 +42,16 @@ public class ShopMenuControllerTwo {
 
     @FXML
     public void buyOneRing() {
-        BattleItem boughtItem = world.buyItemByID(oneRingID);
-        if (boughtItem != null) {
-            statusField.setText("Congratulations, you have bought The One Ring!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(oneRingID);
+            if (boughtItem != null) {
+                statusField.setText("Congratulations, you have bought The One Ring!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy The One Ring!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy The One Ring!");
+            statusField.setText("You can't buy The One Ring, inventory is full! Try selling some items");
         }
     }
 
@@ -62,7 +62,7 @@ public class ShopMenuControllerTwo {
             statusField.setText("Thank you for selling The One Ring!");
             world.sellItem(item);
         } else {
-            statusField.setText("You don't have The One Ring to sell");
+            statusField.setText("You don't have The One Ring to sell!");
         }
     }
 
