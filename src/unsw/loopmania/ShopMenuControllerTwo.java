@@ -85,8 +85,8 @@ public class ShopMenuControllerTwo {
     private void buyItem(int itemID) {
         BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == oneRingID) {
-                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Congratulations, you have bought The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Congratulations, you have bought The Anduril!");
@@ -95,8 +95,8 @@ public class ShopMenuControllerTwo {
             } 
             mainController.onLoad(boughtItem);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == oneRingID) {
-                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
                 statusField.setText("Insufficient funds to buy The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Insufficient funds to buy The Anduril!");
@@ -111,7 +111,6 @@ public class ShopMenuControllerTwo {
         if (itemToSell != null) {
             LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == oneRingID) {
-                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Thank you for selling The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Thank you for selling The Anduril!");
@@ -122,8 +121,6 @@ public class ShopMenuControllerTwo {
         } else {
             LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == oneRingID) {
-                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
-
                 statusField.setText("You don't have The One Ring to sell!");
             } else if (itemID == andurilID) {
                 statusField.setText("You don't have The Anduril to sell!");
