@@ -172,9 +172,10 @@ public class ElanMuskeTest {
      * Test to check if Elan is defeated by a character wielding Anduril, Flame of the West, which does 20 damage
      * Given that Elan has a health of 40 and damage of 25,
      *      The character with Anduril has a health of 100 and a damage of 20, and
-     *      The Elan moves first,
+     *      Elan moves first,
      * The battle should end with the Character having a health of 50 remaining
      */
+    @Test
     public void testElanDamageAnduril() {
         initializeWorld();
         addCharacter();
