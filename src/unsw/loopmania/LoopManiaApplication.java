@@ -163,7 +163,7 @@ public class LoopManiaApplication extends Application {
 
     @Override
     public void stop() {
-        // wrap up activities when exit program
+        // Erases the old game and starts a new one
         mainController.terminate();
         try {
             start(stage);
