@@ -1074,6 +1074,7 @@ public class LoopManiaWorldController {
                             if (currentlyDraggedType == draggableType){
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
+
                                 int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
                                 int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
                                 Integer cIndex = GridPane.getColumnIndex(n);
@@ -1081,12 +1082,26 @@ public class LoopManiaWorldController {
                                 int x = cIndex == null ? 0 : cIndex;
                                 int y = rIndex == null ? 0 : rIndex;
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
-                                    if (!canPlace) {
-                                        n.setOpacity(1);
-                                    } else {
-                                        n.setOpacity(0.7);
+                                    switch (draggableType) {
+                                        case CARD:
+                                            boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                            if (!canPlace) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        case ITEM:
+                                            if (world.equipItemByCoordinates(nodeX, nodeY, x, y) == null) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        default:
+                                            break;
                                     }
+                                    
                                 } 
                             }
                             event.consume();
