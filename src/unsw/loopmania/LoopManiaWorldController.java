@@ -388,6 +388,9 @@ public class LoopManiaWorldController {
                         if (character.getX() == 0 && character.getY() == 0 && canSwitch(world)) {
                             switchToShopMenu();
                         }
+                        for (Node n: squares.getChildren()) {
+                            n.setOpacity(1);
+                        }
                     }
                 });
             }
@@ -1117,11 +1120,24 @@ public class LoopManiaWorldController {
                                 int x = cIndex == null ? 0 : cIndex;
                                 int y = rIndex == null ? 0 : rIndex;
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
-                                    if (!canPlace) {
-                                        n.setOpacity(1);
-                                    } else {
-                                        n.setOpacity(0.7);
+                                    switch (draggableType) {
+                                        case CARD:
+                                            boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                            if (!canPlace) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        case ITEM:
+                                            if (world.equipItemByCoordinates(nodeX, nodeY, x, y) == null) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        default:
+                                            break;
                                     }
                                 } 
                             }
