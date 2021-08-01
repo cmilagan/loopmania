@@ -485,6 +485,8 @@ public class LoopManiaWorld {
                 items.add((OneRing) entity);
             } else if (itemID == 7 && entity instanceof HealthPotion) {
                 items.add((HealthPotion) entity);
+            } else if (itemID == 8 && entity instanceof Anduril) {
+                items.add((Anduril) entity);
             }
         }
 
@@ -529,9 +531,11 @@ public class LoopManiaWorld {
         Staff staff = new Staff(newX, newY);
         Stake stake = new Stake(newX, newY);
         Sword sword = new Sword(newX, newY);
+        Anduril anduril = new Anduril(newX, newY);
         shopItems.add(staff);
         shopItems.add(stake);
         shopItems.add(sword);
+        shopItems.add(anduril);
 
         // adding other items
         OneRing oneRing = new OneRing(newX, newY);
@@ -1092,11 +1096,11 @@ public class LoopManiaWorld {
         double choice = rand.nextDouble();
         System.out.println(choice);
         Item addedItem = null;
+        Random nrand2 = new Random();
         if (choice < rareBound) {
             System.out.println("basic item");
             Random nrand1 = new Random();
             double commonUncommon = nrand1.nextDouble();
-            Random nrand2 = new Random();
             if (commonUncommon < 0.6) {
                 // common item drops
                 int nextChoice = nrand2.nextInt(2);
@@ -1132,9 +1136,16 @@ public class LoopManiaWorld {
                 } 
             }
         } else {
-            // rare item (the one ring)
-            addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            // rare item drops
+            int nextChoice = nrand2.nextInt(2);
+
+            if (nextChoice == 0) {
+                addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 1) {
+                addedItem = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1())); 
+            }
         }
         unequippedInventoryItems.add(addedItem);
         return addedItem;
