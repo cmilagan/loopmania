@@ -20,6 +20,8 @@ public class ShopMenuControllerOne {
     private int stakeID = 4;
     private int swordID = 5;
     private int healthPotionID = 7;
+    private int protectiveGearCount = 0;
+    private int healthPotionBuyCount = 0;
     private LoopManiaWorld world;
     private MenuSwitcher gameSwitcher;
     private MenuSwitcher shopScreenTwoSwitcher;
@@ -142,15 +144,58 @@ public class ShopMenuControllerOne {
         }     
     }
 
+    private void addShield() {
+        BattleItem boughtItem = world.buyItemByID(shieldID);
+        if (boughtItem != null) {
+            statusField.setText("Thank you for purchasing a Shield!");
+            mainController.onLoad(boughtItem);
+        } else {
+            statusField.setText("Insufficient funds to buy a Shield!");
+        }
+    }
+
+    private void addArmour() {
+        BattleItem boughtItem = world.buyItemByID(armorID);
+        if (boughtItem != null) {
+            statusField.setText("Thank you for purchasing Armour!");
+            mainController.onLoad(boughtItem);
+        } else {
+            statusField.setText("Insufficient funds to buy Armour!");
+        }
+    }
+
+    private void addHelmet() {
+        BattleItem boughtItem = world.buyItemByID(helmetID);
+        if (boughtItem != null) {
+            statusField.setText("Thank you for purchasing a Helmet!");
+            mainController.onLoad(boughtItem);
+        } else {
+            statusField.setText("Insufficient funds to buy a Helmet!");
+        }
+    }
+
+    private void addGearBerserkerMode(int itemID) {
+        if (protectiveGearCount == 0) {
+            if (itemID == shieldID) {
+                addShield();    
+            } else if (itemID == armorID) {
+                addArmour();
+            } else if (itemID == helmetID) {
+                addHelmet();
+            }
+            protectiveGearCount++;
+        } else {
+            statusField.setText("Cannot buy more than one piece of protective gear in Berserker Mode!");
+        }
+    }
+
     @FXML
     private void shieldBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(shieldID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Shield!");
-                mainController.onLoad(boughtItem);
+            if (world.getBerserker()) {
+                addGearBerserkerMode(shieldID);
             } else {
-                statusField.setText("Insufficient funds to buy a Shield!");
+                addShield();
             }
         } else {
             statusField.setText("You can't buy a Shield, inventory is full! Try selling some items");
@@ -171,12 +216,10 @@ public class ShopMenuControllerOne {
     @FXML
     private void helmetBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(helmetID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Helmet!");
-                mainController.onLoad(boughtItem);
+            if (world.getBerserker()) {
+                addGearBerserkerMode(helmetID);
             } else {
-                statusField.setText("Insufficient funds to buy a Helmet!");
+                addHelmet();
             }
         } else {
             statusField.setText("You can't buy a Helmet, inventory is full! Try selling some items");
@@ -197,13 +240,11 @@ public class ShopMenuControllerOne {
     @FXML
     private void armourBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(armorID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing Armour!");
-                mainController.onLoad(boughtItem);
+            if (world.getBerserker()) {
+                addGearBerserkerMode(armorID);
             } else {
-                statusField.setText("Insufficient funds to buy Armour!");
-            }
+                addArmour();
+            } 
         } else {
             statusField.setText("You can't buy Armour, inventory is full! Try selling some items");
         }
@@ -220,15 +261,30 @@ public class ShopMenuControllerOne {
         }
     }
 
+    private void addHealthPotion() {
+        BattleItem boughtItem = world.buyItemByID(healthPotionID);
+        if (boughtItem != null) {
+            statusField.setText("Thank you for purchasing a Health Potion!");
+            mainController.onLoad(boughtItem);
+            healthPotionBuyCount++;
+        } else {
+            statusField.setText("Insufficient funds to buy a Health Potion!");
+        }
+    }
+
     @FXML
     private void healthPotionBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(healthPotionID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Health Potion!");
-                mainController.onLoad(boughtItem);
+            // if survival mode is on, restrict buying Health Potion to 1
+            if (world.getSurvival()) {
+                if (healthPotionBuyCount == 0) {
+                    addHealthPotion();
+                    healthPotionBuyCount++;
+                } else  {
+                    statusField.setText("Cannot buy more than one Health Potion in Survival Mode!");
+                } 
             } else {
-                statusField.setText("Insufficient funds to buy a Health Potion!");
+                addHealthPotion();
             }
         } else {
             statusField.setText("You can't buy a Health Potion, inventory is full! Try selling some items");
