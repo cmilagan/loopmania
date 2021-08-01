@@ -13,6 +13,9 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -64,6 +67,7 @@ import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
 
+import javafx.scene.shape.Rectangle;
 import java.util.EnumMap;
 import java.io.File;
 import java.io.IOException;
@@ -107,7 +111,7 @@ public class LoopManiaWorldController {
      * Showcase characters current health
      */
     @FXML
-    private Text health;
+    private Rectangle healthbar;
     
     /**
      * Showcase characters current gold
@@ -346,8 +350,6 @@ public class LoopManiaWorldController {
             soldiers.add(groundView, x, 1);
         }
 
-        // health bar
-        health.setText("100");
         // gold text
         gold.setText("0");
         // experience text
@@ -505,8 +507,13 @@ public class LoopManiaWorldController {
             String charGold = Integer.toString(world.getCharacter().getGold());
             gold.setText(charGold);
             // display the health of the hero
-            String charHealth = Integer.toString(world.getCharacter().getHealth());
-            health.setText(charHealth);
+
+            int barPx = 80;
+            float health = world.getCharacter().getHealth();
+            float maxHealth = world.getCharacter().getMaxHealth();
+            float healthPercentage = health / maxHealth;
+            healthbar.setWidth(barPx * healthPercentage);
+            
 
             // Check to see if the win conditions are met
             if ((world.getCharacter().getGold() >= world.getWinGold())

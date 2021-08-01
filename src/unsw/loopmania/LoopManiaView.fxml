@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -22,13 +23,14 @@
     <VBox>
         <!-- HBox is used to stack items horizontally left to right -->
         <HBox>
-            <VBox alignment="CENTER" prefHeight="366.0" prefWidth="135.0" spacing="60.0">
+            <VBox alignment="CENTER" prefHeight="366.0" prefWidth="103.0" spacing="60.0">
                 <children>
                     <!-- equippedItems contains the equipment equipped by the character in special slots -->
                     <!-- TODO = extend this to have slots for equipping armour, shields, helmets, and any other equippable items -->
-                    <GridPane fx:id="equippedItems" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+                    <GridPane fx:id="equippedItems" prefHeight="147.0" prefWidth="232.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
                     <columnConstraints>
                         <ColumnConstraints />
+                     <ColumnConstraints />
                      <ColumnConstraints />
                      <ColumnConstraints />
                      <ColumnConstraints />
@@ -58,7 +60,7 @@
                         </GridPane.margin>
                         </ImageView>
                         <!-- shieldCell is the cell where a shield intended to be equipped will be dragged by the human player -->
-                        <ImageView id="shieldCell" GridPane.columnIndex="3" GridPane.rowIndex="2" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">    
+                        <ImageView id="shieldCell" GridPane.columnIndex="4" GridPane.rowIndex="2" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">    
                             <image>
                                 <Image url="@../../images/shield_unequipped.png" />
                             </image>
@@ -123,27 +125,24 @@
                         </ImageView>
                      <Text fx:id="gold" fill="#c7d413" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="4" GridPane.rowIndex="1">
                         <font>
-                           <Font name="Garamond" size="25.0" />
+                           <Font name="Garamond Bold" size="25.0" />
                         </font>
                         <GridPane.margin>
                            <Insets left="5.0" />
                         </GridPane.margin></Text>
                      <Text fill="#bc20c1" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" GridPane.columnIndex="4" GridPane.rowIndex="2" fx:id="xp">
                         <font>
-                           <Font name="Garamond" size="25.0" />
+                           <Font name="Garamond Bold" size="25.0" />
                         </font>
                         <GridPane.margin>
                            <Insets left="5.0" />
                         </GridPane.margin>
                      </Text>
-                     <Text fx:id="health" fill="#d41313" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" GridPane.columnIndex="4">
-                        <font>
-                           <Font name="Garamond" size="25.0" />
-                        </font>
+                     <Rectangle fx:id="healthbar" arcHeight="5.0" arcWidth="5.0" fill="#ff1f1f" height="18.0" stroke="BLACK" strokeType="INSIDE" width="80.0" GridPane.columnIndex="4">
                         <GridPane.margin>
-                           <Insets left="5.0" />
+                           <Insets left="3.0" />
                         </GridPane.margin>
-                     </Text>
+                     </Rectangle>
                     </children>
                     </GridPane>
                     <!-- clicking this button returns the human player to the main menu -->
