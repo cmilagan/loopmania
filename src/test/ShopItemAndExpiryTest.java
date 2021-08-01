@@ -364,35 +364,35 @@ public class ShopItemAndExpiryTest {
         assertTrue(itemPresent);
     }
 
-    @Test
-    public void testBuyTreeStump() {
-        boolean itemPresent = false;
-        for (BattleItem item : battleItems) {
-            if (item instanceof TreeStump) {
-                TreeStump treeStump = (TreeStump) item;
-                itemPresent = true;
+    // @Test
+    // public void testBuyTreeStump() {
+    //     boolean itemPresent = false;
+    //     for (BattleItem item : battleItems) {
+    //         if (item instanceof TreeStump) {
+    //             TreeStump treeStump = (TreeStump) item;
+    //             itemPresent = true;
 
-                // character has enough gold to buy item
-                newCharacter.setGold(treeStump.getItemCost());
+    //             // character has enough gold to buy item
+    //             newCharacter.setGold(treeStump.getItemCost());
 
-                // character should be able to buy item
-                assertTrue(testWorld.buyItemByID(treeStumpID) != null);
+    //             // character should be able to buy item
+    //             assertTrue(testWorld.buyItemByID(treeStumpID) != null);
 
-                // item should appear in character's inventory
-                boolean equipmentContains = false;
-                for (Entity entities : testWorld.getCharacterInventory()) {
-                    if (entities instanceof TreeStump) {
-                        equipmentContains = true;
-                    }
-                }
-                assertTrue(equipmentContains);
+    //             // item should appear in character's inventory
+    //             boolean equipmentContains = false;
+    //             for (Entity entities : testWorld.getCharacterInventory()) {
+    //                 if (entities instanceof TreeStump) {
+    //                     equipmentContains = true;
+    //                 }
+    //             }
+    //             assertTrue(equipmentContains);
 
-                // cant buy another item, insufficient gold
-                assertFalse(testWorld.buyItemByID(treeStumpID) != null);
-            }
-        }
-        assertTrue(itemPresent);
-    }
+    //             // cant buy another item, insufficient gold
+    //             assertFalse(testWorld.buyItemByID(treeStumpID) != null);
+    //         }
+    //     }
+    //     assertTrue(itemPresent);
+    // }
 
     @Test
     public void testBuyStaff() {

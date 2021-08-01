@@ -28,17 +28,12 @@ public class LoopManiaSoundPlayer {
 		}
 	};
 
-	// static private void adjustVolume() {
-	// 	sounds.forEach((type, audio) -> audio.setVolume(LoopManiaApplication.getGameVolume() / 100D));
-	// }
 
 	static public void playSoundEffect(LoopManiaSound sound_type) {
-		// adjustVolume();
 		sounds.get(sound_type).play();
 	}
 
 	static public void playBGM() {
-		// adjustVolume();
 		AudioClip MUSIC = sounds.get(LoopManiaSound.MUSIC);
 		MUSIC.setCycleCount(AudioClip.INDEFINITE);
 		;

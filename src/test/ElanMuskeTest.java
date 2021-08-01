@@ -199,18 +199,18 @@ public class ElanMuskeTest {
      * The battle should end with the Character having a health of 50 remaining
      */
     @Test
-    public void testTreeStumpDefence() {
-        initializeWorld();
-        addCharacter();
-        addElan();
+    // public void testTreeStumpDefence() {
+    //     initializeWorld();
+    //     addCharacter();
+    //     addElan();
 
-        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        newCharacter.setTreeStump(treeStump);
+    //     TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+    //     newCharacter.setTreeStump(treeStump);
 
-        testWorld.runBattles();
+    //     testWorld.runBattles();
 
-        assertEquals(50, newCharacter.getHealth());
-    }
+    //     assertEquals(50, newCharacter.getHealth());
+    // }
     /**
      * Setup template world
      */
