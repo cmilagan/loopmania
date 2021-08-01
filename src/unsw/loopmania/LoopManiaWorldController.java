@@ -221,6 +221,8 @@ public class LoopManiaWorldController {
     private Image stakeImage;
     private Image staffImage;
     private Image ringImage;
+    private Image andurilImage;
+    private Image treeStumpImage;
 
     // enemy images
     private Image slugImage;
@@ -334,7 +336,7 @@ public class LoopManiaWorldController {
         stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
         helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
         potionImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
-        
+        andurilImage = new Image((new File("src/images/anduril.png")).toURI().toString());
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
 
