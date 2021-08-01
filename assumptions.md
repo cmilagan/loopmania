@@ -98,6 +98,8 @@ in the allied soldier state.
     - Staff: 3, 8
     - Stake Damage: 4, 8
         - Stake has damage = 12 on Vampires.
+    - Anduril, Flame of the West: 15, 20
+        - Anduril has damage = 20 on Bosses.
 - Item Costs (in Gold) at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
@@ -107,7 +109,9 @@ in the allied soldier state.
     - Helmet: 10
     - Health Potion: 20
 - As part of extending the project with ideas, rare items can be bought from the Item Shop with the costs (in Gold):
-    - The One Ring: 5000
+    - The One Ring:                 5000
+    - Anduril, Flame of the west:   7000
+    - Tree Stump:                   7000
 - Item rarity (since some items cost more) - excluding rare items
     common 60%, uncommon 40%
     - Sword: common
