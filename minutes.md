@@ -289,6 +289,10 @@ Milestone 3:
 
 ### Updates:
 
+Difficulties faced from last meeting:
+
+Since the last meeting, there has been trouble figuring out how to accomplish screen switching. But after much discussion, eventually it was figured out and multiple screens were created in the frontend to provide a better user experience. Also implementing the different design patterns to previous parts of code we had looked over last time. Figuring out if the extensions we thought of were possible in the short time frame so far.
+
 What has been completed so far:
 
 * Implement OneRing -> Prats
