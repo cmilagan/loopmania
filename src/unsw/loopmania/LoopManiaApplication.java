@@ -18,10 +18,7 @@ public class LoopManiaApplication extends Application {
      */
     private LoopManiaWorldController mainController;
     private Stage stage;
-
-    public void DungeonScreen(Stage stage) {
-		this.stage = stage;
-	}
+    private boolean newGame = false;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -82,7 +79,15 @@ public class LoopManiaApplication extends Application {
         Parent shopMenuRootTwo = shopLoaderTwo.load();
 
         // create new scene with the main menu (so we start with the main menu)
-        Scene scene = new Scene(mainMenuRoot);
+        // unless it new game is selected, then start with new game menu
+        Scene scene;
+        if (newGame) {
+            newGame = false;
+            scene = new Scene(gameMenuRoot);
+        } else {
+            scene = new Scene(mainMenuRoot);
+        }      
+
         
         // set functions which are activated when button click to switch menu is pressed
         // e.g. from main menu to start the game, or from the game to return to main menu
@@ -92,6 +97,7 @@ public class LoopManiaApplication extends Application {
         
         mainMenuController.setNewGameSwitcher(() -> {
             switchToRoot(scene, gameMenuRoot, primaryStage);
+            stop();
         });
 
         mainMenuController.setExitSwitcher(() -> {
@@ -165,6 +171,7 @@ public class LoopManiaApplication extends Application {
         // Erases the old game and starts a new one
         mainController.terminate();
         try {
+            newGame = true;
             start(stage);
         } catch (IOException e) {
             System.out.println("Restart Error");
