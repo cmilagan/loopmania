@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +86,8 @@ public class ZombieTest {
      * Given that Elan has a health of 10 and damage of 8,
      *      The character with Anduril has a health of 100 and a damage of 20, and
      *      The Zombie moves first,
-     * The battle should end with the Character having a health of 92 remaining
+     * The battle should end with the Character having a health of 92 or 76 remaining.
+     * This is because of the 20% chance of a Critical hit occuring.
      */
     @Test
     public void testZombieDamageAnduril() {
@@ -96,7 +98,8 @@ public class ZombieTest {
 
         testWorld.runBattles();
 
-        assertEquals(92, newCharacter.getHealth());
+        int characterHealth = newCharacter.getHealth();
+        assertTrue(characterHealth == 92 || characterHealth == 76);
     }
     /**
      * Setup template world
