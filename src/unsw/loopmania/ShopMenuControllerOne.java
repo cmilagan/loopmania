@@ -95,35 +95,39 @@ public class ShopMenuControllerOne {
          * when this value changes, we know that character is now initialized and so we can
          * bi-directionally connect character's gold stats to the Text: playerGold field 
          */
-        swordBuyPrice.setText(String.valueOf(getItemPrice(swordID)));
-        swordSellPrice.setText(String.valueOf(getItemSellValue(swordID)));
-
-        staffBuyPrice.setText(String.valueOf(getItemPrice(staffID)));
-        staffSellPrice.setText(String.valueOf(getItemSellValue(staffID)));
-
-        stakeBuyPrice.setText(String.valueOf(getItemPrice(stakeID)));
-        stakeSellPrice.setText(String.valueOf(getItemSellValue(stakeID)));
-
-        shieldBuyPrice.setText(String.valueOf(getItemPrice(shieldID)));
-        shieldSellPrice.setText(String.valueOf(getItemSellValue(shieldID)));
-
-        helmetBuyPrice.setText(String.valueOf(getItemPrice(helmetID)));
-        helmetSellPrice.setText(String.valueOf(getItemPrice(helmetID)));
-
-        armorBuyPrice.setText(String.valueOf(getItemPrice(armorID)));
-        armorSellPrice.setText(String.valueOf(getItemPrice(armorID)));
-
-        hpBuyPrice.setText(String.valueOf(getItemPrice(healthPotionID)));
-        hpSellPrice.setText(String.valueOf(getItemPrice(healthPotionID)));
-
         world.getCharacter().x().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observable,
                     Number oldValue, Number newValue) {
                 IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
                 IntegerProperty doggieCoin = world.getCharacter().getSimpleIntegerDoggieCoin();
+
+                /**
+                 * also update the cost/sell value of the weapons in the front-end 
+                 */
                 playerGold.textProperty().bind(characterGold.asString());
                 doggieCoinValue.textProperty().bind(doggieCoin.asString());
+
+                swordBuyPrice.setText(String.valueOf(getItemPrice(swordID)));
+                swordSellPrice.setText(String.valueOf(getItemSellValue(swordID)));
+
+                staffBuyPrice.setText(String.valueOf(getItemPrice(staffID)));
+                staffSellPrice.setText(String.valueOf(getItemSellValue(staffID)));
+
+                stakeBuyPrice.setText(String.valueOf(getItemPrice(stakeID)));
+                stakeSellPrice.setText(String.valueOf(getItemSellValue(stakeID)));
+
+                shieldBuyPrice.setText(String.valueOf(getItemPrice(shieldID)));
+                shieldSellPrice.setText(String.valueOf(getItemSellValue(shieldID)));
+
+                helmetBuyPrice.setText(String.valueOf(getItemPrice(helmetID)));
+                helmetSellPrice.setText(String.valueOf(getItemSellValue(helmetID)));
+
+                armorBuyPrice.setText(String.valueOf(getItemPrice(armorID)));
+                armorSellPrice.setText(String.valueOf(getItemSellValue(armorID)));
+
+                hpBuyPrice.setText(String.valueOf(getItemPrice(healthPotionID)));
+                hpSellPrice.setText(String.valueOf(getItemSellValue(healthPotionID)));
             }
         });
     }
