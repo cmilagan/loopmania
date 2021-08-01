@@ -125,6 +125,12 @@ public class LoopManiaWorldController {
     @FXML
     private Text xp;
 
+    @FXML
+    private Text dogecoin;
+
+    @FXML
+    private Text loopcounter;
+
     // /**
     //  * Showcase characters current health
     //  */
@@ -354,6 +360,8 @@ public class LoopManiaWorldController {
         gold.setText("0");
         // experience text
         xp.setText("0");
+        loopcounter.setText("0");
+        dogecoin.setText("0");
         // Add the ground first so it is below all other entities (inculding all the twists and turns)
         for (int x = 0; x < world.getWidth(); x++) {
             for (int y = 0; y < world.getHeight(); y++) {
@@ -514,7 +522,12 @@ public class LoopManiaWorldController {
             float healthPercentage = health / maxHealth;
             healthbar.setWidth(barPx * healthPercentage);
             
-
+            // display the doggie coin of the user
+            String doggieCoin = Integer.toString(world.getCharacter().getDoggieCoin());
+            dogecoin.setText(doggieCoin);
+            // display the loop number
+            String loopNum = Integer.toString(world.getLoopCount());
+            loopcounter.setText(loopNum);
             // Check to see if the win conditions are met
             if ((world.getCharacter().getGold() >= world.getWinGold())
                     && (world.getCharacter().getXP() >= world.getWinXp())
