@@ -102,6 +102,27 @@ public class ZombieTest {
         int characterHealth = newCharacter.getHealth();
         assertTrue(characterHealth == 92 || characterHealth == 76);
     }
+
+    /**
+     * Test to check if a Zombie is defeated by a character holding the Tree Stump which reduces incoming damage by 40%
+     * Given that the Zombie has a health of 10 and damage of 8 which is reduced by 40% to be 4.8
+     *      The character with a Sword has a health of 100 and a damage of 8, and
+     *      Elan moves first,
+     * The battle should end with the Character having a health of 50 remaining
+     */
+    @Test
+    public void testZombieDefenceTreeStump() {
+        initializeWorld();
+
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setTreeStump(treeStump);
+
+        testWorld.runBattles();
+
+        int characterHealth = newCharacter.getHealth();
+        assertTrue(characterHealth == 92 || characterHealth == 76);
+    }
+
     /**
      * Setup template world
      */

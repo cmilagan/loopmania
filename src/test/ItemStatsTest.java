@@ -87,6 +87,19 @@ public class ItemStatsTest {
     }
 
     @Test
+    public void testTreeStumpStats() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        assertEquals(7000, treeStump.getItemCost());
+        assertEquals(20, treeStump.getItemDurability());
+        assertEquals(0.3, treeStump.useDefence());
+        assertEquals(0.4, treeStump.useSpecialDefence());
+        assertEquals(0.7, treeStump.useCritDefence());
+
+        // usage should be incremented by 3
+        assertEquals(3, treeStump.getUsage());
+    }
+
+    @Test
     public void testShieldStats() {
         Shield shield = new Shield(new SimpleIntegerProperty(), new SimpleIntegerProperty());
         assertEquals(10, shield.getItemCost());
