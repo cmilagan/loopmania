@@ -220,6 +220,10 @@ public class LoopManiaWorld {
         return doggieCoinPrice;
     }
 
+    public List<BasicEnemy> getEnemies() {
+        return enemies;
+    }
+
     /**
      * Setters for the different modes
      */
@@ -605,7 +609,7 @@ public class LoopManiaWorld {
             }
 
             // Spawn Elan every 40 rounds
-            if (loopCounter > 0 && loopCounter % 40 == 0 && character.getXP() > 10000) {
+            if (loopCounter > 0 && loopCounter % 40 == 0 && character.getXP() >= 10000) {
                 ElanMuske elan = new ElanMuske(new PathPosition(indexInPath, orderedPath));
                 enemies.add(elan);
                 spawningEnemies.add(elan);
