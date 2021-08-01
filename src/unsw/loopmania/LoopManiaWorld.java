@@ -36,6 +36,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.modes.BerserkerMode;
 import unsw.loopmania.modes.ConfusingMode;
 import unsw.loopmania.modes.StandardMode;
@@ -416,6 +417,9 @@ public class LoopManiaWorld {
             } else if (itemID == 8) {
                 itemBought = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (itemID == 9) {
+                itemBought = new TreeStump(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
 
             unequippedInventoryItems.add(itemBought);
@@ -492,6 +496,8 @@ public class LoopManiaWorld {
                 items.add((HealthPotion) entity);
             } else if (itemID == 8 && entity instanceof Anduril) {
                 items.add((Anduril) entity);
+            } else if (itemID == 9 && entity instanceof TreeStump) {
+                items.add((TreeStump) entity);
             }
         }
 
@@ -536,7 +542,6 @@ public class LoopManiaWorld {
         Staff staff = new Staff(newX, newY);
         Stake stake = new Stake(newX, newY);
         Sword sword = new Sword(newX, newY);
-        Anduril anduril = new Anduril(newX, newY);
         shopItems.add(staff);
         shopItems.add(stake);
         shopItems.add(sword);
@@ -544,9 +549,12 @@ public class LoopManiaWorld {
         // adding other items
         OneRing oneRing = new OneRing(newX, newY);
         HealthPotion healthPotion = new HealthPotion(newX, newY);
+        Anduril anduril = new Anduril(newX, newY);
+        TreeStump treeStump = new TreeStump(newX, newY);
         shopItems.add(oneRing);
         shopItems.add(healthPotion);
         shopItems.add(anduril);
+        shopItems.add(treeStump);
 
         return shopItems;
     }

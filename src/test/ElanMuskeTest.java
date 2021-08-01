@@ -14,6 +14,8 @@ import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.items.Anduril;
+import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Zombie;
 
@@ -193,10 +195,10 @@ public class ElanMuskeTest {
 
     /**
      * Test to check if Elan is defeated by a character holding the Tree Stump which reduces incoming damage by 40%
-     * Given that Elan has a health of 40 and damage of 25 which is reduced by 40% to be 10
+     * Given that Elan has a health of 40 and damage of 25 which is reduced by 40% to be 15
      *      The character with a Sword has a health of 100 and a damage of 8, and
      *      Elan moves first, 
-     * The battle should end with the Character having a health of 50 remaining
+     * The battle should end with the Character having a health of 25 remaining
      */
     @Test
     public void testTreeStumpDefence() {
@@ -204,12 +206,14 @@ public class ElanMuskeTest {
         addCharacter();
         addElan();
 
+        Sword sword = new Sword(new SimpleIntegerProperty(), new SimpleIntegerProperty());
         TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        newCharacter.setTreeStump(treeStump);
+        newCharacter.setShield(treeStump);
+        newCharacter.setWeapon(sword);
 
         testWorld.runBattles();
 
-        assertEquals(50, newCharacter.getHealth());
+        assertEquals(25, newCharacter.getHealth());
     }
     /**
      * Setup template world

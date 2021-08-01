@@ -26,6 +26,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.Vampire;
 
 /**
@@ -325,7 +326,7 @@ public class ShopItemAndExpiryTest {
     public void testBuyShield() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
-            if (item instanceof Shield) {
+            if (item instanceof Shield && !(item instanceof TreeStump)) {
                 Shield shield = (Shield) item;
                 itemPresent = true;
 
