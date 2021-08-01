@@ -1,20 +1,68 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Button?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<!-- TODO = modify and expand the range of menus available from the menu menu, and develop game modes you can select when starting a new game -->
-
-<!-- vertically stacked label and button -->
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="712.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label text="Main Menu" />
-      <!-- clicking button should start/resume the game -->
-      <Button fx:id="startGameButton" text="Start Game" onAction="#switchToGame"/>
+      <ImageView fitHeight="400.0" fitWidth="712.0">
+         <image>
+            <Image url="@../../images/MainMenuImg.jpg" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="78.0" layoutX="210.0" layoutY="39.0" stroke="BLACK" strokeType="INSIDE" width="286.0">
+         <effect>
+            <DropShadow />
+         </effect>
+      </Rectangle>
+      <Label layoutX="226.0" layoutY="62.0" prefHeight="58.0" prefWidth="258.0" text="LOOP MANIA" textFill="WHITE">
+         <font>
+            <Font name="Goudy Old Style Bold" size="40.0" />
+         </font>
+      </Label>
+      <Button fx:id="startGameButton" layoutX="304.0" layoutY="152.0" onAction="#switchToNewGameMenu" prefHeight="0.0" prefWidth="98.0" text="New Game" textAlignment="CENTER">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="startGameButton" layoutX="304.0" layoutY="192.0" onAction="#switchToGame" prefHeight="15.0" prefWidth="98.0" text="Load Game">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="startGameButton" layoutX="318.0" layoutY="231.0" onAction="#switchToCredits" prefHeight="17.0" prefWidth="70.0" text="Credits">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="startGameButton" layoutX="304.0" layoutY="269.0" onAction="#exitGame" prefHeight="30.0" prefWidth="98.0" text="Exit Game">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Label layoutX="240.0" layoutY="46.0" prefHeight="0.0" prefWidth="226.0" text="F13C_BLINKER PRESENTS" textFill="WHITE">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Label>
    </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-</VBox>
+</AnchorPane>

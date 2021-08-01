@@ -1,13 +1,11 @@
 package unsw.loopmania.npcs;
 
-import java.util.Random;
-
 import unsw.loopmania.PathPosition;
 
 public class Zombie extends BasicEnemy {
     
     public Zombie(PathPosition position) {
-        super(position, 8, 10, 100, 1, 2);
+        super(position, 8, 10, 100, 1, 2, false);
     }
 
     /**
@@ -57,10 +55,7 @@ public class Zombie extends BasicEnemy {
      * A Zombie has a 20% chance of critical attack.
      */
     public boolean rollCrit() {
-        int seed = 100;
-        Random random = new Random(seed);
-        int value = random.nextInt(seed);
-        return value < 21;
+       return Math.random() <= 0.2; 
     }
 
 }

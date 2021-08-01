@@ -24,5 +24,4 @@ public class TowerBuilding extends Building {
     public int getRange() {
         return this.range;
     }
-
 }

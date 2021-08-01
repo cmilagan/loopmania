@@ -12,6 +12,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.HealthPotion;
 import unsw.loopmania.items.Helmet;
@@ -20,6 +21,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 
 public class ItemStatsTest {
     private int characterPosition = 0;
@@ -69,8 +71,33 @@ public class ItemStatsTest {
     @Test
     public void testOneRingStats() {
         OneRing onering = new OneRing(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        assertEquals(500, onering.getItemCost());
+        assertEquals(5000, onering.getItemCost());
         assertEquals(1, onering.getItemDurability());
+    }
+
+    @Test
+    public void testAndurilStats() {
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        assertEquals(7000, anduril.getItemCost());
+        assertEquals(20, anduril.getItemDurability());
+        assertEquals(15, anduril.inflictDamage());
+        assertEquals(20, anduril.getSpecialDamage());
+
+        // usage should be incremented by 2
+        assertEquals(2, anduril.getUsage());
+    }
+
+    @Test
+    public void testTreeStumpStats() {
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        assertEquals(7000, treeStump.getItemCost());
+        assertEquals(20, treeStump.getItemDurability());
+        assertEquals(0.3, treeStump.useDefence());
+        assertEquals(0.4, treeStump.useSpecialDefence());
+        assertEquals(0.7, treeStump.useCritDefence());
+
+        // usage should be incremented by 3
+        assertEquals(3, treeStump.getUsage());
     }
 
     @Test
@@ -88,7 +115,7 @@ public class ItemStatsTest {
     @Test
     public void testStaffStats() {
         Staff staff = new Staff(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        assertEquals(8, staff.getItemCost());
+        assertEquals(25, staff.getItemCost());
         assertEquals(8, staff.getItemDurability());
         assertEquals(3, staff.inflictDamage());
 

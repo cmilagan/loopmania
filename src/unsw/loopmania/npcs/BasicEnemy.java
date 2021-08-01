@@ -1,11 +1,14 @@
 package unsw.loopmania.npcs;
 
 import java.util.List;
-import java.util.Random;
+
+import org.javatuples.Pair;
 
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.Character;
+import unsw.loopmania.LoopManiaWorld;
 
 /**
  * a basic form of enemy in the world
@@ -16,6 +19,8 @@ public class BasicEnemy extends MovingEntity {
     private int experience;
     private int battleRadius;
     private int supportRadius;
+    private int maxHealth;
+    private boolean isBoss;
 
     /**
      * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
@@ -26,13 +31,15 @@ public class BasicEnemy extends MovingEntity {
      * @param battleRadius
      * @param supportRadius
      */
-    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius) {
+    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius, boolean isBoss) {
         super(position);
         this.damage = damage;
         this.health = health;
         this.experience = experience;
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
+        this.maxHealth = health;
+        this.isBoss = isBoss;
     }
 
     /**
@@ -60,12 +67,21 @@ public class BasicEnemy extends MovingEntity {
         return supportRadius;
     }
 
+    public boolean getIsBoss() {
+        return isBoss;
+    }
+
     public void setHealth(int newHealth) {
         this.health = newHealth;
     }
 
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
         int damageDealt = character.getDamage();
+
+        if (isBoss && character.getWeapon() instanceof Anduril) {
+            Anduril anduril = (Anduril) character.getWeapon();
+            damageDealt = anduril.getSpecialDamage();
+        }
         
         for (AlliedSoldier s: alliedSoldiers) {
             damageDealt += s.getDamage();
@@ -82,5 +98,48 @@ public class BasicEnemy extends MovingEntity {
 
     public boolean rollCrit() {
         return false;
+    }
+
+    public void applyWeaponEffects(Character character, LoopManiaWorld world, List<Pair<Integer, Integer>> orderedPath) {
+        /**
+         * if character has a Staff, can apply trance if chance permits
+         * 
+         * Note: strategy pattern used here
+         */
+        if (character.inflictStaffTrance()) {
+            /**
+             * before we switch this enemy with an allied soldier,
+             * 
+             * we must first store this enemy into the allied soldier class
+             * so that after the duration of trance ends, the allied soldier can
+             * turn back into the original enemy it was
+             * 
+             * Note: allied soldier will spawn at the exact spot the zombie was there
+             */
+            AlliedSoldier transformedSoldier = new AlliedSoldier(new PathPosition(this.getCurrentPositionIndex(), orderedPath));
+
+            /**
+             * Note that we do the unbinding because if we dont, the enemies position 
+             * remains tracked and hence the enemy appears stationary, despite of death.
+             */
+            this.x().unbind();
+            this.y().unbind();
+            transformedSoldier.setOriginalEnemy(this);
+
+            world.getBattleEnemies().remove(this);
+            world.addAlliedSoldier(transformedSoldier);
+            world.killEnemy(this);
+        }
+    }
+    
+    public void heal() {
+        health = maxHealth;
+    }
+
+    /**
+     * Apply any effects an Enemy may have during battle.
+     * @param character
+     */
+    public void applyEnemyEffects(Character character, boolean inBattle, List<BasicEnemy> enemies) {
     }
 }

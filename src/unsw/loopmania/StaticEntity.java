@@ -12,7 +12,7 @@ public abstract class StaticEntity extends Entity {
     /**
      * x and y coordinates represented by IntegerProperty, so ChangeListeners can be added
      */
-    private IntegerProperty x, y;
+    public IntegerProperty x, y;
 
     public StaticEntity(SimpleIntegerProperty x, SimpleIntegerProperty y) {
         super();
@@ -34,5 +34,15 @@ public abstract class StaticEntity extends Entity {
 
     public int getY() {
         return y().get();
+    }
+
+    public void setX(int x) {
+        SimpleIntegerProperty xCoordinate = new SimpleIntegerProperty(x);
+        this.x = xCoordinate;
+    }
+
+    public void setY(int y) {
+        SimpleIntegerProperty yCoordinate = new SimpleIntegerProperty(y);
+        this.y = yCoordinate;
     }
 }

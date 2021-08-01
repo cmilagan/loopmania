@@ -8,6 +8,10 @@
     - Vampire Support Radius: 3
     - Tower Support Radius: 2
     - Campfire Support Radius: 2
+    - Doggie Battle Radius: 1
+    - Doggie Support Radius: 1
+    - Elan Muske Battle Radius: 1
+    - Elan Muske Support Radius: 1
     - Circular Support Radius calculation done by starter code
 - Characters and enemies do not keep moving in battle
     - Notification and sound effects to show the initiation/engagement of battle and when the character dies
@@ -24,6 +28,8 @@
     - Zombie Damage : 8, 10, 100
     - Vampire Damage: 20, 20, 200
     - Ally Damage   : 5, 5, 0
+    - Doggie        : 0, 20, 100
+    - Elan Muske    : 25, 40, 500
 - When the main character defeats enemies, the character gains the specified amount of XP from the enemy. When an allied soldier defeats an enemy, that XP is redirected to the main character.
 - The more the XP, the increased damage/defence stats of weapons available from loot and Hero's Castle, enhanced enemy and ally health and damage
     - Health Formula: initialHealth * (1 + XP / 1000)
@@ -44,6 +50,14 @@
 - Support and Battle radii are calculated by the pythagoras theorem
     - if the character is within the battle radius of an enemy, a battle is engaged.
 - If the One Ring is in the character's inventory, the character respawns automatically on defeat.
+- If character has Staff equipped, the chance for inflicting a trance is 20%.
+- The trance for a Staff will last for 20 ticks of the world. I.e., the enemy which was turned into an allied
+soldier will return back into its original enemy form after 20 ticks of the world. Given that it was still alive 
+in the allied soldier state.
+- The new Doggie Enemy cannot damage the character, only stun him
+- The Doggie enemy attacks the character last (to prevent OP behaviour of stun)
+- The Doggie can stun the character every other turn
+    - This is so that the Doggie cannot have an infintely long battle where it keeps stunning the character.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
@@ -84,14 +98,20 @@
     - Staff: 3, 8
     - Stake Damage: 4, 8
         - Stake has damage = 12 on Vampires.
-- Item Costs at the Hero’s Castle:
+    - Anduril, Flame of the West: 15, 20
+        - Anduril has damage = 20 on Bosses.
+- Item Costs (in Gold) at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
-    - Staff: 8
+    - Staff: 25
     - Armour: 20
     - Shield: 10
     - Helmet: 10
     - Health Potion: 20
+- As part of extending the project with ideas, rare items can be bought from the Item Shop with the costs (in Gold):
+    - The One Ring:                 5000
+    - Anduril, Flame of the west:   7000
+    - Tree Stump:                   7000
 - Item rarity (since some items cost more) - excluding rare items
     common 60%, uncommon 40%
     - Sword: common
@@ -102,15 +122,19 @@
     - staff: uncommon
     - healthpotion: uncommon
 - The Initial Values of defence/crit protection/durability/ for defence items:
-    - Armour Defence: 40%, 0%, 10
-    - Helmet Defence: 10%, 0%, 10
-    - Shield Defence: 20%, 60%, 5
+    - Armour Defence        :   40%, 0%, 10
+    - Helmet Defence        :   10%, 0%, 10
+    - Shield Defence        :   20%, 60%, 5
+    - Tree Stump Defence    :   30%, 70%, 20
+        - The Tree Stump has a higher defence stat of 40% when being hit by Bosses (Doggie & Elan Muske)
 - Items have a set number of uses:
     - If item uses are reduced to 0, the item will disappear
 - The shield item reduces inflicted damage by the defence stats
 - Health Potions (when acquired) will be displayed in Character's inventory. It can be used by simply clicking on it in the time of need or by pressing 'H'. When used, the potion item will disappear and the character's health will return to max. A sound effect will also be added to signify the usage of a Health Potion.
 - Basic items have a 99% chance of dropping with each item being equally as probable, rare items have a 1% chance of dropping. (this changes based on enemy type defeated)
 - Defeating higher level enemies increases the chance of dropping rare items (promotes placing zombie pit buildings)
+- Human Player can sell items (which are buy-able from the shop) which they have at the shop for a 70% refund of the original amount of the purchase
+- When the Human Player wants to sell an item and has multiple quantities of it, when the player sells the item, the shop backend will choose the item which has the highest number of uses to remove in exchange for 70% refund of original amount
     
 ## Game State Related Assumptions:
 - The Game starts with the Vampire Castle and Zombie Pit already built
@@ -147,3 +171,10 @@
     - 8 tiles x 6 tiles
 - What is the size of the settings screen?
     - 8 tiles x 6 tiles
+
+## Doggie Coin Related Assumptions:
+- 1 DCN = 100 Gold in the beginning of the game (since it can only be gained by defeating Doggie)
+- Every round the price of DCN will vary randomly from 100 - 500 Gold
+- Once Elan Muske joins the game, the price of DCN varies between 3,000 - 10,000 Gold
+    - This is because it's unlikely that the Hero gets to the shop before killing Elan
+- Once Elan Muske is defeated, the price of DCN varies from 0 - 10 Gold for the next 5 rounds, after which it will go back to varying from 100 - 500.

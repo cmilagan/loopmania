@@ -1,6 +1,7 @@
 package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,9 @@ import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.Zombie;
 
 public class ZombieTest {
@@ -79,7 +82,48 @@ public class ZombieTest {
         testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }
-    
+   
+    /**
+     * Test to check if a Zombie is defeated by a character wielding Anduril, Flame of the West, which does 20 damage
+     * Given that Elan has a health of 10 and damage of 8,
+     *      The character with Anduril has a health of 100 and a damage of 20, and
+     *      The Zombie moves first,
+     * The battle should end with the Character having a health of 92 or 76 remaining.
+     * This is because of the 20% chance of a Critical hit occuring.
+     */
+    @Test
+    public void testZombieDamageAnduril() {
+        initializeWorld();
+
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setWeapon(anduril);
+
+        testWorld.runBattles();
+
+        int characterHealth = newCharacter.getHealth();
+        assertTrue(characterHealth == 92 || characterHealth == 76);
+    }
+
+    /**
+     * Test to check if a Zombie is defeated by a character holding the Tree Stump which reduces incoming damage by 40%
+     * Given that the Zombie has a health of 10 and damage of 8 which is reduced by 30% to be 5.6
+     *      The character has a health of 100 and a damage of 1, and
+     *      the Zombie moves first,
+     * The battle should end with the Character having a health of 50 remaining
+     */
+    @Test
+    public void testZombieDefenceTreeStump() {
+        initializeWorld();
+
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setShield(treeStump);
+
+        testWorld.runBattles();
+
+        int characterHealth = newCharacter.getHealth();
+        assertEquals(50, characterHealth);
+    }
+
     /**
      * Setup template world
      */
