@@ -98,6 +98,8 @@ in the allied soldier state.
     - Staff: 3, 8
     - Stake Damage: 4, 8
         - Stake has damage = 12 on Vampires.
+    - Anduril, Flame of the West: 15, 20
+        - Anduril has damage = 20 on Bosses.
 - Item Costs (in Gold) at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
