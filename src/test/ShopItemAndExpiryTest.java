@@ -41,9 +41,8 @@ public class ShopItemAndExpiryTest {
     private int staffID = 3;
     private int stakeID = 4;
     private int swordID = 5;
-    private int andurilID = 6;
+    private int andurilID = 8;
     private int healthPotionID = 7;
-    private int AndurilID = 8;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
