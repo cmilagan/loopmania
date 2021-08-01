@@ -202,5 +202,13 @@
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
+      <ImageView layoutX="184.0" layoutY="245.0">
+         <image>
+            <Image url="@../../images/anduril.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
    </children>
 </AnchorPane>
