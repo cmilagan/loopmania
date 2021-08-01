@@ -8,7 +8,7 @@ import unsw.loopmania.Character;
 
 public class Doggie extends BasicEnemy {
     public Doggie(PathPosition position) {
-        super(position, 0, 20, 100, 1, 1);
+        super(position, 0, 20, 100, 1, 1, true);
     }
 
     private int distanceTravelled = 0;

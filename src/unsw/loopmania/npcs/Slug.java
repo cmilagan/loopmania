@@ -5,7 +5,7 @@ import unsw.loopmania.PathPosition;
 public class Slug extends BasicEnemy {
     
     public Slug(PathPosition position) {
-        super(position, 5, 3, 50, 1, 1);
+        super(position, 5, 3, 50, 1, 1, false);
     }
 
     /**
