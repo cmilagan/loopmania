@@ -540,13 +540,13 @@ public class LoopManiaWorld {
         shopItems.add(staff);
         shopItems.add(stake);
         shopItems.add(sword);
-        shopItems.add(anduril);
-
+        
         // adding other items
         OneRing oneRing = new OneRing(newX, newY);
         HealthPotion healthPotion = new HealthPotion(newX, newY);
         shopItems.add(oneRing);
         shopItems.add(healthPotion);
+        shopItems.add(anduril);
 
         return shopItems;
     }
