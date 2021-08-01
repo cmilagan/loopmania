@@ -1751,9 +1751,6 @@ public class LoopManiaWorld {
             character.setHelmet((Helmet) equip);
             equippedInventoryItems.add(equip);
         }
-        if (unequipped == null) {
-            System.out.println("no item");
-        }
 
         return new Pair<Item,Item>(equip, unequipped);
 
