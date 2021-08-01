@@ -107,8 +107,8 @@ class BattleTest {
 
     /**
      * Testing the respawn ability of the One Ring.
-     * Normally, the main character without a weapon is defeated by a Zombie.
-     * This should not be the case when he has the One Ring and can respawn.
+     * When the main character without a weapon is defeated by a Zombie,
+     * he can respawn with full health if he has the One Ring.
      */
     @Test
     public void testOneRingRespawn() {
@@ -116,6 +116,7 @@ class BattleTest {
 
         PathPosition zombiePosition = new PathPosition(0, orderedPath);
         Zombie zombie = new Zombie(zombiePosition);
+        newCharacter.setHealth(1);
         testWorld.addEnemy(zombie);
         
         int oneRingID = 6;
