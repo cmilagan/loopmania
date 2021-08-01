@@ -160,6 +160,7 @@ public class LoopManiaWorld {
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
+        equippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
@@ -1679,45 +1680,49 @@ public class LoopManiaWorld {
 
         Item unequipped = null;
         if (equip instanceof AttackItem) {
-            if (character.getWeapon() != null) {
-                System.out.println("got here");
-                unequipped = character.getWeapon();
-                unequippedInventoryItems.add(unequipped);
-                equippedInventoryItems.remove(unequipped);
+            System.out.println("start");
+            for (Item i : equippedInventoryItems) {
+                if (i instanceof AttackItem) {
+                    unequipped = i;
+                    equippedInventoryItems.remove(i);
+                    System.out.println("unequipped sword");
+                    break;
+                }
             }
+            System.out.println("equipped sword");
             character.setWeapon((AttackItem) equip);
             equippedInventoryItems.add(equip);
         } else if (equip instanceof Shield) {
-            if (character.getShield() != null) {
-                System.out.println("got here");
-                unequipped = character.getShield();
-                unequippedInventoryItems.add(unequipped);
-                equippedInventoryItems.remove(unequipped);
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Shield) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
             }
             character.setShield((Shield) equip);
             equippedInventoryItems.add(equip);
         } else if (equip instanceof Armor) {
-            if (character.getArmor() != null) {
-                System.out.println("got here");
-                unequipped = character.getArmor();
-                unequippedInventoryItems.add(unequipped);
-                equippedInventoryItems.remove(unequipped);
-
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Armor) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
             }
             character.setArmor((Armor) equip);
             equippedInventoryItems.add(equip);
         } else if (equip instanceof Helmet) {
-            if (character.getHelmet() != null) {
-                System.out.println("got here");
-                unequipped = character.getHelmet();
-                unequippedInventoryItems.add(unequipped);
-                equippedInventoryItems.remove(unequipped);
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Helmet) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
             }
             character.setHelmet((Helmet) equip);
             equippedInventoryItems.add(equip);
         }
-        System.out.println("got here");
-        
+        if (unequipped == null) {
+            System.out.println("no item");
+        }
 
         return new Pair<Item,Item>(equip, unequipped);
 

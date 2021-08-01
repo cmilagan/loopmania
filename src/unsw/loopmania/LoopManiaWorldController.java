@@ -920,15 +920,18 @@ public class LoopManiaWorldController {
                                     return;
                                 }
 
-                                Item equipped = items.getValue0();
+                                Item equip = items.getValue0();
                                 Item unequipped = items.getValue1();
 
-                                onLoadEquipped(equipped, equipped.getX(), equipped.getY());
-                                onLoad(unequipped);
+
+                                onLoadEquipped(equip, equip.getX(), equip.getY());
+                                if (unequipped != null) {
+                                    onLoad(unequipped);
+                                }
 
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
-                                // targetGridPane.add(image, x, y, 1, 1);
+                                targetGridPane.add(image, x, y, 1, 1);
                                 break;
 
                             default:
