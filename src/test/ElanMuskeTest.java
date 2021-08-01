@@ -169,6 +169,27 @@ public class ElanMuskeTest {
     }
 
     /**
+     * Test to check if Elan is defeated by a character wielding Anduril, Flame of the West, which does 20 damage
+     * Given that Elan has a health of 40 and damage of 25,
+     *      The character with Anduril has a health of 100 and a damage of 20, and
+     *      Elan moves first,
+     * The battle should end with the Character having a health of 50 remaining
+     */
+    @Test
+    public void testElanDamageAnduril() {
+        initializeWorld();
+        addCharacter();
+        addElan();
+
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setWeapon(anduril);
+
+        testWorld.runBattles();
+
+        assertEquals(50, newCharacter.getHealth());
+    }
+
+    /**
      * Setup template world
      */
     public void initializeWorld() {

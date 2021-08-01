@@ -79,7 +79,25 @@ public class ZombieTest {
         testWorld.runBattles();
         assertEquals(expectedXP, newCharacter.getXP());
     }
-    
+   
+    /**
+     * Test to check if a Zombie is defeated by a character wielding Anduril, Flame of the West, which does 20 damage
+     * Given that Elan has a health of 10 and damage of 8,
+     *      The character with Anduril has a health of 100 and a damage of 20, and
+     *      The Zombie moves first,
+     * The battle should end with the Character having a health of 92 remaining
+     */
+    @Test
+    public void testZombieDamageAnduril() {
+        initializeWorld();
+
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setWeapon(anduril);
+
+        testWorld.runBattles();
+
+        assertEquals(92, newCharacter.getHealth());
+    }
     /**
      * Setup template world
      */
