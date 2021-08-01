@@ -122,9 +122,11 @@ in the allied soldier state.
     - staff: uncommon
     - healthpotion: uncommon
 - The Initial Values of defence/crit protection/durability/ for defence items:
-    - Armour Defence: 40%, 0%, 10
-    - Helmet Defence: 10%, 0%, 10
-    - Shield Defence: 20%, 60%, 5
+    - Armour Defence        :   40%, 0%, 10
+    - Helmet Defence        :   10%, 0%, 10
+    - Shield Defence        :   20%, 60%, 5
+    - Tree Stump Defence    :   30%, 70%, 20
+        - The Tree Stump has a higher defence stat of 40% when being hit by Bosses (Doggie & Elan Muske)
 - Items have a set number of uses:
     - If item uses are reduced to 0, the item will disappear
 - The shield item reduces inflicted damage by the defence stats

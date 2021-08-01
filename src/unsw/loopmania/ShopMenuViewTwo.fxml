@@ -11,20 +11,83 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="488.0" prefWidth="732.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fitHeight="400.0" fitWidth="600.0" opacity="0.5">
+      <ImageView fitHeight="488.0" fitWidth="732.0" opacity="0.5">
          <image>
             <Image url="@../../images/bimg.jpg" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="147.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
-      <Label layoutX="153.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="173.0" layoutY="326.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="389.0" />
+      <Label layoutX="179.0" layoutY="374.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="treeStumpBuyPrice" layoutX="237.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Label layoutX="279.0" layoutY="374.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="treeStumpSellPrice" layoutX="331.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="173.0" layoutY="233.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="389.0" />
+      <Label layoutX="179.0" layoutY="281.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="andurilBuyPrice" layoutX="237.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Label layoutX="279.0" layoutY="281.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="andurilSellPrice" layoutX="335.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="173.0" layoutY="140.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="389.0" />
+      <Label layoutX="179.0" layoutY="188.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="oneRingBuyPrice" layoutX="237.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="38.0">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Label layoutX="279.0" layoutY="188.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Label>
+      <Text fx:id="oneRingSellPrice" layoutX="331.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="38.0">
+         <font>
+            <Font name="Goudy Old Style Bold" size="16.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="225.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
+      <Label layoutX="231.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style Bold" size="30.0" />
          </font>
       </Label>
-      <ImageView layoutX="117.0" layoutY="198.0">
+      <ImageView layoutX="185.0" layoutY="245.0">
          <image>
             <Image url="@../../images/anduril_flame_of_the_west.png" />
          </image>
@@ -32,7 +95,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="117.0" layoutY="255.0">
+      <ImageView layoutX="184.0" layoutY="338.0">
          <image>
             <Image url="@../../images/tree_stump.png" />
          </image>
@@ -40,7 +103,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="117.0" layoutY="140.0">
+      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="184.0" layoutY="152.0">
          <image>
             <Image url="@../../images/the_one_ring.png" />
          </image>
@@ -48,32 +111,32 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Label layoutX="156.0" layoutY="203.0" prefHeight="22.0" prefWidth="213.0" text="Anduril, Flame of the West  ">
+      <Label layoutX="224.0" layoutY="250.0" prefHeight="22.0" prefWidth="213.0" text="Anduril, Flame of the West  ">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="156.0" layoutY="145.0" prefHeight="22.0" prefWidth="110.0" text="The One Ring">
+      <Label layoutX="223.0" layoutY="157.0" prefHeight="22.0" prefWidth="110.0" text="The One Ring">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="156.0" layoutY="260.0" prefHeight="22.0" prefWidth="102.0" text="Tree Stump">
+      <Label layoutX="223.0" layoutY="343.0" prefHeight="22.0" prefWidth="102.0" text="Tree Stump">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="231.0" layoutY="60.0" prefHeight="22.0" prefWidth="110.0" text="Current Gold: ">
+      <Label layoutX="299.0" layoutY="60.0" prefHeight="22.0" prefWidth="110.0" text="Current Gold: ">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="205.0" layoutY="60.0">
+      <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="273.0" layoutY="60.0">
          <image>
             <Image url="@../../images/gold_pile.png" />
          </image>
       </ImageView>
-      <Button fx:id="buyOneRingButton" layoutX="369.0" layoutY="141.0" minWidth="41.0" mnemonicParsing="false" onAction="#buyOneRing" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyOneRingButton" layoutX="439.0" layoutY="152.0" minWidth="41.0" mnemonicParsing="false" onAction="#buyOneRing" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -81,63 +144,63 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Text fx:id="playerGold" layoutX="339.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="62.13671875">
+      <Text fx:id="playerGold" layoutX="407.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="62.13671875">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="statusField" layoutX="120.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="362.9366455078125">
+      <Button fx:id="buyAndurilButton" layoutX="439.0" layoutY="245.0" minWidth="41.0" mnemonicParsing="false" onAction="#buyAnduril" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="buyTreeStumpButton" layoutX="438.0" layoutY="338.0" minWidth="41.0" mnemonicParsing="false" onAction="#buyTreeStump" prefHeight="35.0" prefWidth="54.0" text="Buy">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellOneRingButton" layoutX="497.0" layoutY="152.0" minWidth="41.0" mnemonicParsing="false" onAction="#sellOneRing" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellAndurilButton" layoutX="497.0" layoutY="245.0" minWidth="41.0" mnemonicParsing="false" onAction="#sellAnduril" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="sellTreeStumpButton" layoutX="496.0" layoutY="338.0" minWidth="41.0" mnemonicParsing="false" onAction="#sellTreeStump" prefHeight="35.0" prefWidth="54.0" text="Sell">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Button fx:id="switchToShopScreenOneButton" layoutX="7.0" layoutY="446.0" mnemonicParsing="false" onAction="#switchToShopScreenOne" prefHeight="35.0" prefWidth="130.0" text="&lt;- Basic Items">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <Text fx:id="statusField" layoutX="96.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="539.7366333007812">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="369.0" layoutY="198.0" minWidth="41.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="54.0" text="Buy">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
-      <Button layoutX="369.0" layoutY="256.0" minWidth="41.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="54.0" text="Buy">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
-      <Button fx:id="sellOneRingButton" layoutX="427.0" layoutY="141.0" minWidth="41.0" mnemonicParsing="false" onAction="#sellOneRing" prefHeight="35.0" prefWidth="54.0" text="Sell">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
-      <Button layoutX="427.0" layoutY="198.0" minWidth="41.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="54.0" text="Sell">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
-      <Button layoutX="427.0" layoutY="256.0" minWidth="41.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="54.0" text="Sell">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
-      <Button fx:id="switchToShopScreenOneButton" layoutX="14.0" layoutY="350.0" mnemonicParsing="false" onAction="#switchToShopScreenOne" prefHeight="35.0" prefWidth="130.0" text="&lt;- Basic Items">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-         <effect>
-            <InnerShadow />
-         </effect>
-      </Button>
    </children>
 </AnchorPane>
