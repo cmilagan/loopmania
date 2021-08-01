@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import org.javatuples.Pair;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.json.JSONString;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 
 import java.util.List;
 
@@ -50,6 +50,22 @@ public abstract class LoopManiaWorldLoader {
             loadEntity(world, jsonEntities.getJSONObject(i), orderedPath);
         }
 
+        JSONObject goals = json.getJSONObject("goal-condition");
+        // Check for sub goals
+        if (goals.getString("goal") == "AND") {
+            // Check for operators
+        } else {
+            // There are no subgoals
+            try {
+                if (goals.getString("goal") == "experience") world.setWinXp(goals.getInt("quantity"));
+                if (goals.getString("goal") == "cycles") world.setWinLoops(goals.getInt("quantity"));
+                if (goals.getString("goal") == "gold") world.setWinGold(goals.getInt("quantity"));
+                if (goals.getString("goal") == "bosses") world.setWinBoss(true);
+            } catch (Exception e) {
+                System.out.println("Condition is missing");
+            }
+        }
+
         return world;
     }
 
@@ -67,13 +83,8 @@ public abstract class LoopManiaWorldLoader {
         assert indexInPath != -1;
 
         Entity entity = null;
-        // TODO = load more entity types from the file
         switch (type) {
         case "hero_castle":
-            // HeroCastleBuilding heroCastle = new HeroCastleBuilding(new SimpleIntegerProperty(x), new SimpleIntegerProperty(x));
-            // onLoad(heroCastle);
-            // entity = heroCastle;
-            // world.addEntity(heroCastle);
             Character character = new Character(new PathPosition(indexInPath, orderedPath));
             world.setCharacter(character);
             onLoad(character);
@@ -81,7 +92,6 @@ public abstract class LoopManiaWorldLoader {
             break;
         case "path_tile":
             throw new RuntimeException("path_tile's aren't valid entities, define the path externally.");
-        // TODO Handle other possible entities
         }
         world.addEntity(entity);
     }
@@ -152,6 +162,5 @@ public abstract class LoopManiaWorldLoader {
     public abstract void onLoad(Character character);
     public abstract void onLoad(PathTile pathTile, PathTile.Direction into, PathTile.Direction out);
     // public abstract void onLoad(HeroCastleBuilding heroCastle);
-    // TODO Create additional abstract methods for the other entities
 
 }

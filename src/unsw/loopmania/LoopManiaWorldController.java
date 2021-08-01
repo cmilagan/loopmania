@@ -514,6 +514,9 @@ public class LoopManiaWorldController {
                     && (world.getWinLoops() >= world.getWinLoops())) {
                 switchToWinScreen();
             } 
+            if (world.getWinBoss()) {
+                if (world.getWinBossKilled()) switchToWinScreen();
+            }
             
             // Check to see if the character has died, if so, end the game
             if (world.getCharacter().getHealth() == 0) {

@@ -18,10 +18,7 @@ public class LoopManiaApplication extends Application {
      */
     private LoopManiaWorldController mainController;
     private Stage stage;
-
-    public void DungeonScreen(Stage stage) {
-		this.stage = stage;
-	}
+    private boolean newGame = false;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -39,8 +36,25 @@ public class LoopManiaApplication extends Application {
         gameOverLoader.setController(GameOverController);
         Parent gameOverRoot = gameOverLoader.load();
 
+        // load map menu
+        MapMenuController mapController = new MapMenuController();
+        FXMLLoader mapLoader = new FXMLLoader(getClass().getResource("MapMenuView.fxml"));
+        mapLoader.setController(mapController);
+        Parent mapRoot = mapLoader.load();
+        
         // load the main game
-        LoopManiaWorldControllerLoader loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
+        LoopManiaWorldControllerLoader loopManiaLoader;
+        if (mapController.getOriginalMap()) {
+            loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
+        } else if (mapController.getCircleMap()) {
+            loopManiaLoader = new LoopManiaWorldControllerLoader("circle_loop_world.json");
+        } else if (mapController.getSnakeMap()) {
+            loopManiaLoader = new LoopManiaWorldControllerLoader("snake_world.json");
+        } else if (mapController.getComplexMap()) {
+            loopManiaLoader = new LoopManiaWorldControllerLoader("complex_world.json");
+        } else {
+            loopManiaLoader = new LoopManiaWorldControllerLoader("world_with_twists_and_turns.json");
+        }
         mainController = loopManiaLoader.loadController();
         FXMLLoader gameLoader = new FXMLLoader(getClass().getResource("LoopManiaView.fxml"));
         gameLoader.setController(mainController);
@@ -82,7 +96,14 @@ public class LoopManiaApplication extends Application {
         Parent shopMenuRootTwo = shopLoaderTwo.load();
 
         // create new scene with the main menu (so we start with the main menu)
-        Scene scene = new Scene(mainMenuRoot);
+        // unless it new game is selected, then start with new game menu
+        Scene scene;
+        if (newGame) {
+            newGame = false;
+            scene = new Scene(gameMenuRoot);
+        } else {
+            scene = new Scene(mainMenuRoot);
+        }      
         
         // set functions which are activated when button click to switch menu is pressed
         // e.g. from main menu to start the game, or from the game to return to main menu
@@ -92,6 +113,7 @@ public class LoopManiaApplication extends Application {
         
         mainMenuController.setNewGameSwitcher(() -> {
             switchToRoot(scene, gameMenuRoot, primaryStage);
+            stop();
         });
 
         mainMenuController.setExitSwitcher(() -> {
@@ -133,6 +155,7 @@ public class LoopManiaApplication extends Application {
         shopMenuControllerOne.setShopScreenTwo(() -> {
             switchToRoot(scene, shopMenuRootTwo, primaryStage);
         });
+        
         // when normal items button is pressed, the screen switches to shop screen one
         shopMenuControllerTwo.setShopScreenOne(() -> {
             switchToRoot(scene, shopMenuRootOne, primaryStage);
@@ -144,7 +167,13 @@ public class LoopManiaApplication extends Application {
             stop();
         });
         
+        // When next is pressed on the new game menu
         gameMenuController.setMenuSwitcher(() -> {
+            switchToRoot(scene, mapRoot, primaryStage);
+        });
+
+        // When start game is pressed on the map menu
+        mapController.setMenuSwitcher(() -> {
             switchToRoot(scene, gameRoot, primaryStage);
             mainController.startTimer();
         });
@@ -152,6 +181,11 @@ public class LoopManiaApplication extends Application {
         // The back button in the new game menu screen
         gameMenuController.setBackMenuSwitcher(() -> {
             switchToRoot(scene, mainMenuRoot, primaryStage);
+        });
+
+        // The back button in the map menu screen
+        mapController.setBackMenuSwitcher(() -> {
+            switchToRoot(scene, gameMenuRoot, primaryStage);
         });
 
         // deploy the main onto the stage
@@ -163,8 +197,9 @@ public class LoopManiaApplication extends Application {
     @Override
     public void stop() {
         // Erases the old game and starts a new one
-        mainController.terminate();
+        //mainController.terminate();
         try {
+            newGame = true;
             start(stage);
         } catch (IOException e) {
             System.out.println("Restart Error");

@@ -90,6 +90,16 @@ public class LoopManiaWorld {
     private boolean survivalMode;
     private boolean berserkerMode;
     private boolean confusingMode;
+
+    /**
+     * Conditions for which the game is won
+     */
+    private int winXP;
+    private int winGold;
+    private int winLoops;
+    private boolean bosses;
+    private boolean bossesdefeated;
+
     /** 
      * Keeps track of the previous time Shop was opened
      */
@@ -169,6 +179,11 @@ public class LoopManiaWorld {
         survivalMode = false;
         berserkerMode = false;
         confusingMode = false;
+        winXP = 0;
+        winGold = 0;
+        winLoops = 0;
+        bosses = false;
+        bossesdefeated = false;
         previousShopRound = 1;
         shopCounter = 1;
         battleEnemies = new ArrayList<BasicEnemy>();
@@ -224,7 +239,7 @@ public class LoopManiaWorld {
     }
 
     /**
-     * Setters for the different modes
+     * Getters for the different modes
      */
     public boolean getStandard() {
         return standardMode;
@@ -273,29 +288,12 @@ public class LoopManiaWorld {
         confusingMode = true;
     }
 
-    // If a mode isn't selected from the new game screen, it will automatically have standard
-    // mode conditions
     /**
      * Gives the corresponding amount of xp needed to win
      * @return the amount of xp needed to win
      */
     public int getWinXp() {
-        if (standardMode) {
-            StandardMode mode = new StandardMode();
-            return mode.getWinXP();
-        } else if (survivalMode) {
-            SurvivalMode mode = new SurvivalMode();
-            return mode.getWinXP();
-        } else if (berserkerMode) {
-            BerserkerMode mode = new BerserkerMode();
-            return mode.getWinXP();
-        } else if (confusingMode) {
-            ConfusingMode mode = new ConfusingMode();
-            return mode.getWinXP();
-        } else {
-            StandardMode mode = new StandardMode();
-            return mode.getWinXP();
-        }
+        return this.winXP;
     }
 
     /**
@@ -303,22 +301,7 @@ public class LoopManiaWorld {
      * @return the amount of gold needed to win
      */
     public int getWinGold() {
-        if (standardMode) {
-            StandardMode mode = new StandardMode();
-            return mode.getWinGold();
-        } else if (survivalMode) {
-            SurvivalMode mode = new SurvivalMode();
-            return mode.getWinGold();
-        } else if (berserkerMode) {
-            BerserkerMode mode = new BerserkerMode();
-            return mode.getWinGold();
-        } else if (confusingMode) {
-            ConfusingMode mode = new ConfusingMode();
-            return mode.getWinGold();
-        } else {
-            StandardMode mode = new StandardMode();
-            return mode.getWinGold();
-        }
+        return this.winGold;
     }
 
     /**
@@ -326,24 +309,60 @@ public class LoopManiaWorld {
      * @return the amount of loops needed to win
      */
     public int getWinLoops() {
-        if (standardMode) {
-            StandardMode m = new StandardMode();
-            return m.getWinLoop();
-        } else if (survivalMode) {
-            SurvivalMode m = new SurvivalMode();
-            return m.getWinLoop();
-        } else if (berserkerMode) {
-            BerserkerMode m = new BerserkerMode();
-            return m.getWinLoop();
-        } else if (confusingMode) {
-            ConfusingMode m = new ConfusingMode();
-            return m.getWinLoop();
-        } else {
-            StandardMode m = new StandardMode();
-            return m.getWinLoop();
-        }
+        return this.winLoops;
     }
 
+    /**
+     * Gives true or false to whether the bosses are a goal
+     * @return true or false
+     */
+    public boolean getWinBoss() {
+        return this.bosses;
+    }
+
+    /**
+     * Gives true or false to whether the bosses are dead
+     * @return true or false
+     */
+    public boolean getWinBossKilled() {
+        return this.bossesdefeated;
+    }
+
+    /**
+     * Sets the corresponding amount of xp needed to win
+     */
+    public void setWinXp(int num) {
+        this.winXP = num;
+    }
+
+    /**
+     * Sets the corresponding amount of gold needed to win
+     */
+    public void setWinGold(int num) {
+        this.winGold = num;
+    }
+
+    /**
+     * Sets the corresponding amount of loops needed to win
+     */
+    public void setWinLoops(int num) {
+        this.winLoops = num;
+    }
+
+    /**
+     * Sets true or false if the bosses are a goal
+     */
+    public void setWinBoss(boolean bool) {
+        bosses = bool;
+    }
+
+    /**
+     * Sets true or false if the bosses are killed
+     */
+    public void setWinBossKilled(boolean bool) {
+        bossesdefeated = bool;
+    }
+    
     /**
      * checks if inventory is full. I.e., there are 
      * inventory width times height many items
@@ -896,6 +915,7 @@ public class LoopManiaWorld {
             if (e instanceof Doggie) { character.incrementDoggieCoin(); }
             character.setXP(character.getXP() + e.getExperience());
             character.setGold(goldReward());
+            if (e instanceof ElanMuske) setWinBossKilled(true);
         }
         return defeatedEnemies;
     }

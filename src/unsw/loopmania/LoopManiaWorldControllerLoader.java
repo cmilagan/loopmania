@@ -11,7 +11,6 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import unsw.loopmania.buildings.HeroCastleBuilding;
 import javafx.geometry.Rectangle2D;
 
 import java.io.File;
@@ -40,7 +39,6 @@ public class LoopManiaWorldControllerLoader extends LoopManiaWorldLoader {
         pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
     }
 
-    // TODO = load more entity types from the file
     @Override
     public void onLoad(Character character) {
         ImageView view = new ImageView(characterImage);
