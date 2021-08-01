@@ -175,6 +175,10 @@ public class LoopManiaWorld {
         battleEnemies = new ArrayList<BasicEnemy>();
     }
 
+    public List<BasicEnemy> getEnemies() {
+        return enemies;
+    }
+
     public int getWidth() {
         return width;
     }
@@ -371,6 +375,7 @@ public class LoopManiaWorld {
      * 5 - Sword
      * 6 - One Ring
      * 7 - Health Potion
+     * 8 - Anduril, Flame of the West
      */
     public BattleItem buyItemByID(int itemID) {
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -1137,7 +1142,7 @@ public class LoopManiaWorld {
             }
         } else {
             // rare item drops
-            int nextChoice = nrand2.nextInt(2);
+            int nextChoice = nrand2.nextInt(1);
 
             if (nextChoice == 0) {
                 addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
