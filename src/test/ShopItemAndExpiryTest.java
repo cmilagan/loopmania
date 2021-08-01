@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.javatuples.Pair;
 import org.junit.Test;
-import org.junit.jupiter.api.TestFactory;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
@@ -41,8 +40,9 @@ public class ShopItemAndExpiryTest {
     private int staffID = 3;
     private int stakeID = 4;
     private int swordID = 5;
-    private int andurilID = 8;
+    private int oneRingID = 6;
     private int healthPotionID = 7;
+    private int andurilID = 8;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -268,7 +268,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(ring.getItemCost());
 
                 // character should be able to buy item
-                OneRing orgOneRing = (OneRing) testWorld.buyItemByID(andurilID);
+                OneRing orgOneRing = (OneRing) testWorld.buyItemByID(oneRingID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -280,10 +280,10 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item, insufficient gold
-                assertFalse(testWorld.buyItemByID(andurilID) != null);
+                assertFalse(testWorld.buyItemByID(oneRingID) != null);
 
                 // checking that oneRing highest usage is still 1
-                assertTrue(testWorld.getHighestUsageItem(andurilID) == orgOneRing);
+                assertTrue(testWorld.getHighestUsageItem(oneRingID) == orgOneRing);
             }
         }
         assertTrue(itemPresent);
