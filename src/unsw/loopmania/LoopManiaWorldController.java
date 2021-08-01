@@ -48,6 +48,7 @@ import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.HealthPotion;
@@ -58,6 +59,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Doggie;
 import unsw.loopmania.npcs.Slug;
@@ -210,6 +212,8 @@ public class LoopManiaWorldController {
     private Image stakeImage;
     private Image staffImage;
     private Image ringImage;
+    private Image andurilImage;
+    private Image treeStumpImage;
 
     // enemy images
     private Image slugImage;
@@ -320,6 +324,8 @@ public class LoopManiaWorldController {
         stakeImage = new Image((new File("src/images/stake.png")).toURI().toString());
         helmetImage = new Image((new File("src/images/helmet.png")).toURI().toString());
         potionImage = new Image((new File("src/images/brilliant_blue_new.png")).toURI().toString());
+        andurilImage = new Image((new File("src/images/anduril_flame_of_the_west.png")).toURI().toString());
+        treeStumpImage = new Image((new File("src/images/tree_stump.png")).toURI().toString());
         
         currentlyDraggedImage = null;
         currentlyDraggedType = null;
@@ -395,9 +401,6 @@ public class LoopManiaWorldController {
                 });
             }
         });
-
-
-        
         
         // add the ground underneath the cards
         for (int x=0; x<world.getWidth(); x++){
@@ -731,17 +734,17 @@ public class LoopManiaWorldController {
         } else if (item instanceof Helmet) {
             System.out.println("helmet");
             view = new ImageView(helmetImage);
-        } else if (item instanceof Shield) {
-            System.out.println("shield");
+        } else if (item instanceof Shield && item instanceof TreeStump) {
+            view = new ImageView(treeStumpImage);
+        } else if (item instanceof Anduril) {
+            view = new ImageView(andurilImage);
+        } else if (item instanceof Shield && !(item instanceof TreeStump)) {
             view = new ImageView(shieldImage);
         } else if (item instanceof Staff) {
-            System.out.println("staff");
             view = new ImageView(staffImage);
         } else if (item instanceof Stake) {
-            System.out.println("stak");
             view = new ImageView(stakeImage);
         } else if (item instanceof HealthPotion) {
-            System.out.println("pot");
             view = new ImageView(potionImage);
         } else if (item instanceof OneRing) {
             view = new ImageView(ringImage);
@@ -768,25 +771,22 @@ public class LoopManiaWorldController {
     public void onLoad(Item item) {
         ImageView view = null;
         if (item instanceof Sword) {
-            System.out.println("sword");
             view = new ImageView(swordImage);
         } else if (item instanceof Armor) {
-            System.out.println("armor");
             view = new ImageView(armourImage);
         } else if (item instanceof Helmet) {
-            System.out.println("helmet");
             view = new ImageView(helmetImage);
-        } else if (item instanceof Shield) {
-            System.out.println("shield");
+        } else if (item instanceof Shield && item instanceof TreeStump) {
+            view = new ImageView(treeStumpImage);
+        } else if (item instanceof Anduril) {
+            view = new ImageView(andurilImage);
+        } else if (item instanceof Shield && !(item instanceof TreeStump)) {
             view = new ImageView(shieldImage);
         } else if (item instanceof Staff) {
-            System.out.println("staff");
             view = new ImageView(staffImage);
         } else if (item instanceof Stake) {
-            System.out.println("stak");
             view = new ImageView(stakeImage);
         } else if (item instanceof HealthPotion) {
-            System.out.println("pot");
             view = new ImageView(potionImage);
         } else if (item instanceof OneRing) {
             view = new ImageView(ringImage);
