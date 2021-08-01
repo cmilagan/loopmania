@@ -24,6 +24,7 @@ import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
@@ -403,6 +404,9 @@ public class LoopManiaWorld {
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 7) {
                 itemBought = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (itemID == 8) {
+                itemBought = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
 
