@@ -1129,7 +1129,7 @@ public class LoopManiaWorld {
             double commonUncommon = nrand1.nextDouble();
             if (commonUncommon < 0.6) {
                 // common item drops
-                int nextChoice = nrand2.nextInt(2);
+                int nextChoice = nrand2.nextInt(3);
                 System.out.println(nextChoice);
 
                 if (nextChoice == 0) {
@@ -1145,7 +1145,7 @@ public class LoopManiaWorld {
                 } 
             } else {
                 // uncommon item drops
-                int nextChoice = nrand2.nextInt(3);
+                int nextChoice = nrand2.nextInt(4);
 
                 if (nextChoice == 0) {
                     addedItem = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
@@ -1163,7 +1163,7 @@ public class LoopManiaWorld {
             }
         } else {
             // rare item drops
-            int nextChoice = nrand2.nextInt(2);
+            int nextChoice = nrand2.nextInt(3);
 
             if (nextChoice == 0) {
                 addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
