@@ -11,11 +11,13 @@ public class DefenceItem extends BattleItem {
      */
     private double defencePercentage;
     private double critDefencePercentage;
+    private double specialDefencePercentage;
     
-    public DefenceItem(SimpleIntegerProperty x, SimpleIntegerProperty y, int itemCost, int itemDurability, double defencePercentage, double critDefencePercentage) {
+    public DefenceItem(SimpleIntegerProperty x, SimpleIntegerProperty y, int itemCost, int itemDurability, double defencePercentage, double critDefencePercentage, double specialDefencePercentage) {
         super(x, y, itemCost, itemDurability);
         this.defencePercentage = defencePercentage;
         this.critDefencePercentage = critDefencePercentage;
+        this.specialDefencePercentage = specialDefencePercentage;
     }
 
     /**
@@ -37,5 +39,10 @@ public class DefenceItem extends BattleItem {
     public double useCritDefence() { 
         this.incrementUsage();
         return critDefencePercentage;
+    }
+
+    public double useSpecialDefence() {
+        this.incrementUsage();
+        return specialDefencePercentage;
     }
 }

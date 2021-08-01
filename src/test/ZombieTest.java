@@ -15,6 +15,7 @@ import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
 import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.Zombie;
 
 public class ZombieTest {
@@ -105,23 +106,23 @@ public class ZombieTest {
 
     /**
      * Test to check if a Zombie is defeated by a character holding the Tree Stump which reduces incoming damage by 40%
-     * Given that the Zombie has a health of 10 and damage of 8 which is reduced by 40% to be 4.8
-     *      The character with a Sword has a health of 100 and a damage of 8, and
-     *      Elan moves first,
+     * Given that the Zombie has a health of 10 and damage of 8 which is reduced by 30% to be 5.6
+     *      The character has a health of 100 and a damage of 1, and
+     *      the Zombie moves first,
      * The battle should end with the Character having a health of 50 remaining
      */
     @Test
-    // public void testZombieDefenceTreeStump() {
-    //     initializeWorld();
+    public void testZombieDefenceTreeStump() {
+        initializeWorld();
 
-    //     TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-    //     newCharacter.setTreeStump(treeStump);
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setShield(treeStump);
 
-    //     testWorld.runBattles();
+        testWorld.runBattles();
 
-    //     int characterHealth = newCharacter.getHealth();
-    //     assertTrue(characterHealth == 92 || characterHealth == 76);
-    // }
+        int characterHealth = newCharacter.getHealth();
+        assertEquals(50, characterHealth);
+    }
 
     /**
      * Setup template world
