@@ -13,7 +13,11 @@ public class Shield extends DefenceItem implements EquipItem {
     private static double critDefencePercentage = 0.6;
 
     public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage);
+        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage, 0);
+    }
+
+    public Shield(SimpleIntegerProperty x, SimpleIntegerProperty y, int itemCost, int itemDurability, double defencePercentage, double critDefencePercentage, double specialDefencePercentage) {
+        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage, specialDefencePercentage);
     }
 
     @Override

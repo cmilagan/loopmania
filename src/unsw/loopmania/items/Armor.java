@@ -14,7 +14,7 @@ public class Armor extends DefenceItem implements EquipItem {
     private static double critDefencePercentage = 0;
 
     public Armor(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage);
+        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage, defencePercentage);
     }
 
     /**
