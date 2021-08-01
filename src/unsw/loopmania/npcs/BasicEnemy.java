@@ -6,6 +6,7 @@ import org.javatuples.Pair;
 
 import unsw.loopmania.MovingEntity;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
@@ -19,6 +20,7 @@ public class BasicEnemy extends MovingEntity {
     private int battleRadius;
     private int supportRadius;
     private int maxHealth;
+    private boolean isBoss;
 
     /**
      * Spawn an Enemy at position, with specified damage, health, experience, battleRadius, supportRadius
@@ -29,7 +31,7 @@ public class BasicEnemy extends MovingEntity {
      * @param battleRadius
      * @param supportRadius
      */
-    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius) {
+    public BasicEnemy(PathPosition position, int damage, int health, int experience, int battleRadius, int supportRadius, boolean isBoss) {
         super(position);
         this.damage = damage;
         this.health = health;
@@ -37,6 +39,7 @@ public class BasicEnemy extends MovingEntity {
         this.battleRadius = battleRadius;
         this.supportRadius = supportRadius;
         this.maxHealth = health;
+        this.isBoss = isBoss;
     }
 
     /**
@@ -64,14 +67,23 @@ public class BasicEnemy extends MovingEntity {
         return supportRadius;
     }
 
+    public boolean getIsBoss() {
+        return isBoss;
+    }
+
     public void setHealth(int newHealth) {
         this.health = newHealth;
     }
 
     public int applyCharacterDamage(Character character, List<AlliedSoldier> alliedSoldiers) {
         int damageDealt = character.getDamage();
+
+        if (isBoss && character.getWeapon() instanceof Anduril) {
+            Anduril anduril = (Anduril) character.getWeapon();
+            damageDealt = anduril.getSpecialDamage();
+        }
         
-         for (AlliedSoldier s: alliedSoldiers) {
+        for (AlliedSoldier s: alliedSoldiers) {
             damageDealt += s.getDamage();
         }
 
