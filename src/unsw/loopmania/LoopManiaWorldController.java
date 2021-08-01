@@ -923,7 +923,7 @@ public class LoopManiaWorldController {
                                 Item equip = items.getValue0();
                                 Item unequipped = items.getValue1();
 
-
+                                // swap the currently equipped item with the item you want to equip (if applicable)
                                 onLoadEquipped(equip, equip.getX(), equip.getY());
                                 if (unequipped != null) {
                                     onLoad(unequipped);
@@ -933,7 +933,7 @@ public class LoopManiaWorldController {
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 break;
-
+                            
                             default:
                                 break;
                         }
@@ -1058,7 +1058,7 @@ public class LoopManiaWorldController {
                         break;
                 }
                 
-                draggedEntity.setVisible(true);
+                draggedEntity.setVisible(false);
                 draggedEntity.setMouseTransparent(true);
                 draggedEntity.toFront();
 
