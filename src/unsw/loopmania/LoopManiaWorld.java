@@ -1675,6 +1675,7 @@ public class LoopManiaWorld {
         for (Entity e: getCharacterInventory()) {
             if (e instanceof Item) {
                 if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
+                    System.out.println("fff");
                     item = (Item) e;
                 }
             }
@@ -1683,6 +1684,7 @@ public class LoopManiaWorld {
         Pair<Integer, Integer>target = new Pair<Integer, Integer>(slotX, slotY);
         if (item instanceof AttackItem) {
             AttackItem attackItem = (AttackItem) item;
+            System.out.println("hello");
             if (!attackItem.getAppropiateSlot().equals(target)) return null;
         } else if (item instanceof Shield) {
             Shield shieldItem = (Shield) item;
@@ -1694,6 +1696,7 @@ public class LoopManiaWorld {
             Helmet helmetItem = (Helmet) item;
             if (!helmetItem.getAppropiateSlot().equals(target)) return null;
         } else {
+            System.out.println("111");
             return null;
         }
         return item;
@@ -1777,5 +1780,13 @@ public class LoopManiaWorld {
      */
     public int getNumCards() {
         return this.cardEntities.size();
+    }
+
+    /**
+     * adds to unequipped item array
+     * @param item
+     */
+    public void addUnequippedItem(Item item) {
+        unequippedInventoryItems.add(item);
     }
 }
