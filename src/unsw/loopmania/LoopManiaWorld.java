@@ -24,6 +24,7 @@ import unsw.loopmania.cards.TrapCard;
 import unsw.loopmania.cards.VampireCastleCard;
 import unsw.loopmania.cards.VillageCard;
 import unsw.loopmania.cards.ZombieGraveyardCard;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.AttackItem;
 import unsw.loopmania.items.BattleItem;
@@ -172,6 +173,10 @@ public class LoopManiaWorld {
         previousShopRound = 1;
         shopCounter = 1;
         battleEnemies = new ArrayList<BasicEnemy>();
+    }
+
+    public List<BasicEnemy> getEnemies() {
+        return enemies;
     }
 
     public int getWidth() {
@@ -370,6 +375,7 @@ public class LoopManiaWorld {
      * 5 - Sword
      * 6 - One Ring
      * 7 - Health Potion
+     * 8 - Anduril, Flame of the West
      */
     public BattleItem buyItemByID(int itemID) {
         Pair<Integer, Integer> firstAvailableSlot = getFirstAvailableSlotForItem();
@@ -406,6 +412,9 @@ public class LoopManiaWorld {
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             } else if (itemID == 7) {
                 itemBought = new HealthPotion(new SimpleIntegerProperty(firstAvailableSlot.getValue0()), 
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (itemID == 8) {
+                itemBought = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
 
@@ -481,6 +490,8 @@ public class LoopManiaWorld {
                 items.add((OneRing) entity);
             } else if (itemID == 7 && entity instanceof HealthPotion) {
                 items.add((HealthPotion) entity);
+            } else if (itemID == 8 && entity instanceof Anduril) {
+                items.add((Anduril) entity);
             }
         }
 
@@ -525,15 +536,17 @@ public class LoopManiaWorld {
         Staff staff = new Staff(newX, newY);
         Stake stake = new Stake(newX, newY);
         Sword sword = new Sword(newX, newY);
+        Anduril anduril = new Anduril(newX, newY);
         shopItems.add(staff);
         shopItems.add(stake);
         shopItems.add(sword);
-
+        
         // adding other items
         OneRing oneRing = new OneRing(newX, newY);
         HealthPotion healthPotion = new HealthPotion(newX, newY);
         shopItems.add(oneRing);
         shopItems.add(healthPotion);
+        shopItems.add(anduril);
 
         return shopItems;
     }
@@ -1092,11 +1105,11 @@ public class LoopManiaWorld {
         double choice = rand.nextDouble();
         System.out.println(choice);
         Item addedItem = null;
+        Random nrand2 = new Random();
         if (choice < rareBound) {
             System.out.println("basic item");
             Random nrand1 = new Random();
             double commonUncommon = nrand1.nextDouble();
-            Random nrand2 = new Random();
             if (commonUncommon < 0.6) {
                 // common item drops
                 int nextChoice = nrand2.nextInt(2);
@@ -1132,9 +1145,16 @@ public class LoopManiaWorld {
                 } 
             }
         } else {
-            // rare item (the one ring)
-            addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
-                    new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            // rare item drops
+            int nextChoice = nrand2.nextInt(1);
+
+            if (nextChoice == 0) {
+                addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
+            } else if (nextChoice == 1) {
+                addedItem = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1())); 
+            }
         }
         unequippedInventoryItems.add(addedItem);
         return addedItem;

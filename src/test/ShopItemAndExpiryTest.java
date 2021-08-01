@@ -16,6 +16,7 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
@@ -276,7 +277,7 @@ public class ShopItemAndExpiryTest {
                     if (entities instanceof OneRing) {
                         equipmentContains = true;
                     }
-                }   
+                }
                 assertTrue(equipmentContains);
 
                 // cant buy another item, insufficient gold
@@ -301,7 +302,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(anduril.getItemCost());
 
                 // character should be able to buy item
-                Anduril orgAnduril = (Anduril) testWorld.buyItemByID(andurilID);
+                assertTrue(testWorld.buyItemByID(andurilID) != null);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -314,9 +315,6 @@ public class ShopItemAndExpiryTest {
 
                 // cant buy another item, insufficient gold
                 assertFalse(testWorld.buyItemByID(andurilID) != null);
-
-                // checking that oneRing highest usage is still 1
-                assertTrue(testWorld.getHighestUsageItem(andurilID) == orgAnduril);
             }
         }
         assertTrue(itemPresent);
