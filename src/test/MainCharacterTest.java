@@ -86,7 +86,7 @@ class MainCharacterTest {
         newCharacter.setHelmet(helmet);
         newCharacter.setShield(shield);
 
-        assertEquals(newCharacter.getTotalDefenceMultiplier(), 1 - 0.1 - 0.4 - 0.2);
+        assertEquals(newCharacter.getTotalDefenceMultiplier(false), 1 - 0.1 - 0.4 - 0.2);
         assertEquals(newCharacter.getTotalCritDefenceMultiplier(), 1 - 0 - 0 - 0.6);
     }
 
