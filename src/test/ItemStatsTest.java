@@ -69,7 +69,7 @@ public class ItemStatsTest {
     @Test
     public void testOneRingStats() {
         OneRing onering = new OneRing(new SimpleIntegerProperty(), new SimpleIntegerProperty());
-        assertEquals(500, onering.getItemCost());
+        assertEquals(5000, onering.getItemCost());
         assertEquals(1, onering.getItemDurability());
     }
 

@@ -111,12 +111,14 @@ public class Character extends MovingEntity {
     }
 
     public void incrementDoggieCoin() {
-        doggieCoin.subtract(1);
+        int coin = doggieCoin.get();
+        doggieCoin.set(coin + 1);
     }
 
     public void decrementDoggieCoin() {
         if (doggieCoin.get() > 0) {
-            doggieCoin.subtract(1);
+            int coin = doggieCoin.get();
+            doggieCoin.set(coin - 1);
         }
     }
 
