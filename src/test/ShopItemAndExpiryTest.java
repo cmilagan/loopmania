@@ -44,6 +44,7 @@ public class ShopItemAndExpiryTest {
     private int oneRingID = 6;
     private int healthPotionID = 7;
     private int andurilID = 8;
+    private int treeStumpID = 9;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -358,6 +359,36 @@ public class ShopItemAndExpiryTest {
                 shield1.useDefence();
                 shield2.useDefence();
                 assertTrue(testWorld.getHighestUsageItem(shieldID) == shield1);
+            }
+        }
+        assertTrue(itemPresent);
+    }
+
+    @Test
+    public void testBuyTreeStump() {
+        boolean itemPresent = false;
+        for (BattleItem item : battleItems) {
+            if (item instanceof TreeStump) {
+                TreeStump treeStump = (TreeStump) item;
+                itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(treeStump.getItemCost());
+
+                // character should be able to buy item
+                assertTrue(testWorld.buyItemByID(treeStumpID) != null);
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof TreeStump) {
+                        equipmentContains = true;
+                    }
+                }
+                assertTrue(equipmentContains);
+
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(treeStumpID) != null);
             }
         }
         assertTrue(itemPresent);

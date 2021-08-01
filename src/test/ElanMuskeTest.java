@@ -192,6 +192,26 @@ public class ElanMuskeTest {
     }
 
     /**
+     * Test to check if Elan is defeated by a character holding the Tree Stump which reduces incoming damage by 40%
+     * Given that Elan has a health of 40 and damage of 25 which is reduced by 40% to be 10
+     *      The character with a Sword has a health of 100 and a damage of 8, and
+     *      Elan moves first, 
+     * The battle should end with the Character having a health of 50 remaining
+     */
+    @Test
+    public void testTreeStumpDefence() {
+        initializeWorld();
+        addCharacter();
+        addElan();
+
+        TreeStump treeStump = new TreeStump(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        newCharacter.setTreeStump(treeStump);
+
+        testWorld.runBattles();
+
+        assertEquals(50, newCharacter.getHealth());
+    }
+    /**
      * Setup template world
      */
     public void initializeWorld() {
