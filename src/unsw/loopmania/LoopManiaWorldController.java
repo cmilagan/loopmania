@@ -915,44 +915,6 @@ public class LoopManiaWorldController {
                                 onLoad(newBuilding);
                                 break;
                             case ITEM:
-                                // if item is d
-                                // get the currently dragged item
-                                Item newItem = world.getItem(nodeX, nodeY);
-                                if (newItem == null) {
-                                    System.out.println("invalid");
-                                    return;
-                                }
-                                if (newItem instanceof Helmet) {
-                                    System.out.println("helmet spawn");
-                                    // respective coordinates of the helmet slot
-                                    if (!(x == 1 && y == 1)) {
-                                        return;
-                                    } 
-                                    // equip the item
-                                } else if (newItem instanceof Armor) {
-                                    System.out.println("armor spawn");
-                                    // respective coordinates of the armor slot
-                                    if (!(x == 1 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof AttackItem) {
-                                    System.out.println("attack spawn");
-                                    // respective coordinates of the sword slot
-                                    if (!(x == 0 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof Shield) {
-                                    System.out.println("shield spawn");
-                                    // respective coordinates of the shield slot
-                                    if (!(x == 3 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else {
-                                    return;
-                                }
                                 Pair<Item,Item> items = world.equipItemByCoordinates(nodeX, nodeY, x, y);
                                 if (items == null) {
                                     return;
@@ -1130,7 +1092,7 @@ public class LoopManiaWorldController {
                                             }
                                             break;
                                         case ITEM:
-                                            if (world.equipItemByCoordinates(nodeX, nodeY, x, y) == null) {
+                                            if (world.checkValidItemSlot(nodeX, nodeY, x, y) == null) {
                                                 n.setOpacity(1);
                                             } else {
                                                 n.setOpacity(0.7);
