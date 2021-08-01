@@ -209,6 +209,9 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToGameMenu() throws IOException {
+        protectiveGearCount = 0;
+        healthPotionBuyCount = 0;
+        statusField.setText("Welcome!");
         gameSwitcher.switchMenu();
     }
 
