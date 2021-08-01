@@ -897,6 +897,10 @@ public class LoopManiaWorld {
             character.setXP(character.getXP() + e.getExperience());
             character.setGold(goldReward());
         }
+
+        if (character.isStunned()) {
+            character.toggleStun();
+        }
         return defeatedEnemies;
     }
 
