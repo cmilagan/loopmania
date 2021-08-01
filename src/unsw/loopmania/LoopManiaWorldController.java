@@ -695,22 +695,25 @@ public class LoopManiaWorldController {
             Random rd2 = new Random();
             if (rgen > 0.9) {
                 // epic items
-                int randInt = rd2.nextInt(4);
+                int randInt = rd2.nextInt(3);
                 if (randInt == 0) {
                     loadVampireCard();
                 } else if (randInt == 1) {
                     loadTowerCard();
                 } else if (randInt == 2) {
-                    loadBarracksCard();
-                } else if (randInt == 3) {
                     loadCampfireCard();
-                } else if (randInt == 4) {
-                    loadVillageCard();
                 }
-            } else if (rgen <= 0.9 && rgen > 0.6) {
+            } else if (rgen <= 0.9 && rgen > 0.5) {
                 // uncommon items
-                loadZombieGraveyardCard();
-            } else if (rgen <= 0.6) {
+                int randInt = rd2.nextInt(3);
+                if (randInt == 0) {
+                    loadBarracksCard();
+                } else if (randInt == 1) {
+                    loadVillageCard();
+                } else if (randInt == 2) {
+                    loadZombieGraveyardCard();
+                }
+            } else if (rgen <= 0.5) {
                 // common items
                 loadTrapCard();
             }

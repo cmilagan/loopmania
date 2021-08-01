@@ -61,12 +61,12 @@ in the allied soldier state.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
-- Each card has its own rarity: Common (60%), Uncommon (30%), Epic (10%)
+- Each card has its own rarity: Common (50%), Uncommon (30%), Epic (10%)
     - Vampire Castle: Epic
     - Zombie Pit: Uncommon
     - Tower: Epic
-    - Village: Epic
-    - Barracks: Epic
+    - Village: Uncommon
+    - Barracks: Uncommon
     - Trap: Common
     - Campfire: Epic 
 - The Initial Values of damage/expiry(/rounds) for building items:
