@@ -66,7 +66,7 @@ public class ShopMenuControllerOne {
                 statusField.setText("Insufficient funds to buy a Sword!");
             }
         } else {
-            statusField.setText("You can't buy a Sword, inventory is full!");
+            statusField.setText("You can't buy a Sword, inventory is full! Try selling some items");
         }
     }
 
@@ -92,7 +92,7 @@ public class ShopMenuControllerOne {
                 statusField.setText("Insufficient funds to buy a Staff!");
             }
         } else {
-            statusField.setText("You can't buy a Staff, inventory is full!");
+            statusField.setText("You can't buy a Staff, inventory is full! Try selling some items");
         }
     }
 
@@ -118,7 +118,7 @@ public class ShopMenuControllerOne {
                 statusField.setText("Insufficient funds to buy a Stake!");
             }
         } else {
-            statusField.setText("You can't buy a Stake, inventory is full!");
+            statusField.setText("You can't buy a Stake, inventory is full! Try selling some items");
         }
     }
 
@@ -144,12 +144,16 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void shieldBuy() {
-        BattleItem boughtItem = world.buyItemByID(shieldID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Shield!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(shieldID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Shield!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Shield!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Shield!");
+            statusField.setText("You can't buy a Shield, inventory is full! Try selling some items");
         }
     }
 
@@ -166,12 +170,16 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void helmetBuy() {
-        BattleItem boughtItem = world.buyItemByID(helmetID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Helmet!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(helmetID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Helmet!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Helmet!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Helmet!");
+            statusField.setText("You can't buy a Helmet, inventory is full! Try selling some items");
         }
     }
 
@@ -188,12 +196,16 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void armourBuy() {
-        BattleItem boughtItem = world.buyItemByID(armorID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing Armour!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(armorID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing Armour!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy Armour!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy Armour!");
+            statusField.setText("You can't buy Armour, inventory is full! Try selling some items");
         }
     }
 
@@ -210,12 +222,16 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void healthPotionBuy() {
-        BattleItem boughtItem = world.buyItemByID(healthPotionID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Health Potion!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(healthPotionID);
+            if (boughtItem != null) {
+                statusField.setText("Thank you for purchasing a Health Potion!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy a Health Potion!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy a Health Potion!");
+            statusField.setText("You can't buy a Health Potion, inventory is full! Try selling some items");
         }
     }
 

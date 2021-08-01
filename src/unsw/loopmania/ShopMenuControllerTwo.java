@@ -42,12 +42,16 @@ public class ShopMenuControllerTwo {
 
     @FXML
     public void buyOneRing() {
-        BattleItem boughtItem = world.buyItemByID(oneRingID);
-        if (boughtItem != null) {
-            statusField.setText("Congratulations, you have bought The One Ring!");
-            mainController.onLoad(boughtItem);
+        if (!world.checkInventoryFull()) {
+            BattleItem boughtItem = world.buyItemByID(oneRingID);
+            if (boughtItem != null) {
+                statusField.setText("Congratulations, you have bought The One Ring!");
+                mainController.onLoad(boughtItem);
+            } else {
+                statusField.setText("Insufficient funds to buy The One Ring!");
+            }
         } else {
-            statusField.setText("Insufficient funds to buy The One Ring!");
+            statusField.setText("You can't buy The One Ring, inventory is full! Try selling some items");
         }
     }
 
