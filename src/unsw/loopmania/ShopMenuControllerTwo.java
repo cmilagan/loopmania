@@ -1,4 +1,4 @@
-package unsw;
+package unsw.loopmania;
 
 import java.io.IOException;
 
@@ -7,9 +7,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
-import unsw.loopmania.LoopManiaWorld;
-import unsw.loopmania.LoopManiaWorldController;
-import unsw.loopmania.MenuSwitcher;
 import unsw.loopmania.items.BattleItem;
 
 public class ShopMenuControllerTwo {
@@ -23,7 +20,6 @@ public class ShopMenuControllerTwo {
 
     @FXML
     private Text statusField;
-
 
     public ShopMenuControllerTwo(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
@@ -44,26 +40,66 @@ public class ShopMenuControllerTwo {
         });
     }
 
-    @FXML
-    public void buyOneRing() {
-        BattleItem boughtItem = world.buyItemByID(oneRingID);
+    private void buyItem(int itemID) {
+        BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
-            statusField.setText("Congratulations, you have bought The One Ring!");
+            if (itemID == oneRingID) {
+                statusField.setText("Congratulations, you have bought The One Ring!");
+            } 
+            // else if (itemID == staffID) {
+            //     statusField.setText("Thank you for purchasing a Staff!");
+            // } else if (itemID == stakeID) {
+            //     statusField.setText("Thank you for purchasing a Stake!");
+            // } 
             mainController.onLoad(boughtItem);
         } else {
-            statusField.setText("Insufficient funds to buy The One Ring!");
+            if (itemID == oneRingID) {
+                statusField.setText("Insufficient funds to buy The One Ring!");
+            } 
+            // else if (itemID == staffID) {
+            //     statusField.setText("Insufficient funds to buy a Staff!");
+            // } else if (itemID == stakeID) {
+            //     statusField.setText("Insufficient funds to buy a Stake!");
+            // } 
+        }
+    }
+
+    private void sellItem(int itemID) {
+        BattleItem itemToSell = world.getHighestUsageItem(itemID);
+        if (itemToSell != null) {
+            if (itemID == oneRingID) {
+                statusField.setText("Thank you for selling The One Ring!");
+            } 
+            // else if (itemID == staffID) {
+            //     statusField.setText("Thank you for selling a Staff!");
+            // } else if (itemID == stakeID) {
+            //     statusField.setText("Thank you for selling a Stake!");
+            // } 
+            world.sellItem(itemToSell);
+        } else {
+            if (itemID == oneRingID) {
+                statusField.setText("You don't have The One Ring to sell!");
+            } 
+            // else if (itemID == staffID) {
+            //     statusField.setText("You don't have a Staff to sell!");
+            // } else if (itemID == stakeID) {
+            //     statusField.setText("You don't have a Stake to sell!");
+            // } 
+        }
+    }
+
+    @FXML
+    public void buyOneRing() {
+        if (!world.checkInventoryFull()) {
+            buyItem(oneRingID);
+        } else {
+            statusField.setText("You can't buy The One Ring, inventory is full! Try selling some items");
         }
     }
 
     @FXML
     public void sellOneRing() {
-        BattleItem item = world.getHighestUsageItem(oneRingID);
-        if (item != null) {
-            statusField.setText("Thank you for selling The One Ring!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have The One Ring to sell");
-        }
+        sellItem(oneRingID);
     }
 
     @FXML
