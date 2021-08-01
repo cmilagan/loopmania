@@ -14,22 +14,24 @@ import unsw.loopmania.Character;
 import unsw.loopmania.LoopManiaWorld;
 
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Slug;
+import unsw.loopmania.npcs.Zombie;
 
 class BattleTest {
     private Character newCharacter;
     private LoopManiaWorld testWorld;
     private List<Pair<Integer, Integer>> orderedPath = new ArrayList<>();
 
-    @Test
     /**
      *  Fighting Basic Enemy Test
      *  Testing that enemies die properly
      */
+    @Test
     void testBattleEncounter() {
         initializeWorld();
         // Adding Enemy to World
@@ -42,11 +44,11 @@ class BattleTest {
         // Check results
     }
 
-    @Test
     /**
      *  Fighting Multiple Slugs Test
      *  Testing that only enemies inside proximity will fight
      */
+    @Test
     void testBattleEncounterWithMultiple1() {
         initializeWorld();
         // Adding Enemy to World
@@ -62,11 +64,11 @@ class BattleTest {
         // Check results
     }
 
-    @Test
     /**
      *  Fighting one slug, with other outside of proximity
      *  Testing that only enemies inside proximity will fight
      */
+    @Test
     void testBattleEncounterWithMultiple2() {
         initializeWorld();
         // Adding Enemy to World
@@ -83,11 +85,11 @@ class BattleTest {
     }
 
 
-    @Test
     /**
      *  Fighting one slug, with other outside of proximity
      *  Testing that only enemies inside proximity will fight
      */
+    @Test
     void testBattleEncounterWithCharacterDeath() {
         initializeWorld();
         // Setting Character health to 1
@@ -102,6 +104,33 @@ class BattleTest {
         assertEquals(newCharacter.getHealth(), 0);
         // Check results
     }
+
+    /**
+     * Testing the respawn ability of the One Ring.
+     * Normally, the main character without a weapon is defeated by a Zombie.
+     * This should not be the case when he has the One Ring and can respawn.
+     */
+    @Test
+    public void testOneRingRespawn() {
+        initializeWorld();
+
+        PathPosition zombiePosition = new PathPosition(0, orderedPath);
+        Zombie zombie = new Zombie(zombiePosition);
+        testWorld.addEnemy(zombie);
+        
+        int oneRingID = 6;
+        newCharacter.setGold(5000);
+        testWorld.buyItemByID(oneRingID);
+        
+        testWorld.runBattles();
+        
+        assertEquals(0, newCharacter.getHealth());
+        
+        newCharacter.useOneRing();
+
+        assertEquals(100, newCharacter.getHealth());
+    }
+
 
     // setup template world
     public void initializeWorld() {
