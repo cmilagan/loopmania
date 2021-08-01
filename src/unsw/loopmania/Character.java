@@ -79,20 +79,20 @@ public class Character extends MovingEntity {
     }
 
     /**
-     * This function checks if character has Staff equipped and returns a 40% of inflicting a trance.
+     * This function checks if character has Staff equipped and returns a 20% chance of inflicting a trance.
      * A trance inflicted is denoted by returning true. 
      * 
      * If character does not have Staff equipped or chance does not permit trance, return false.
      */
     public boolean inflictStaffTrance() {
         /**
-         * A Staff has 40% chance of inflicting trance.
+         * A Staff has 20% chance of inflicting trance.
          */
         if (this.getWeapon() instanceof Staff) {
             int seed = 100;
             Random random = new Random(seed);
             int value = random.nextInt(seed);
-            return value < 41;
+            return value < 21;
         }
 
         return false;
