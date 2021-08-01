@@ -1163,7 +1163,7 @@ public class LoopManiaWorld {
             }
         } else {
             // rare item drops
-            int nextChoice = nrand2.nextInt(1);
+            int nextChoice = nrand2.nextInt(2);
 
             if (nextChoice == 0) {
                 addedItem = new OneRing(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
@@ -1171,6 +1171,9 @@ public class LoopManiaWorld {
             } else if (nextChoice == 1) {
                 addedItem = new Anduril(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
                 new SimpleIntegerProperty(firstAvailableSlot.getValue1())); 
+            } else if (nextChoice == 2) {
+                addedItem = new TreeStump(new SimpleIntegerProperty(firstAvailableSlot.getValue0()),
+                new SimpleIntegerProperty(firstAvailableSlot.getValue1()));
             }
         }
         unequippedInventoryItems.add(addedItem);
