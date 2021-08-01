@@ -18,116 +18,116 @@
             <Image url="@../../images/bimg.jpg" />
          </image>
       </ImageView>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="413.0" layoutY="355.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="419.0" layoutY="403.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="395.0" layoutY="357.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="401.0" layoutY="405.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="hpBuyPrice" layoutX="474.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="hpBuyPrice" layoutX="456.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="499.0" layoutY="403.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="481.0" layoutY="405.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="hpSellPrice" layoutX="554.0" layoutY="420.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="hpSellPrice" layoutX="536.0" layoutY="422.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="413.0" layoutY="275.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="419.0" layoutY="323.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="395.0" layoutY="277.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="401.0" layoutY="325.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="armorBuyPrice" layoutX="474.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="armorBuyPrice" layoutX="456.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="499.0" layoutY="323.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="481.0" layoutY="325.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="armorSellPrice" layoutX="554.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="armorSellPrice" layoutX="536.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="413.0" layoutY="195.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="419.0" layoutY="243.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="395.0" layoutY="197.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="401.0" layoutY="245.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="helmetBuyPrice" layoutX="474.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="helmetBuyPrice" layoutX="456.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="499.0" layoutY="243.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="481.0" layoutY="245.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="helmetSellPrice" layoutX="554.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="helmetSellPrice" layoutX="536.0" layoutY="262.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="413.0" layoutY="114.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="419.0" layoutY="162.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="395.0" layoutY="116.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="401.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="shieldBuyPrice" layoutX="474.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="shieldBuyPrice" layoutX="456.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="499.0" layoutY="162.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="481.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="shieldSellPrice" layoutX="554.0" layoutY="179.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="shieldSellPrice" layoutX="536.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="6.0" layoutY="357.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="14.0" layoutY="406.0" prefHeight="22.0" prefWidth="180.0" text="Sell for Doggie Coin Value">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="357.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="32.0" layoutY="406.0" prefHeight="22.0" prefWidth="180.0" text="Sell for Doggie Coin Value">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="6.0" layoutY="277.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Label layoutX="12.0" layoutY="324.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="277.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Label layoutX="30.0" layoutY="324.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Label layoutX="92.0" layoutY="324.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="110.0" layoutY="324.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="6.0" layoutY="197.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="6.0" layoutY="116.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="197.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="116.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="225.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
       <Label layoutX="231.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop">
          <font>
             <Font name="Goudy Old Style Bold" size="30.0" />
          </font>
       </Label>
-      <ImageView layoutX="422.0" layoutY="283.0">
+      <ImageView layoutX="405.0" layoutY="289.0">
          <image>
             <Image url="@../../images/armour.png" />
          </image>
@@ -135,7 +135,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="422.0" layoutY="361.0">
+      <ImageView layoutX="405.0" layoutY="367.0">
          <image>
             <Image url="@../../images/brilliant_blue_new.png" />
          </image>
@@ -143,7 +143,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="422.0" layoutY="203.0">
+      <ImageView layoutX="405.0" layoutY="209.0">
          <image>
             <Image url="@../../images/helmet.png" />
          </image>
@@ -151,7 +151,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="422.0" layoutY="122.0">
+      <ImageView layoutX="405.0" layoutY="128.0">
          <image>
             <Image url="@../../images/shield.png" />
          </image>
@@ -159,7 +159,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="14.0" layoutY="205.0">
+      <ImageView layoutX="34.0" layoutY="207.0">
          <image>
             <Image url="@../../images/staff.png" />
          </image>
@@ -167,7 +167,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="13.0" layoutY="285.0">
+      <ImageView layoutX="33.0" layoutY="287.0">
          <image>
             <Image url="@../../images/stake.png" />
          </image>
@@ -175,7 +175,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="14.0" layoutY="124.0">
+      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="34.0" layoutY="126.0">
          <image>
             <Image url="@../../images/basic_sword.png" />
          </image>
@@ -183,7 +183,7 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <ImageView layoutX="12.0" layoutY="365.0">
+      <ImageView layoutX="33.0" layoutY="367.0">
          <image>
             <Image url="@../../images/doggiecoin.png" />
          </image>
@@ -191,42 +191,42 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Label layoutX="53.0" layoutY="210.0" prefHeight="22.0" prefWidth="84.0" text="Staff">
+      <Label layoutX="73.0" layoutY="212.0" prefHeight="22.0" prefWidth="84.0" text="Staff">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="53.0" layoutY="129.0" prefHeight="22.0" prefWidth="84.0" text="Sword">
+      <Label layoutX="73.0" layoutY="131.0" prefHeight="22.0" prefWidth="84.0" text="Sword">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="52.0" layoutY="290.0" prefHeight="22.0" prefWidth="84.0" text="Stake">
+      <Label layoutX="72.0" layoutY="292.0" prefHeight="22.0" prefWidth="84.0" text="Stake">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="51.0" layoutY="370.0" prefHeight="22.0" prefWidth="93.0" text="Doggie Coin">
+      <Label layoutX="72.0" layoutY="372.0" prefHeight="22.0" prefWidth="93.0" text="Doggie Coin">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="461.0" layoutY="127.0" prefHeight="22.0" prefWidth="84.0" text="Shield">
+      <Label layoutX="444.0" layoutY="133.0" prefHeight="22.0" prefWidth="84.0" text="Shield">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="461.0" layoutY="208.0" prefHeight="22.0" prefWidth="84.0" text="Helmet">
+      <Label layoutX="444.0" layoutY="214.0" prefHeight="22.0" prefWidth="84.0" text="Helmet">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="461.0" layoutY="288.0" prefHeight="22.0" prefWidth="84.0" text="Armour">
+      <Label layoutX="444.0" layoutY="294.0" prefHeight="22.0" prefWidth="84.0" text="Armour">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="461.0" layoutY="366.0" prefHeight="22.0" prefWidth="109.0" text="Health Potion">
+      <Label layoutX="444.0" layoutY="372.0" prefHeight="22.0" prefWidth="109.0" text="Health Potion">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -241,7 +241,7 @@
             <Image url="@../../images/gold_pile.png" />
          </image>
       </ImageView>
-      <Button fx:id="buySword" layoutX="198.0" layoutY="122.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buySword" layoutX="217.0" layoutY="124.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -249,7 +249,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="backToMapButton" layoutX="7.0" layoutY="446.0" mnemonicParsing="false" onAction="#switchToGameMenu" prefWidth="131.0" text="Resume Game">
+      <Button fx:id="backToMapButton" layoutX="25.0" layoutY="443.0" mnemonicParsing="false" onAction="#switchToGameMenu" prefWidth="131.0" text="Resume Game">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -267,7 +267,7 @@
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
-      <Button fx:id="buyStaff" layoutX="198.0" layoutY="203.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyStaff" layoutX="217.0" layoutY="205.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -275,7 +275,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="buyStake" layoutX="198.0" layoutY="283.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyStake" layoutX="217.0" layoutY="285.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -283,7 +283,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellSword" layoutX="256.0" layoutY="122.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellSword" layoutX="275.0" layoutY="124.0" minWidth="41.0" mnemonicParsing="false" onAction="#swordSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -291,7 +291,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellStaff" layoutX="256.0" layoutY="203.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellStaff" layoutX="275.0" layoutY="205.0" minWidth="41.0" mnemonicParsing="false" onAction="#staffSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -299,7 +299,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellStake" layoutX="256.0" layoutY="283.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellStake" layoutX="275.0" layoutY="285.0" minWidth="41.0" mnemonicParsing="false" onAction="#stakeSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -307,7 +307,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellDoggieCoin" layoutX="256.0" layoutY="363.0" minWidth="41.0" mnemonicParsing="false" onAction="#doggieCoinSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellDoggieCoin" layoutX="275.0" layoutY="365.0" minWidth="41.0" mnemonicParsing="false" onAction="#doggieCoinSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -315,7 +315,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="buyShield" layoutX="606.0" layoutY="120.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyShield" layoutX="588.0" layoutY="124.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -323,7 +323,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="buyHelmet" layoutX="604.0" layoutY="201.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyHelmet" layoutX="586.0" layoutY="205.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -331,7 +331,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="buyArmor" layoutX="604.0" layoutY="281.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyArmor" layoutX="586.0" layoutY="285.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -339,7 +339,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="buyHealthPotion" layoutX="604.0" layoutY="361.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
+      <Button fx:id="buyHealthPotion" layoutX="586.0" layoutY="365.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionBuy" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -347,7 +347,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellShield" layoutX="664.0" layoutY="120.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellShield" layoutX="646.0" layoutY="124.0" minWidth="41.0" mnemonicParsing="false" onAction="#shieldSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -355,7 +355,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellHelmet" layoutX="662.0" layoutY="201.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellHelmet" layoutX="644.0" layoutY="205.0" minWidth="41.0" mnemonicParsing="false" onAction="#helmetSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -363,7 +363,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellArmour" layoutX="662.0" layoutY="281.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellArmour" layoutX="644.0" layoutY="285.0" minWidth="41.0" mnemonicParsing="false" onAction="#armourSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -371,7 +371,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="sellHealthPotion" layoutX="662.0" layoutY="361.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
+      <Button fx:id="sellHealthPotion" layoutX="644.0" layoutY="365.0" minWidth="41.0" mnemonicParsing="false" onAction="#healthPotionSell" prefHeight="35.0" prefWidth="54.0" text="Sell">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -379,7 +379,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <Button fx:id="switchToShopScreenTwoButton" layoutX="588.0" layoutY="446.0" mnemonicParsing="false" onAction="#switchToShopScreenTwo" prefHeight="35.0" prefWidth="137.0" text="Special Items -&gt;">
+      <Button fx:id="switchToShopScreenTwoButton" layoutX="570.0" layoutY="443.0" mnemonicParsing="false" onAction="#switchToShopScreenTwo" prefHeight="35.0" prefWidth="137.0" text="Special Items -&gt;">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
@@ -402,52 +402,52 @@
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
-      <Label layoutX="12.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Label layoutX="30.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="swordBuyPrice" layoutX="67.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="swordBuyPrice" layoutX="85.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="92.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="110.0" layoutY="164.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="swordSellPrice" layoutX="147.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="swordSellPrice" layoutX="165.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="12.0" layoutY="244.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
+      <Label layoutX="30.0" layoutY="244.0" prefHeight="22.0" prefWidth="54.0" text="Buy for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="staffBuyPrice" layoutX="67.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="staffBuyPrice" layoutX="85.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="92.0" layoutY="244.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="110.0" layoutY="244.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="staffSellPrice" layoutX="147.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="staffSellPrice" layoutX="165.0" layoutY="261.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="stakeBuyPrice" layoutX="68.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="stakeBuyPrice" layoutX="86.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Text fx:id="stakeSellPrice" layoutX="145.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="stakeSellPrice" layoutX="163.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>

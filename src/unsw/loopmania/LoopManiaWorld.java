@@ -539,6 +539,15 @@ public class LoopManiaWorld {
     }
 
     /**
+     * returns the price of an item given the itemID
+     */
+    public int getItemPrice(int itemID) {
+        List<BattleItem> shopItems = getBattleItems();
+        int itemCost = shopItems.get(itemID).getItemCost();
+        return itemCost;
+    }
+
+    /**
      * set the character. This is necessary because it is loaded as a special entity
      * out of the file
      * 
