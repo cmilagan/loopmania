@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import org.javatuples.Pair;
 
 import java.util.Random;
 
@@ -520,11 +521,6 @@ public class LoopManiaWorldController {
                 }
             }
 
-            // remove expired highlights
-            for(Node n : squares.getChildren()) {
-                n.setOpacity(1);
-            }
-
             printThreadingNotes("HANDLED TIMER");
         }));
         timeline.setCycleCount(Animation.INDEFINITE);
@@ -721,6 +717,46 @@ public class LoopManiaWorldController {
         cards.getChildren().add(view);
     }
 
+
+    public void onLoadEquipped(Item item, int x, int y) {
+        ImageView view = null;
+        if (item instanceof Sword) {
+            System.out.println("sword");
+            view = new ImageView(swordImage);
+        } else if (item instanceof Armor) {
+            System.out.println("armor");
+            view = new ImageView(armourImage);
+        } else if (item instanceof Helmet) {
+            System.out.println("helmet");
+            view = new ImageView(helmetImage);
+        } else if (item instanceof Shield) {
+            System.out.println("shield");
+            view = new ImageView(shieldImage);
+        } else if (item instanceof Staff) {
+            System.out.println("staff");
+            view = new ImageView(staffImage);
+        } else if (item instanceof Stake) {
+            System.out.println("stak");
+            view = new ImageView(stakeImage);
+        } else if (item instanceof HealthPotion) {
+            System.out.println("pot");
+            view = new ImageView(potionImage);
+        } else if (item instanceof OneRing) {
+            view = new ImageView(ringImage);
+        } else {
+            try {
+                throw new Exception("Invalid Item");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, equippedItems, unequippedInventory);
+        addEntity(item, view);
+        equippedItems.add(view, x, y);
+    }
+
     /**
      * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
@@ -914,11 +950,22 @@ public class LoopManiaWorldController {
                                 } else {
                                     return;
                                 }
-                                world.equipItem(newItem);
+                                Pair<Item,Item> items = world.equipItemByCoordinates(nodeX, nodeY, x, y);
+                                if (items == null) {
+                                    return;
+                                }
+
+                                Item equipped = items.getValue0();
+                                Item unequipped = items.getValue1();
+
+                                onLoadEquipped(equipped, equipped.getX(), equipped.getY());
+                                onLoad(unequipped);
+
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
-                                targetGridPane.add(image, x, y, 1, 1);
+                                // targetGridPane.add(image, x, y, 1, 1);
                                 break;
+
                             default:
                                 break;
                         }

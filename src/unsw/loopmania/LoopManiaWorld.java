@@ -1621,6 +1621,7 @@ public class LoopManiaWorld {
         
     }
 
+
     /**
      * 
      * @param itemNodeX
@@ -1633,20 +1634,88 @@ public class LoopManiaWorld {
         return item;
     }
 
+
     /**
      * Equips the item
      * @param item
      */
-    public void equipItem(Item item) {
-        if (item instanceof Helmet) {
-            character.setHelmet((Helmet)item);
-        } else if (item instanceof Armor) {
-            character.setArmor((Armor)item);
-        } else if (item instanceof AttackItem) {
-            character.setWeapon((AttackItem)item);
-        } else if (item instanceof Shield) {
-            character.setShield((Shield)item);
+    public Pair<Item, Item> equipItemByCoordinates(int itemNodeX, int itemNodeY, int slotX, int slotY) {
+        Item equip = null;
+        // getting the appropiate item
+        for (Entity e: getCharacterInventory()) {
+            if (e instanceof Item) {
+                if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
+                    equip = (Item) e;
+                }
+            }
         }
+
+        Pair<Integer, Integer>target = new Pair<Integer, Integer>(slotX, slotY);
+
+        // check if drag request is to a appropiate slot
+        System.out.println(1);
+        int equippedIdx;
+        if (equip instanceof AttackItem) {
+            equippedIdx = 0;
+            AttackItem attackItem = (AttackItem) equip;
+            if (!attackItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Shield) {
+            equippedIdx = 1;
+            Shield shieldItem = (Shield) equip;
+            if (!shieldItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Armor) {
+            equippedIdx = 2;
+            Armor armourItem = (Armor) equip;
+            if (!armourItem.getAppropiateSlot().equals(target)) return null;
+        } else if (equip instanceof Helmet) {
+            equippedIdx = 3;
+            Helmet helmetItem = (Helmet) equip;
+            if (!helmetItem.getAppropiateSlot().equals(target)) return null;
+        } else {
+            System.out.println(3);
+
+            return null;
+        }
+        System.out.println(2);
+
+        equip.setX(slotX);
+        equip.setY(slotY);
+
+        Item unequipped = null;
+        if (equippedIdx == 0) {
+            if (character.getWeapon() != null) {
+                System.out.println("got here");
+                unequipped = character.getWeapon();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setWeapon((AttackItem) equip);
+        } else if (equippedIdx == 1) {
+            if (character.getShield() != null) {
+                System.out.println("got here");
+                unequipped = character.getShield();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setShield((Shield) equip);
+        } else if (equippedIdx == 2) {
+            if (character.getArmor() != null) {
+                System.out.println("got here");
+                unequipped = character.getArmor();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setArmor((Armor) equip);
+        } else if (equippedIdx == 3) {
+            if (character.getHelmet() != null) {
+                System.out.println("got here");
+                unequipped = character.getHelmet();
+                unequippedInventoryItems.add(unequipped);
+            }
+            character.setHelmet((Helmet) equip);
+        }
+        System.out.println("got here");
+        
+
+        return new Pair<Item,Item>(equip, unequipped);
+
     }
 
     /**
