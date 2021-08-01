@@ -63,6 +63,7 @@ import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
 import unsw.loopmania.npcs.Doggie;
+import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -226,6 +227,8 @@ public class LoopManiaWorldController {
     private Image zombieImage;
     private Image vampireImage;
     private Image doggieImage;
+    private Image elanImage;
+
 
     private Image soldierImage;
 
@@ -318,6 +321,7 @@ public class LoopManiaWorldController {
         zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
         doggieImage = new Image((new File("src/images/doggie.png")).toURI().toString());
+        elanImage = new Image((new File("src/images/elan.png")).toURI().toString());
 
         soldierImage = new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString());
 
@@ -838,6 +842,8 @@ public class LoopManiaWorldController {
             view = new ImageView(vampireImage);
         } else if (enemy instanceof Doggie) {
             view = new ImageView(doggieImage);
+        } else if (enemy instanceof ElanMuske) {
+            view = new ImageView(elanImage);
         } else {
             try {
                 throw new Exception("Invalid Enemy");
