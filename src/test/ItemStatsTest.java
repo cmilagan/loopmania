@@ -74,6 +74,18 @@ public class ItemStatsTest {
     }
 
     @Test
+    public void testAndurilStats() {
+        Anduril anduril = new Anduril(new SimpleIntegerProperty(), new SimpleIntegerProperty());
+        assertEquals(7000, anduril.getItemCost());
+        assertEquals(20, anduril.getItemDurability());
+        assertEquals(15, anduril.inflictDamage());
+        assertEquals(20, anduril.getSpecialDamage());
+
+        // usage should be incremented by 2
+        assertEquals(2, anduril.getUsage());
+    }
+
+    @Test
     public void testShieldStats() {
         Shield shield = new Shield(new SimpleIntegerProperty(), new SimpleIntegerProperty());
         assertEquals(10, shield.getItemCost());
