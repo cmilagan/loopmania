@@ -21,6 +21,32 @@ public class ShopMenuControllerTwo {
     @FXML
     private Text statusField;
 
+    @FXML
+    private Text oneRingBuyPrice;
+
+    @FXML
+    private Text oneRingSellPrice;
+
+    @FXML
+    private Text andurilBuyPrice;
+
+    @FXML
+    private Text andurilSellPrice;
+
+    @FXML
+    private Text treeStumpBuyPrice;
+
+    @FXML
+    private Text treeStumpSellPrice;
+
+    public int getItemPrice(int itemID) {
+        return world.getItemPrice(itemID);
+    }
+
+    public long getItemSellValue(int itemID) {
+        return Math.round(0.7 * world.getItemPrice(itemID));
+    }
+
     public ShopMenuControllerTwo(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
         this.mainController = mainController;
@@ -36,6 +62,18 @@ public class ShopMenuControllerTwo {
                     Number oldValue, Number newValue) {
                 IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
                 playerGold.textProperty().bind(characterGold.asString());
+                
+                /**
+                 * also update the cost/sell value of the weapons in the front-end 
+                 */
+                oneRingBuyPrice.setText(String.valueOf(getItemPrice(oneRingID)));
+                oneRingSellPrice.setText(String.valueOf(getItemSellValue(oneRingID)));
+
+                // staffBuyPrice.setText(String.valueOf(getItemPrice(staffID)));
+                // staffSellPrice.setText(String.valueOf(getItemSellValue(staffID)));
+
+                // stakeBuyPrice.setText(String.valueOf(getItemPrice(stakeID)));
+                // stakeSellPrice.setText(String.valueOf(getItemSellValue(stakeID)));
             }
         });
     }

@@ -122,7 +122,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="197.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fff2d0" height="75.0" layoutX="24.0" layoutY="116.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="313.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="225.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
-      <Label layoutX="231.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop">
+      <Label layoutX="231.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style Bold" size="30.0" />
          </font>

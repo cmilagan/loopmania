@@ -24,17 +24,17 @@
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="treeStumpBuyPrice" layoutX="234.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="treeStumpBuyPrice" layoutX="237.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="259.0" layoutY="374.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="279.0" layoutY="374.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="treeStumpSellPrice" layoutX="314.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="treeStumpSellPrice" layoutX="331.0" layoutY="391.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
@@ -45,17 +45,17 @@
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="andurilBuyPrice" layoutX="234.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="andurilBuyPrice" layoutX="237.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="259.0" layoutY="281.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="279.0" layoutY="281.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="andurilSellPrice" layoutX="314.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="andurilSellPrice" layoutX="335.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="37.999999999999886">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
@@ -66,23 +66,23 @@
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="oneRingBuyPrice" layoutX="234.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="oneRingBuyPrice" layoutX="237.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="38.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Label layoutX="259.0" layoutY="188.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
+      <Label layoutX="279.0" layoutY="188.0" prefHeight="22.0" prefWidth="54.0" text="Sell for:">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Label>
-      <Text fx:id="oneRingSellPrice" layoutX="314.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="10" wrappingWidth="22.0">
+      <Text fx:id="oneRingSellPrice" layoutX="331.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000" wrappingWidth="38.0">
          <font>
             <Font name="Goudy Old Style Bold" size="16.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="215.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
-      <Label layoutX="221.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="35.0" layoutX="225.0" layoutY="16.0" stroke="BLACK" strokeType="INSIDE" width="305.0" />
+      <Label layoutX="231.0" layoutY="14.0" prefHeight="35.0" prefWidth="298.0" text="Hero's Castle Item Shop" textFill="WHITE">
          <font>
             <Font name="Goudy Old Style Bold" size="30.0" />
          </font>
@@ -149,11 +149,6 @@
             <Font name="Goudy Old Style Bold" size="18.0" />
          </font>
       </Text>
-      <Text fx:id="statusField" layoutX="188.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="362.9366455078125">
-         <font>
-            <Font name="Goudy Old Style Bold" size="18.0" />
-         </font>
-      </Text>
       <Button fx:id="buyAndurilButton" layoutX="439.0" layoutY="245.0" minWidth="41.0" mnemonicParsing="false" onAction="#buyAnduril" prefHeight="35.0" prefWidth="54.0" text="Buy">
          <font>
             <Font name="Goudy Old Style Bold" size="18.0" />
@@ -202,5 +197,10 @@
             <InnerShadow />
          </effect>
       </Button>
+      <Text fx:id="statusField" layoutX="96.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome!" textAlignment="CENTER" wrappingWidth="539.7366333007812">
+         <font>
+            <Font name="Goudy Old Style Bold" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
