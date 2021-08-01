@@ -13,13 +13,14 @@ import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.BasicEnemy;
 
 /**
  * represents the main character in the backend of the game world
  */
 public class Character extends MovingEntity {
-    private SimpleIntegerProperty gold = new SimpleIntegerProperty(5000);
+    private SimpleIntegerProperty gold = new SimpleIntegerProperty(100);
     private SimpleIntegerProperty doggieCoin = new SimpleIntegerProperty(0);
     private int health = 100;
     private int maxHealth = 100;
@@ -44,8 +45,8 @@ public class Character extends MovingEntity {
         int enemyDamage = enemy.getDamage();
         boolean enemyCrit = enemy.rollCrit();
         int damageDealt;
-        if (enemyCrit) damageDealt = (int)(3 * enemyDamage * this.getTotalDefenceMultiplier() * this.getTotalCritDefenceMultiplier());
-        else damageDealt = (int)(enemyDamage * this.getTotalDefenceMultiplier());
+        if (enemyCrit) damageDealt = (int)(3 * enemyDamage * getTotalDefenceMultiplier(enemy.getIsBoss()) * getTotalCritDefenceMultiplier());
+        else damageDealt = (int)(enemyDamage * this.getTotalDefenceMultiplier(enemy.getIsBoss()));
         this.setHealth(Math.max(0, this.health - damageDealt));
         return health;
     }
@@ -174,11 +175,14 @@ public class Character extends MovingEntity {
         this.equippedShield = shield;
     }
 
-    public double getTotalDefenceMultiplier() {
+    public double getTotalDefenceMultiplier(boolean isBoss) {
         double multiplier = 1;
         if (this.equippedArmor != null) multiplier -= this.equippedArmor.useDefence();
         if (this.equippedHelmet != null) multiplier -= this.equippedHelmet.useDefence();
-        if (this.equippedShield != null) multiplier -= this.equippedShield.useDefence();
+        if (this.equippedShield != null) {
+            if (isBoss) multiplier -= this.equippedShield.useSpecialDefence();
+            else multiplier -= this.equippedShield.useDefence();
+        }
         return multiplier;
     }
     

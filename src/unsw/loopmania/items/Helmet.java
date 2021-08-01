@@ -14,7 +14,7 @@ public class Helmet extends DefenceItem implements EquipItem {
     private static double critDefencePercentage = 0;
 
     public Helmet(SimpleIntegerProperty x, SimpleIntegerProperty y) {
-        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage);
+        super(x, y, itemCost, itemDurability, defencePercentage, critDefencePercentage, defencePercentage);
     }
 
     /**

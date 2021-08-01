@@ -61,12 +61,12 @@ in the allied soldier state.
  
 ## Building Related Assumptions:
 - When the character reaches the Hero Castle, item shop pops up and game is paused until user exits the shop
-- Each card has its own rarity: Common (60%), Uncommon (30%), Epic (10%)
+- Each card has its own rarity: Common (50%), Uncommon (30%), Epic (10%)
     - Vampire Castle: Epic
     - Zombie Pit: Uncommon
     - Tower: Epic
-    - Village: Epic
-    - Barracks: Epic
+    - Village: Uncommon
+    - Barracks: Uncommon
     - Trap: Common
     - Campfire: Epic 
 - The Initial Values of damage/expiry(/rounds) for building items:
@@ -122,9 +122,11 @@ in the allied soldier state.
     - staff: uncommon
     - healthpotion: uncommon
 - The Initial Values of defence/crit protection/durability/ for defence items:
-    - Armour Defence: 40%, 0%, 10
-    - Helmet Defence: 10%, 0%, 10
-    - Shield Defence: 20%, 60%, 5
+    - Armour Defence        :   40%, 0%, 10
+    - Helmet Defence        :   10%, 0%, 10
+    - Shield Defence        :   20%, 60%, 5
+    - Tree Stump Defence    :   30%, 70%, 20
+        - The Tree Stump has a higher defence stat of 40% when being hit by Bosses (Doggie & Elan Muske)
 - Items have a set number of uses:
     - If item uses are reduced to 0, the item will disappear
 - The shield item reduces inflicted damage by the defence stats

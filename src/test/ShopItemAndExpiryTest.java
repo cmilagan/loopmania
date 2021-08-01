@@ -16,6 +16,7 @@ import unsw.loopmania.Character;
 import unsw.loopmania.Entity;
 import unsw.loopmania.LoopManiaWorld;
 import unsw.loopmania.PathPosition;
+import unsw.loopmania.items.Anduril;
 import unsw.loopmania.items.Armor;
 import unsw.loopmania.items.BattleItem;
 import unsw.loopmania.items.HealthPotion;
@@ -25,6 +26,7 @@ import unsw.loopmania.items.Shield;
 import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
+import unsw.loopmania.items.TreeStump;
 import unsw.loopmania.npcs.Vampire;
 
 /**
@@ -43,6 +45,7 @@ public class ShopItemAndExpiryTest {
     private int oneRingID = 6;
     private int healthPotionID = 7;
     private int andurilID = 8;
+    private int treeStumpID = 9;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -326,7 +329,7 @@ public class ShopItemAndExpiryTest {
     public void testBuyShield() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
-            if (item instanceof Shield) {
+            if (item instanceof Shield && !(item instanceof TreeStump)) {
                 Shield shield = (Shield) item;
                 itemPresent = true;
 
@@ -361,6 +364,36 @@ public class ShopItemAndExpiryTest {
         }
         assertTrue(itemPresent);
     }
+
+    // @Test
+    // public void testBuyTreeStump() {
+    //     boolean itemPresent = false;
+    //     for (BattleItem item : battleItems) {
+    //         if (item instanceof TreeStump) {
+    //             TreeStump treeStump = (TreeStump) item;
+    //             itemPresent = true;
+
+    //             // character has enough gold to buy item
+    //             newCharacter.setGold(treeStump.getItemCost());
+
+    //             // character should be able to buy item
+    //             assertTrue(testWorld.buyItemByID(treeStumpID) != null);
+
+    //             // item should appear in character's inventory
+    //             boolean equipmentContains = false;
+    //             for (Entity entities : testWorld.getCharacterInventory()) {
+    //                 if (entities instanceof TreeStump) {
+    //                     equipmentContains = true;
+    //                 }
+    //             }
+    //             assertTrue(equipmentContains);
+
+    //             // cant buy another item, insufficient gold
+    //             assertFalse(testWorld.buyItemByID(treeStumpID) != null);
+    //         }
+    //     }
+    //     assertTrue(itemPresent);
+    // }
 
     @Test
     public void testBuyStaff() {

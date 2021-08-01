@@ -8,9 +8,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 public class ShopMenuControllerTwo {
     private int oneRingID = 6;
+    private int andurilID = 8;
+    private int treeStumpID = 9;
     private LoopManiaWorld world;
     private MenuSwitcher shopScreenOneSwitcher;
     private LoopManiaWorldController mainController;
@@ -20,6 +24,32 @@ public class ShopMenuControllerTwo {
 
     @FXML
     private Text statusField;
+
+    @FXML
+    private Text oneRingBuyPrice;
+
+    @FXML
+    private Text oneRingSellPrice;
+
+    @FXML
+    private Text andurilBuyPrice;
+
+    @FXML
+    private Text andurilSellPrice;
+
+    @FXML
+    private Text treeStumpBuyPrice;
+
+    @FXML
+    private Text treeStumpSellPrice;
+
+    public int getItemPrice(int itemID) {
+        return world.getItemPrice(itemID);
+    }
+
+    public long getItemSellValue(int itemID) {
+        return Math.round(0.7 * world.getItemPrice(itemID));
+    }
 
     public ShopMenuControllerTwo(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
@@ -36,6 +66,18 @@ public class ShopMenuControllerTwo {
                     Number oldValue, Number newValue) {
                 IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
                 playerGold.textProperty().bind(characterGold.asString());
+                
+                /**
+                 * also update the cost/sell value of the weapons in the front-end 
+                 */
+                oneRingBuyPrice.setText(String.valueOf(getItemPrice(oneRingID)));
+                oneRingSellPrice.setText(String.valueOf(getItemSellValue(oneRingID)));
+
+                andurilBuyPrice.setText(String.valueOf(getItemPrice(andurilID)));
+                andurilSellPrice.setText(String.valueOf(getItemSellValue(andurilID)));
+
+                treeStumpBuyPrice.setText(String.valueOf(getItemPrice(treeStumpID)));
+                treeStumpSellPrice.setText(String.valueOf(getItemSellValue(treeStumpID)));
             }
         });
     }
@@ -44,47 +86,50 @@ public class ShopMenuControllerTwo {
         BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Congratulations, you have bought The One Ring!");
+            } else if (itemID == andurilID) {
+                statusField.setText("Congratulations, you have bought The Anduril!");
+            } else if (itemID == treeStumpID) {
+                statusField.setText("Congratulations, you have bought a Tree Stump!");
             } 
-            // else if (itemID == staffID) {
-            //     statusField.setText("Thank you for purchasing a Staff!");
-            // } else if (itemID == stakeID) {
-            //     statusField.setText("Thank you for purchasing a Stake!");
-            // } 
             mainController.onLoad(boughtItem);
         } else {
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
                 statusField.setText("Insufficient funds to buy The One Ring!");
+            } else if (itemID == andurilID) {
+                statusField.setText("Insufficient funds to buy The Anduril!");
+            } else if (itemID == treeStumpID) {
+                statusField.setText("Insufficient funds to buy a Tree Stump!");
             } 
-            // else if (itemID == staffID) {
-            //     statusField.setText("Insufficient funds to buy a Staff!");
-            // } else if (itemID == stakeID) {
-            //     statusField.setText("Insufficient funds to buy a Stake!");
-            // } 
         }
     }
 
     private void sellItem(int itemID) {
         BattleItem itemToSell = world.getHighestUsageItem(itemID);
         if (itemToSell != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Thank you for selling The One Ring!");
+            } else if (itemID == andurilID) {
+                statusField.setText("Thank you for selling The Anduril!");
+            } else if (itemID == treeStumpID) {
+                statusField.setText("Thank you for selling a Tree Stump!");
             } 
-            // else if (itemID == staffID) {
-            //     statusField.setText("Thank you for selling a Staff!");
-            // } else if (itemID == stakeID) {
-            //     statusField.setText("Thank you for selling a Stake!");
-            // } 
             world.sellItem(itemToSell);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
+
                 statusField.setText("You don't have The One Ring to sell!");
+            } else if (itemID == andurilID) {
+                statusField.setText("You don't have The Anduril to sell!");
+            } else if (itemID == treeStumpID) {
+                statusField.setText("You don't have a Tree Stump to sell!");
             } 
-            // else if (itemID == staffID) {
-            //     statusField.setText("You don't have a Staff to sell!");
-            // } else if (itemID == stakeID) {
-            //     statusField.setText("You don't have a Stake to sell!");
-            // } 
         }
     }
 
@@ -104,22 +149,30 @@ public class ShopMenuControllerTwo {
 
     @FXML
     public void buyAnduril() {
-
+        if (!world.checkInventoryFull()) {
+            buyItem(andurilID);
+        } else {
+            statusField.setText("You can't buy The Anduril, inventory is full! Try selling some items");
+        }
     }
 
     @FXML
     public void sellAnduril() {
-
+        sellItem(andurilID);
     }
 
     @FXML
     public void buyTreeStump() {
-
+        if (!world.checkInventoryFull()) {
+            buyItem(treeStumpID);
+        } else {
+            statusField.setText("You can't buy a Tree Stump, inventory is full! Try selling some items");
+        }
     }
 
     @FXML
     public void sellTreeStump() {
-
+        sellItem(treeStumpID);
     }
 
     /**
@@ -127,6 +180,7 @@ public class ShopMenuControllerTwo {
      * @param shopSwitcher
      */
     public void setShopScreenOne(MenuSwitcher shopSwitcher){
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         this.shopScreenOneSwitcher = shopSwitcher;
     }
 
@@ -136,6 +190,7 @@ public class ShopMenuControllerTwo {
      */
     @FXML
     private void switchToShopScreenOne() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         shopScreenOneSwitcher.switchMenu();
     }
 }

@@ -8,6 +8,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 public class ShopMenuControllerOne {
     /**
@@ -36,6 +38,56 @@ public class ShopMenuControllerOne {
     @FXML
     private Text statusField;
 
+    @FXML
+    private Text swordBuyPrice;
+
+    @FXML
+    private Text swordSellPrice;
+    
+    @FXML
+    private Text staffBuyPrice;
+
+    @FXML
+    private Text staffSellPrice;
+
+    @FXML
+    private Text stakeBuyPrice;
+
+    @FXML
+    private Text stakeSellPrice;
+    
+    @FXML
+    private Text shieldBuyPrice;
+
+    @FXML
+    private Text shieldSellPrice;
+
+    @FXML
+    private Text helmetBuyPrice;
+
+    @FXML
+    private Text helmetSellPrice;
+    
+    @FXML
+    private Text armorBuyPrice;
+
+    @FXML
+    private Text armorSellPrice;
+
+    @FXML
+    private Text hpBuyPrice;
+
+    @FXML
+    private Text hpSellPrice;
+
+    public int getItemPrice(int itemID) {
+        return world.getItemPrice(itemID);
+    }
+
+    public long getItemSellValue(int itemID) {
+        return Math.round(0.7 * world.getItemPrice(itemID));
+    }
+
     public ShopMenuControllerOne(LoopManiaWorld world, LoopManiaWorldController mainController) {
         this.world = world;
         this.mainController = mainController;
@@ -51,8 +103,33 @@ public class ShopMenuControllerOne {
                     Number oldValue, Number newValue) {
                 IntegerProperty characterGold = world.getCharacter().getSimpleIntegerGold();
                 IntegerProperty doggieCoin = world.getCharacter().getSimpleIntegerDoggieCoin();
+
+                /**
+                 * also update the cost/sell value of the weapons in the front-end 
+                 */
                 playerGold.textProperty().bind(characterGold.asString());
                 doggieCoinValue.textProperty().bind(doggieCoin.asString());
+
+                swordBuyPrice.setText(String.valueOf(getItemPrice(swordID)));
+                swordSellPrice.setText(String.valueOf(getItemSellValue(swordID)));
+
+                staffBuyPrice.setText(String.valueOf(getItemPrice(staffID)));
+                staffSellPrice.setText(String.valueOf(getItemSellValue(staffID)));
+
+                stakeBuyPrice.setText(String.valueOf(getItemPrice(stakeID)));
+                stakeSellPrice.setText(String.valueOf(getItemSellValue(stakeID)));
+
+                shieldBuyPrice.setText(String.valueOf(getItemPrice(shieldID)));
+                shieldSellPrice.setText(String.valueOf(getItemSellValue(shieldID)));
+
+                helmetBuyPrice.setText(String.valueOf(getItemPrice(helmetID)));
+                helmetSellPrice.setText(String.valueOf(getItemSellValue(helmetID)));
+
+                armorBuyPrice.setText(String.valueOf(getItemPrice(armorID)));
+                armorSellPrice.setText(String.valueOf(getItemSellValue(armorID)));
+
+                hpBuyPrice.setText(String.valueOf(getItemPrice(healthPotionID)));
+                hpSellPrice.setText(String.valueOf(getItemSellValue(healthPotionID)));
             }
         });
     }
@@ -102,8 +179,10 @@ public class ShopMenuControllerOne {
     @FXML
     private void doggieCoinSell() {
         if (world.sellDoggieCoin()) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             statusField.setText("Congratulations, you have sold one Doggie Coin!");
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             statusField.setText("You don't have a Doggie Coin to sell!");
         }     
     }
@@ -209,6 +288,8 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToGameMenu() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
+
         protectiveGearCount = 0;
         healthPotionBuyCount = 0;
         statusField.setText("Welcome!");
@@ -229,12 +310,14 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToShopScreenTwo() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         shopScreenTwoSwitcher.switchMenu();
     }
 
     private void buyItem(int itemID) {
         BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == swordID) {
                 statusField.setText("Thank you for purchasing a Sword!");
             } else if (itemID == staffID) {
@@ -252,6 +335,7 @@ public class ShopMenuControllerOne {
             }
             mainController.onLoad(boughtItem);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == swordID) {
                 statusField.setText("Insufficient funds to buy a Sword!");
             } else if (itemID == staffID) {
@@ -273,6 +357,7 @@ public class ShopMenuControllerOne {
     private void sellItem(int itemID) {
         BattleItem itemToSell = world.getHighestUsageItem(itemID);
         if (itemToSell != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == swordID) {
                 statusField.setText("Thank you for selling a Sword!");
             } else if (itemID == staffID) {
@@ -290,6 +375,7 @@ public class ShopMenuControllerOne {
             }
             world.sellItem(itemToSell);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == swordID) {
                 statusField.setText("You don't have a Sword to sell!");
             } else if (itemID == staffID) {
