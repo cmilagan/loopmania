@@ -8,6 +8,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 public class ShopMenuControllerTwo {
     private int oneRingID = 6;
@@ -84,6 +86,7 @@ public class ShopMenuControllerTwo {
         BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Congratulations, you have bought The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Congratulations, you have bought The Anduril!");
@@ -93,6 +96,7 @@ public class ShopMenuControllerTwo {
             mainController.onLoad(boughtItem);
         } else {
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
                 statusField.setText("Insufficient funds to buy The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Insufficient funds to buy The Anduril!");
@@ -105,7 +109,9 @@ public class ShopMenuControllerTwo {
     private void sellItem(int itemID) {
         BattleItem itemToSell = world.getHighestUsageItem(itemID);
         if (itemToSell != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
                 statusField.setText("Thank you for selling The One Ring!");
             } else if (itemID == andurilID) {
                 statusField.setText("Thank you for selling The Anduril!");
@@ -114,7 +120,10 @@ public class ShopMenuControllerTwo {
             } 
             world.sellItem(itemToSell);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == oneRingID) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
+
                 statusField.setText("You don't have The One Ring to sell!");
             } else if (itemID == andurilID) {
                 statusField.setText("You don't have The Anduril to sell!");
@@ -171,6 +180,7 @@ public class ShopMenuControllerTwo {
      * @param shopSwitcher
      */
     public void setShopScreenOne(MenuSwitcher shopSwitcher){
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         this.shopScreenOneSwitcher = shopSwitcher;
     }
 
@@ -180,6 +190,7 @@ public class ShopMenuControllerTwo {
      */
     @FXML
     private void switchToShopScreenOne() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         shopScreenOneSwitcher.switchMenu();
     }
 }

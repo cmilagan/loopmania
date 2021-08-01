@@ -8,6 +8,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
 import unsw.loopmania.items.BattleItem;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 public class ShopMenuControllerOne {
     /**
@@ -177,8 +179,10 @@ public class ShopMenuControllerOne {
     @FXML
     private void doggieCoinSell() {
         if (world.sellDoggieCoin()) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             statusField.setText("Congratulations, you have sold one Doggie Coin!");
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             statusField.setText("You don't have a Doggie Coin to sell!");
         }     
     }
@@ -284,6 +288,8 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToGameMenu() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
+
         protectiveGearCount = 0;
         healthPotionBuyCount = 0;
         statusField.setText("Welcome!");
@@ -304,12 +310,14 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToShopScreenTwo() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         shopScreenTwoSwitcher.switchMenu();
     }
 
     private void buyItem(int itemID) {
         BattleItem boughtItem = world.buyItemByID(itemID);
         if (boughtItem != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == swordID) {
                 statusField.setText("Thank you for purchasing a Sword!");
             } else if (itemID == staffID) {
@@ -327,6 +335,7 @@ public class ShopMenuControllerOne {
             }
             mainController.onLoad(boughtItem);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == swordID) {
                 statusField.setText("Insufficient funds to buy a Sword!");
             } else if (itemID == staffID) {
@@ -348,6 +357,7 @@ public class ShopMenuControllerOne {
     private void sellItem(int itemID) {
         BattleItem itemToSell = world.getHighestUsageItem(itemID);
         if (itemToSell != null) {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
             if (itemID == swordID) {
                 statusField.setText("Thank you for selling a Sword!");
             } else if (itemID == staffID) {
@@ -365,6 +375,7 @@ public class ShopMenuControllerOne {
             }
             world.sellItem(itemToSell);
         } else {
+            LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ERROR);
             if (itemID == swordID) {
                 statusField.setText("You don't have a Sword to sell!");
             } else if (itemID == staffID) {

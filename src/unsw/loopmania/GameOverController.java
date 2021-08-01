@@ -2,6 +2,8 @@ package unsw.loopmania;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 public class GameOverController {
     /**
@@ -24,6 +26,7 @@ public class GameOverController {
      */
     @FXML
     public void switchToMainMenu() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.GAME_OVER);
         gameSwitcher.switchMenu();
     }
 }
