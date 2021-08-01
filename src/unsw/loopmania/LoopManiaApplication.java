@@ -17,9 +17,15 @@ public class LoopManiaApplication extends Application {
      * the controller for the game. Stored as a field so can terminate it when click exit button
      */
     private LoopManiaWorldController mainController;
+    private Stage stage;
+
+    public void DungeonScreen(Stage stage) {
+		this.stage = stage;
+	}
 
     @Override
     public void start(Stage primaryStage) throws IOException {
+        stage = primaryStage;
         // set title on top of window bar
         primaryStage.setTitle("Loop Mania");
 
@@ -156,8 +162,13 @@ public class LoopManiaApplication extends Application {
 
     @Override
     public void stop() {
-        // wrap up activities when exit program
+        // Erases the old game and starts a new one
         mainController.terminate();
+        try {
+            start(stage);
+        } catch (IOException e) {
+            System.out.println("Restart Error");
+        }
     }
 
     /**
