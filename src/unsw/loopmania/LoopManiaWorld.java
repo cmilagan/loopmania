@@ -124,6 +124,8 @@ public class LoopManiaWorld {
 
     private List<Entity> unequippedInventoryItems;
 
+    private List<Item> equippedInventoryItems;
+
     private List<Building> buildingEntities;
 
     // a list of allied soldiers
@@ -158,6 +160,7 @@ public class LoopManiaWorld {
         enemies = new ArrayList<>();
         cardEntities = new ArrayList<>();
         unequippedInventoryItems = new ArrayList<>();
+        equippedInventoryItems = new ArrayList<>();
         this.orderedPath = orderedPath;
         buildingEntities = new ArrayList<>();
         this.loopCounter = 0;
@@ -1621,6 +1624,7 @@ public class LoopManiaWorld {
         
     }
 
+
     /**
      * 
      * @param itemNodeX
@@ -1633,20 +1637,95 @@ public class LoopManiaWorld {
         return item;
     }
 
+
+    public Item checkValidItemSlot(int itemNodeX, int itemNodeY, int slotX, int slotY) {
+        Item item = null;
+        // getting the appropiate item
+        for (Entity e: getCharacterInventory()) {
+            if (e instanceof Item) {
+                if (e.getX() == itemNodeX && e.getY() == itemNodeY) {
+                    item = (Item) e;
+                }
+            }
+        }
+
+        Pair<Integer, Integer>target = new Pair<Integer, Integer>(slotX, slotY);
+        if (item instanceof AttackItem) {
+            AttackItem attackItem = (AttackItem) item;
+            if (!attackItem.getAppropiateSlot().equals(target)) return null;
+        } else if (item instanceof Shield) {
+            Shield shieldItem = (Shield) item;
+            if (!shieldItem.getAppropiateSlot().equals(target)) return null;
+        } else if (item instanceof Armor) {
+            Armor armourItem = (Armor) item;
+            if (!armourItem.getAppropiateSlot().equals(target)) return null;
+        } else if (item instanceof Helmet) {
+            Helmet helmetItem = (Helmet) item;
+            if (!helmetItem.getAppropiateSlot().equals(target)) return null;
+        } else {
+            return null;
+        }
+        return item;
+    }
     /**
      * Equips the item
      * @param item
      */
-    public void equipItem(Item item) {
-        if (item instanceof Helmet) {
-            character.setHelmet((Helmet)item);
-        } else if (item instanceof Armor) {
-            character.setArmor((Armor)item);
-        } else if (item instanceof AttackItem) {
-            character.setWeapon((AttackItem)item);
-        } else if (item instanceof Shield) {
-            character.setShield((Shield)item);
+    public Pair<Item, Item> equipItemByCoordinates(int itemNodeX, int itemNodeY, int slotX, int slotY) {
+        
+        Item equip = checkValidItemSlot(itemNodeX, itemNodeY, slotX, slotY);
+        if (equip == null) return null;
+        equip.setX(slotX);
+        equip.setY(slotY);
+
+        Item unequipped = null;
+        if (equip instanceof AttackItem) {
+            System.out.println("start");
+            for (Item i : equippedInventoryItems) {
+                if (i instanceof AttackItem) {
+                    unequipped = i;
+                    equippedInventoryItems.remove(i);
+                    System.out.println("unequipped sword");
+                    break;
+                }
+            }
+            System.out.println("equipped sword");
+            character.setWeapon((AttackItem) equip);
+            equippedInventoryItems.add(equip);
+        } else if (equip instanceof Shield) {
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Shield) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
+            }
+            character.setShield((Shield) equip);
+            equippedInventoryItems.add(equip);
+        } else if (equip instanceof Armor) {
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Armor) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
+            }
+            character.setArmor((Armor) equip);
+            equippedInventoryItems.add(equip);
+        } else if (equip instanceof Helmet) {
+            for (Item item : equippedInventoryItems) {
+                if (item instanceof Helmet) {
+                    unequipped = item;
+                    equippedInventoryItems.remove(item);
+                }
+            }
+            character.setHelmet((Helmet) equip);
+            equippedInventoryItems.add(equip);
         }
+        if (unequipped == null) {
+            System.out.println("no item");
+        }
+
+        return new Pair<Item,Item>(equip, unequipped);
+
     }
 
     /**

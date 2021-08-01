@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.codefx.libfx.listener.handle.ListenerHandle;
 import org.codefx.libfx.listener.handle.ListenerHandles;
+import org.javatuples.Pair;
 
 import java.util.Random;
 
@@ -387,6 +388,9 @@ public class LoopManiaWorldController {
                         if (character.getX() == 0 && character.getY() == 0 && canSwitch(world)) {
                             switchToShopMenu();
                         }
+                        for (Node n: squares.getChildren()) {
+                            n.setOpacity(1);
+                        }
                     }
                 });
             }
@@ -518,11 +522,6 @@ public class LoopManiaWorldController {
                 if (!world.getCharacter().useOneRing()) {
                     switchToGameOver();
                 }
-            }
-
-            // remove expired highlights
-            for(Node n : squares.getChildren()) {
-                n.setOpacity(1);
             }
 
             printThreadingNotes("HANDLED TIMER");
@@ -721,6 +720,46 @@ public class LoopManiaWorldController {
         cards.getChildren().add(view);
     }
 
+
+    public void onLoadEquipped(Item item, int x, int y) {
+        ImageView view = null;
+        if (item instanceof Sword) {
+            System.out.println("sword");
+            view = new ImageView(swordImage);
+        } else if (item instanceof Armor) {
+            System.out.println("armor");
+            view = new ImageView(armourImage);
+        } else if (item instanceof Helmet) {
+            System.out.println("helmet");
+            view = new ImageView(helmetImage);
+        } else if (item instanceof Shield) {
+            System.out.println("shield");
+            view = new ImageView(shieldImage);
+        } else if (item instanceof Staff) {
+            System.out.println("staff");
+            view = new ImageView(staffImage);
+        } else if (item instanceof Stake) {
+            System.out.println("stak");
+            view = new ImageView(stakeImage);
+        } else if (item instanceof HealthPotion) {
+            System.out.println("pot");
+            view = new ImageView(potionImage);
+        } else if (item instanceof OneRing) {
+            view = new ImageView(ringImage);
+        } else {
+            try {
+                throw new Exception("Invalid Item");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        addDragEventHandlers(view, DRAGGABLE_TYPE.ITEM, equippedItems, unequippedInventory);
+        addEntity(item, view);
+        equippedItems.add(view, x, y);
+    }
+
     /**
      * load an item into the GUI.
      * Particularly, we must connect to the drag detection event handler,
@@ -876,49 +915,25 @@ public class LoopManiaWorldController {
                                 onLoad(newBuilding);
                                 break;
                             case ITEM:
-                                // if item is d
-                                // get the currently dragged item
-                                Item newItem = world.getItem(nodeX, nodeY);
-                                if (newItem == null) {
-                                    System.out.println("invalid");
+                                Pair<Item,Item> items = world.equipItemByCoordinates(nodeX, nodeY, x, y);
+                                if (items == null) {
                                     return;
                                 }
-                                if (newItem instanceof Helmet) {
-                                    System.out.println("helmet spawn");
-                                    // respective coordinates of the helmet slot
-                                    if (!(x == 1 && y == 1)) {
-                                        return;
-                                    } 
-                                    // equip the item
-                                } else if (newItem instanceof Armor) {
-                                    System.out.println("armor spawn");
-                                    // respective coordinates of the armor slot
-                                    if (!(x == 1 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof AttackItem) {
-                                    System.out.println("attack spawn");
-                                    // respective coordinates of the sword slot
-                                    if (!(x == 0 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else if (newItem instanceof Shield) {
-                                    System.out.println("shield spawn");
-                                    // respective coordinates of the shield slot
-                                    if (!(x == 3 && y == 2)) {
-                                        return;
-                                    }
-                                    // equip the item
-                                } else {
-                                    return;
+
+                                Item equip = items.getValue0();
+                                Item unequipped = items.getValue1();
+
+                                // swap the currently equipped item with the item you want to equip (if applicable)
+                                onLoadEquipped(equip, equip.getX(), equip.getY());
+                                if (unequipped != null) {
+                                    onLoad(unequipped);
                                 }
-                                world.equipItem(newItem);
+
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
                                 targetGridPane.add(image, x, y, 1, 1);
                                 break;
+                            
                             default:
                                 break;
                         }
@@ -1043,7 +1058,7 @@ public class LoopManiaWorldController {
                         break;
                 }
                 
-                draggedEntity.setVisible(true);
+                draggedEntity.setVisible(false);
                 draggedEntity.setMouseTransparent(true);
                 draggedEntity.toFront();
 
@@ -1070,11 +1085,24 @@ public class LoopManiaWorldController {
                                 int x = cIndex == null ? 0 : cIndex;
                                 int y = rIndex == null ? 0 : rIndex;
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
-                                    if (!canPlace) {
-                                        n.setOpacity(1);
-                                    } else {
-                                        n.setOpacity(0.7);
+                                    switch (draggableType) {
+                                        case CARD:
+                                            boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                            if (!canPlace) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        case ITEM:
+                                            if (world.checkValidItemSlot(nodeX, nodeY, x, y) == null) {
+                                                n.setOpacity(1);
+                                            } else {
+                                                n.setOpacity(0.7);
+                                            }
+                                            break;
+                                        default:
+                                            break;
                                     }
                                 } 
                             }
