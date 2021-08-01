@@ -135,6 +135,8 @@ public class LoopManiaWorld {
     // a list of allied soldiers
     private List<AlliedSoldier> alliedSoldiers;
 
+    // a list of enemies to battle
+    private List<BasicEnemy> battleEnemies;
 
     /**
      * list of x,y coordinate pairs in the order by which moving entities traverse
@@ -173,6 +175,7 @@ public class LoopManiaWorld {
         confusingMode = false;
         previousShopRound = 1;
         shopCounter = 1;
+        battleEnemies = new ArrayList<BasicEnemy>();
     }
 
     public int getWidth() {
@@ -562,6 +565,10 @@ public class LoopManiaWorld {
         enemies.add(enemy);
     }
 
+    public List<BasicEnemy> getBattleEnemies() {
+        return battleEnemies;
+    }
+
     /**
      * 
      * @param x
@@ -587,10 +594,10 @@ public class LoopManiaWorld {
      * @return list of the enemies to be displayed on screen
      */
     public List<BasicEnemy> possiblySpawnEnemies() {
-        // spawning slugs and Doggies
+        // a list of enemies to spawn
         List<BasicEnemy> spawningEnemies = new ArrayList<>();
-
         Pair<Integer, Integer> pos = possiblyGetBasicEnemySpawnPosition();
+
         if (pos != null) {
             int indexInPath = orderedPath.indexOf(pos);
             Slug enemy = new Slug(new PathPosition(indexInPath, orderedPath));
@@ -637,7 +644,53 @@ public class LoopManiaWorld {
                 }
             } 
         }
+
         return spawningEnemies;
+    }
+
+    /**
+     * this function spawns enemies that were turned into allies,
+     * we do this because the period of trance has now ended
+     */
+    public List<BasicEnemy> spawnOriginalEnemies() {
+        List<BasicEnemy> originalEnemies = new ArrayList<BasicEnemy>();
+        List<AlliedSoldier> soldiersToRemove = new ArrayList<AlliedSoldier>();
+        /**
+         * after one round of battle, turn the trance allied soldiers 
+         * (enemies which turn into allied soldiers) back into their original
+         * enemy form
+         */
+        for (AlliedSoldier soldier : alliedSoldiers) {
+            BasicEnemy originalEnemy = soldier.getOriginalEnemy();
+            
+            /**
+             * if originalEnemy is not null, then we know that the allied soldier
+             * was actually a transformed enemy before, our goal is to bring back this
+             * enemy into the world (because the trance has ended)
+             */
+            if (originalEnemy != null) {
+                BasicEnemy enemy = null;
+
+                if (originalEnemy instanceof Slug) {
+                    enemy = new Slug(new PathPosition(soldier.getCurrentPositionIndex(), orderedPath));
+                } else if (originalEnemy instanceof Zombie) {
+                    enemy = new Zombie(new PathPosition(soldier.getCurrentPositionIndex(), orderedPath));
+                } else if (originalEnemy instanceof Vampire) {
+                    enemy = new Vampire(new PathPosition(soldier.getCurrentPositionIndex(), orderedPath));
+                }
+
+                enemies.add(enemy);
+                originalEnemies.add(enemy);
+                
+                // allied soldier is now back into the original enemy it was
+                soldier.destroy();
+                soldiersToRemove.add(soldier);
+            }
+        }
+
+        alliedSoldiers.removeAll(soldiersToRemove);
+
+        return originalEnemies;
     }
 
 
@@ -646,7 +699,7 @@ public class LoopManiaWorld {
      * 
      * @param enemy enemy to be killed
      */
-    private void killEnemy(BasicEnemy enemy) {
+    public void killEnemy(BasicEnemy enemy) {
         enemy.destroy();
         enemies.remove(enemy);
     }
@@ -670,7 +723,6 @@ public class LoopManiaWorld {
         List<BasicEnemy> defeatedEnemies = new ArrayList<BasicEnemy>();
 
         // Collecting all enemies which the character must fight (character within battle radius of an enemy)
-        List<BasicEnemy> battleEnemies = new ArrayList<BasicEnemy>();
         List<BasicEnemy> supportEnemies = new ArrayList<BasicEnemy>();
         for (BasicEnemy e : enemies) {
             // Checking if enemy is inside battle radii
@@ -745,10 +797,10 @@ public class LoopManiaWorld {
             // Continuously fight until character loses or all enemies are defeated
             List<BasicEnemy> currentBattleEnemies = new ArrayList<BasicEnemy>(battleEnemies);
             // Newly added zombies can't attack until next phase
-            for (BasicEnemy e : currentBattleEnemies) {
+            for (BasicEnemy enemy : currentBattleEnemies) {
                 if (alliedSoldiers.size() == 0) {
                     // Calculate Character
-                    int characterHealth = character.applyEnemyDamage(e);
+                    int characterHealth = character.applyEnemyDamage(enemy);
                     if (characterHealth == 0) {
                         character.destroy();
                         break;
@@ -761,7 +813,7 @@ public class LoopManiaWorld {
                      * If statement for testing purposes only. The health of Allied Soldier should
                      * never initially be -1 unless specifically set to be.
                      */
-                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(e);
+                    if(firstSoldier.getHealth() != -1) firstSoldier.applyEnemyDamage(enemy);
 
                     for (AlliedSoldier alliedSoldier : alliedSoldiers) {                    
                         int alliedSoldierHealth = alliedSoldier.getHealth();
@@ -783,19 +835,25 @@ public class LoopManiaWorld {
 
                     // remaining allied soldiers should attack the enemy
                     for (AlliedSoldier a : alliedSoldiers) {
-                        e.applyBuildingDamage(a.getDamage());
+                        enemy.applyBuildingDamage(a.getDamage());
                     }
                 }
-                // Calculate Enemy
-                int enemyHealth = e.applyCharacterDamage(character, alliedSoldiers);
-
-                e.applyEnemyEffects(character, true, enemies);
+                // Calculate enemy health
+                int enemyHealth = enemy.applyCharacterDamage(character, alliedSoldiers);
+                
+                /**
+                 * if character has a special weapon on hand, calculate the effect
+                 */
+                if (enemyHealth != 0) {
+                    enemy.applyWeaponEffects(character, this, orderedPath);
+                    enemy.applyEnemyEffects(character, true, enemies);
+                }
 
                 if (enemyHealth == 0) {
-                    defeatedEnemies.add(e);
-                    battleEnemies.remove(e);
+                    defeatedEnemies.add(enemy);
+                    battleEnemies.remove(enemy);
                     
-                    if (e instanceof ElanMuske) {
+                    if (enemy instanceof ElanMuske) {
                         elanTimer = -5;                        // DoggieCoin price should go down for the next 5 rounds.
                     }
                     System.out.println("enemy killed");
@@ -828,7 +886,7 @@ public class LoopManiaWorld {
     public int goldReward() {
         Random rand = new Random(); 
         int upperbound = 10;
-        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 100);
+        int goldGained = rand.nextInt(upperbound) * ((100 + character.getXP()) / 1000);
         int giveGold = character.getGold() + goldGained;
         System.out.println(giveGold);
         return giveGold;
@@ -1137,6 +1195,10 @@ public class LoopManiaWorld {
                 }
             }
         }
+    }
+
+    public int getTickCounter() {
+        return tickCounter;
     }
     
     /**

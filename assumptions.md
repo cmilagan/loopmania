@@ -50,6 +50,10 @@
 - Support and Battle radii are calculated by the pythagoras theorem
     - if the character is within the battle radius of an enemy, a battle is engaged.
 - If the One Ring is in the character's inventory, the character respawns automatically on defeat.
+- If character has Staff equipped, the chance for trance is 40%.
+- The trance for a Staff will last for 20 ticks of the world. I.e., the enemy which was turned into an allied
+soldier will return back into its original enemy form after 20 ticks of the world. Given that it was still alive 
+in the allied soldier state.
 - The new Doggie Enemy cannot damage the character, only stun him
 - The Doggie enemy attacks the character last (to prevent OP behaviour of stun)
 - The Doggie can stun the character every other turn
@@ -97,11 +101,12 @@
 - Item Costs at the Hero’s Castle:
     - Sword: 10
     - Stake: 8
-    - Staff: 8
+    - Staff: 25
     - Armour: 20
     - Shield: 10
     - Helmet: 10
     - Health Potion: 20
+    - The One Ring: 500
 - Item rarity (since some items cost more) - excluding rare items
     common 60%, uncommon 40%
     - Sword: common

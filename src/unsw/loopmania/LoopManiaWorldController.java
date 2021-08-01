@@ -59,6 +59,7 @@ import unsw.loopmania.items.Staff;
 import unsw.loopmania.items.Stake;
 import unsw.loopmania.items.Sword;
 import unsw.loopmania.npcs.BasicEnemy;
+import unsw.loopmania.npcs.Doggie;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
@@ -214,6 +215,7 @@ public class LoopManiaWorldController {
     private Image slugImage;
     private Image zombieImage;
     private Image vampireImage;
+    private Image doggieImage;
 
     private Image soldierImage;
 
@@ -305,6 +307,7 @@ public class LoopManiaWorldController {
         slugImage = new Image((new File("src/images/slug.png")).toURI().toString());
         zombieImage = new Image((new File("src/images/zombie.png")).toURI().toString());
         vampireImage = new Image((new File("src/images/vampire.png")).toURI().toString());
+        doggieImage = new Image((new File("src/images/doggie.png")).toURI().toString());
 
         soldierImage = new Image((new File("src/images/deep_elf_master_archer.png")).toURI().toString());
 
@@ -454,6 +457,33 @@ public class LoopManiaWorldController {
             for (BasicEnemy e: defeatedEnemies){
                 reactToEnemyDefeat(e);
             }
+
+            numAlliedSoldiers = world.getAlliedSoldiersNumber();
+            // display alive allied soldiers
+            for (int i = 0; i < numAlliedSoldiers; i++) {
+                // Add soldiers bar
+                ImageView soldier = new ImageView(soldierImage);
+                soldiers.add(soldier, i, 1);
+            }
+
+            /**
+             * this function spawns enemies that were turned into allies,
+             * we do this because the period of trance has now ended
+             */
+            if (world.getTickCounter() % 20 == 0) {
+                List<BasicEnemy> originalEnemies = world.spawnOriginalEnemies();
+                for (BasicEnemy enemy : originalEnemies){
+                    onLoad(enemy);
+                }
+            }
+
+            numAlliedSoldiers = world.getAlliedSoldiersNumber();
+            // remove dead allied soldiers from soldier bar
+            for (int i = numAlliedSoldiers; i <= 5; i++) {
+                ImageView black = new ImageView(imageJustBlack);
+                soldiers.add(black, i, 1);
+            }
+
             List<BasicEnemy> newEnemies = world.possiblySpawnEnemies();
             for (BasicEnemy newEnemy: newEnemies){
                 onLoad(newEnemy);
@@ -489,6 +519,11 @@ public class LoopManiaWorldController {
                 if (!world.getCharacter().useOneRing()) {
                     switchToGameOver();
                 }
+            }
+
+            // remove expired highlights
+            for(Node n : squares.getChildren()) {
+                n.setOpacity(1);
             }
 
             printThreadingNotes("HANDLED TIMER");
@@ -782,6 +817,8 @@ public class LoopManiaWorldController {
             view = new ImageView(zombieImage);
         } else if (enemy instanceof Vampire) {
             view = new ImageView(vampireImage);
+        } else if (enemy instanceof Doggie) {
+            view = new ImageView(doggieImage);
         } else {
             try {
                 throw new Exception("Invalid Enemy");
@@ -1037,9 +1074,20 @@ public class LoopManiaWorldController {
                             if (currentlyDraggedType == draggableType){
                             //The drag-and-drop gesture entered the target
                             //show the user that it is an actual gesture target
+                                int nodeX = GridPane.getColumnIndex(currentlyDraggedImage);
+                                int nodeY = GridPane.getRowIndex(currentlyDraggedImage);
+                                Integer cIndex = GridPane.getColumnIndex(n);
+                                Integer rIndex = GridPane.getRowIndex(n);
+                                int x = cIndex == null ? 0 : cIndex;
+                                int y = rIndex == null ? 0 : rIndex;
                                 if(event.getGestureSource() != n && event.getDragboard().hasImage()){
-                                    n.setOpacity(0.7);
-                                }
+                                    boolean canPlace = world.checkValidCardPlacement(nodeX, nodeY, x, y);
+                                    if (!canPlace) {
+                                        n.setOpacity(1);
+                                    } else {
+                                        n.setOpacity(0.7);
+                                    }
+                                } 
                             }
                             event.consume();
                         }

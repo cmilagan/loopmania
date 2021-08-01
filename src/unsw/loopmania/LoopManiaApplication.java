@@ -89,6 +89,11 @@ public class LoopManiaApplication extends Application {
             switchToRoot(scene, gameMenuRoot, primaryStage);
         });
 
+        mainMenuController.setExitSwitcher(() -> {
+            switchToRoot(scene, gameMenuRoot, primaryStage);
+            primaryStage.close();
+        });
+
         // Load game button
         mainController.setShopMenuSwitcher(() -> {switchToRoot(scene, shopMenuRootOne, primaryStage);});
         mainController.setGameOverSwitcher(() -> {switchToRoot(scene, gameOverRoot, primaryStage);});
@@ -151,7 +156,7 @@ public class LoopManiaApplication extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         // wrap up activities when exit program
         mainController.terminate();
     }

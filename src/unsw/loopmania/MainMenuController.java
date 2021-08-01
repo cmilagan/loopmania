@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
  * TODO = you could extend this, for example with a settings menu, or a menu to load particular maps.
  */
 public class MainMenuController {
-    private LoopManiaApplication program;
     /**
      * facilitates switching to new game menu
      */
@@ -21,6 +20,10 @@ public class MainMenuController {
      * facilitates credit screen switch
      */
     private MenuSwitcher creditsSwitcher;
+    /**
+     * facilitates exit game switch
+     */
+    private MenuSwitcher exitSwitcher;
 
     public void setNewGameSwitcher(MenuSwitcher gameSwitcher){
         this.newMenuSwitcher = gameSwitcher;
@@ -32,6 +35,10 @@ public class MainMenuController {
 
     public void setCreditsSwitcher(MenuSwitcher gameSwitcher){
         this.creditsSwitcher = gameSwitcher;
+    }
+
+    public void setExitSwitcher(MenuSwitcher gameSwitcher){
+        this.exitSwitcher = gameSwitcher;
     }
 
     /**
@@ -66,6 +73,6 @@ public class MainMenuController {
      */
     @FXML
     private void exitGame() {
-        program.stop();
+        exitSwitcher.switchMenu();
     }
 }

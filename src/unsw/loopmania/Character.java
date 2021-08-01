@@ -1,6 +1,7 @@
 package unsw.loopmania;
 
 import java.util.List;
+import java.util.Random;
 
 import org.javatuples.Pair;
 
@@ -13,6 +14,7 @@ import unsw.loopmania.items.Helmet;
 import unsw.loopmania.items.Item;
 import unsw.loopmania.items.OneRing;
 import unsw.loopmania.items.Shield;
+import unsw.loopmania.items.Staff;
 import unsw.loopmania.npcs.BasicEnemy;
 
 /**
@@ -76,6 +78,26 @@ public class Character extends MovingEntity {
 
     public int getXP() {
         return xp;
+    }
+
+    /**
+     * This function checks if character has Staff equipped and returns a 40% of inflicting a trance.
+     * A trance inflicted is denoted by returning true. 
+     * 
+     * If character does not have Staff equipped or chance does not permit trance, return false.
+     */
+    public boolean inflictStaffTrance() {
+        /**
+         * A Staff has 40% chance of inflicting trance.
+         */
+        if (this.getWeapon() instanceof Staff) {
+            int seed = 100;
+            Random random = new Random(seed);
+            int value = random.nextInt(seed);
+            return value < 41;
+        }
+
+        return false;
     }
 
     public int getDoggieCoin() {
