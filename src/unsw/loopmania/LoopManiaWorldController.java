@@ -467,7 +467,7 @@ public class LoopManiaWorldController {
         isPaused = false;
         // trigger adding code to process main game logic to queue. JavaFX will target framerate of 0.3 seconds
         // basically a loop
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), event -> {
+        timeline = new Timeline(new KeyFrame(Duration.seconds(0.1), event -> {
             world.runTickMoves();
             int numAlliedSoldiers = world.getAlliedSoldiersNumber();
             // remove dead allied soldiers from soldier bar
@@ -551,6 +551,7 @@ public class LoopManiaWorldController {
                 // check if has one ring & consume
                 // if not trigger end game screen
                 if (!world.getCharacter().useOneRing()) {
+                    LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.GAME_OVER);
                     switchToGameOver();
                 } else {
                     LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.REVIVE);
