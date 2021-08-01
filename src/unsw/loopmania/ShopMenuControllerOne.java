@@ -56,17 +56,11 @@ public class ShopMenuControllerOne {
             }
         });
     }
-    
+
     @FXML
     private void swordBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(swordID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Sword!");
-                mainController.onLoad(boughtItem);
-            } else {
-                statusField.setText("Insufficient funds to buy a Sword!");
-            }
+            buyItem(swordID);
         } else {
             statusField.setText("You can't buy a Sword, inventory is full! Try selling some items");
         }
@@ -74,25 +68,13 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void swordSell() {
-        BattleItem item = world.getHighestUsageItem(swordID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Sword!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Sword to sell!");
-        }
+        sellItem(swordID);
     }
 
     @FXML
     private void staffBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(staffID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Staff!");
-                mainController.onLoad(boughtItem);
-            } else {
-                statusField.setText("Insufficient funds to buy a Staff!");
-            }
+            buyItem(staffID);
         } else {
             statusField.setText("You can't buy a Staff, inventory is full! Try selling some items");
         }
@@ -100,25 +82,13 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void staffSell() {
-        BattleItem item = world.getHighestUsageItem(staffID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Staff!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Staff to sell!");
-        }
+        sellItem(staffID);
     }
 
     @FXML
     private void stakeBuy() {
         if (!world.checkInventoryFull()) {
-            BattleItem boughtItem = world.buyItemByID(stakeID);
-            if (boughtItem != null) {
-                statusField.setText("Thank you for purchasing a Stake!");
-                mainController.onLoad(boughtItem);
-            } else {
-                statusField.setText("Insufficient funds to buy a Stake!");
-            }
+            buyItem(stakeID);
         } else {
             statusField.setText("You can't buy a Stake, inventory is full! Try selling some items");
         }
@@ -126,13 +96,7 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void stakeSell() {
-        BattleItem item = world.getHighestUsageItem(stakeID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Stake!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Stake to sell!");
-        }
+        sellItem(stakeID);
     }
 
     @FXML
@@ -144,45 +108,9 @@ public class ShopMenuControllerOne {
         }     
     }
 
-    private void addShield() {
-        BattleItem boughtItem = world.buyItemByID(shieldID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Shield!");
-            mainController.onLoad(boughtItem);
-        } else {
-            statusField.setText("Insufficient funds to buy a Shield!");
-        }
-    }
-
-    private void addArmour() {
-        BattleItem boughtItem = world.buyItemByID(armorID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing Armour!");
-            mainController.onLoad(boughtItem);
-        } else {
-            statusField.setText("Insufficient funds to buy Armour!");
-        }
-    }
-
-    private void addHelmet() {
-        BattleItem boughtItem = world.buyItemByID(helmetID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Helmet!");
-            mainController.onLoad(boughtItem);
-        } else {
-            statusField.setText("Insufficient funds to buy a Helmet!");
-        }
-    }
-
     private void addGearBerserkerMode(int itemID) {
         if (protectiveGearCount == 0) {
-            if (itemID == shieldID) {
-                addShield();    
-            } else if (itemID == armorID) {
-                addArmour();
-            } else if (itemID == helmetID) {
-                addHelmet();
-            }
+            buyItem(itemID);
             protectiveGearCount++;
         } else {
             statusField.setText("Cannot buy more than one piece of protective gear in Berserker Mode!");
@@ -195,7 +123,7 @@ public class ShopMenuControllerOne {
             if (world.getBerserker()) {
                 addGearBerserkerMode(shieldID);
             } else {
-                addShield();
+                buyItem(shieldID);
             }
         } else {
             statusField.setText("You can't buy a Shield, inventory is full! Try selling some items");
@@ -204,13 +132,7 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void shieldSell() {
-        BattleItem item = world.getHighestUsageItem(shieldID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Shield!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Shield to sell!");
-        }
+        sellItem(shieldID);
     }
 
     @FXML
@@ -219,7 +141,7 @@ public class ShopMenuControllerOne {
             if (world.getBerserker()) {
                 addGearBerserkerMode(helmetID);
             } else {
-                addHelmet();
+                buyItem(helmetID);
             }
         } else {
             statusField.setText("You can't buy a Helmet, inventory is full! Try selling some items");
@@ -228,13 +150,7 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void helmetSell() {
-        BattleItem item = world.getHighestUsageItem(helmetID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Helmet!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Helmet to sell!");
-        }
+        sellItem(helmetID);
     }
 
     @FXML
@@ -243,7 +159,7 @@ public class ShopMenuControllerOne {
             if (world.getBerserker()) {
                 addGearBerserkerMode(armorID);
             } else {
-                addArmour();
+                buyItem(armorID);
             } 
         } else {
             statusField.setText("You can't buy Armour, inventory is full! Try selling some items");
@@ -252,24 +168,7 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void armourSell() {
-        BattleItem item = world.getHighestUsageItem(armorID);
-        if (item != null) {
-            statusField.setText("Thank you for selling Armour!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have Armour to sell!");
-        }
-    }
-
-    private void addHealthPotion() {
-        BattleItem boughtItem = world.buyItemByID(healthPotionID);
-        if (boughtItem != null) {
-            statusField.setText("Thank you for purchasing a Health Potion!");
-            mainController.onLoad(boughtItem);
-            healthPotionBuyCount++;
-        } else {
-            statusField.setText("Insufficient funds to buy a Health Potion!");
-        }
+        sellItem(armorID);
     }
 
     @FXML
@@ -278,13 +177,13 @@ public class ShopMenuControllerOne {
             // if survival mode is on, restrict buying Health Potion to 1
             if (world.getSurvival()) {
                 if (healthPotionBuyCount == 0) {
-                    addHealthPotion();
+                    buyItem(healthPotionID);
                     healthPotionBuyCount++;
                 } else  {
                     statusField.setText("Cannot buy more than one Health Potion in Survival Mode!");
                 } 
             } else {
-                addHealthPotion();
+                buyItem(healthPotionID);
             }
         } else {
             statusField.setText("You can't buy a Health Potion, inventory is full! Try selling some items");
@@ -293,13 +192,7 @@ public class ShopMenuControllerOne {
 
     @FXML
     private void healthPotionSell() {
-        BattleItem item = world.getHighestUsageItem(healthPotionID);
-        if (item != null) {
-            statusField.setText("Thank you for selling a Health Potion!");
-            world.sellItem(item);
-        } else {
-            statusField.setText("You don't have a Health Potion to sell!");
-        }
+        sellItem(healthPotionID);
     }
 
     /**
@@ -316,6 +209,9 @@ public class ShopMenuControllerOne {
      */
     @FXML
     private void switchToGameMenu() throws IOException {
+        protectiveGearCount = 0;
+        healthPotionBuyCount = 0;
+        statusField.setText("Welcome!");
         gameSwitcher.switchMenu();
     }
 
@@ -334,5 +230,81 @@ public class ShopMenuControllerOne {
     @FXML
     private void switchToShopScreenTwo() throws IOException {
         shopScreenTwoSwitcher.switchMenu();
+    }
+
+    private void buyItem(int itemID) {
+        BattleItem boughtItem = world.buyItemByID(itemID);
+        if (boughtItem != null) {
+            if (itemID == swordID) {
+                statusField.setText("Thank you for purchasing a Sword!");
+            } else if (itemID == staffID) {
+                statusField.setText("Thank you for purchasing a Staff!");
+            } else if (itemID == stakeID) {
+                statusField.setText("Thank you for purchasing a Stake!");
+            } else if (itemID == shieldID) {
+                statusField.setText("Thank you for purchasing a Shield!");
+            } else if (itemID == armorID) {
+                statusField.setText("Thank you for purchasing Armour!");
+            } else if (itemID == helmetID) {
+                statusField.setText("Thank you for purchasing a Helmet!");
+            } else if (itemID == healthPotionID) {
+                statusField.setText("Thank you for purchasing a Health Potion!");
+            }
+            mainController.onLoad(boughtItem);
+        } else {
+            if (itemID == swordID) {
+                statusField.setText("Insufficient funds to buy a Sword!");
+            } else if (itemID == staffID) {
+                statusField.setText("Insufficient funds to buy a Staff!");
+            } else if (itemID == stakeID) {
+                statusField.setText("Insufficient funds to buy a Stake!");
+            } else if (itemID == shieldID) {
+                statusField.setText("Insufficient funds to buy a Shield!");
+            } else if (itemID == armorID) {
+                statusField.setText("Insufficient funds to buy Armour!");
+            } else if (itemID == helmetID) {
+                statusField.setText("Insufficient funds to buy a Helmet!");
+            } else if (itemID == healthPotionID) {
+                statusField.setText("Insufficient funds to buy a Health Potion!");
+            }
+        }
+    }
+
+    private void sellItem(int itemID) {
+        BattleItem itemToSell = world.getHighestUsageItem(itemID);
+        if (itemToSell != null) {
+            if (itemID == swordID) {
+                statusField.setText("Thank you for selling a Sword!");
+            } else if (itemID == staffID) {
+                statusField.setText("Thank you for selling a Staff!");
+            } else if (itemID == stakeID) {
+                statusField.setText("Thank you for selling a Stake!");
+            } else if (itemID == shieldID) {
+                statusField.setText("Thank you for selling a Shield!");
+            } else if (itemID == helmetID) {
+                statusField.setText("Thank you for selling a Helmet!");
+            } else if (itemID == armorID) {
+                statusField.setText("Thank you for selling Armour!");
+            } else if (itemID == healthPotionID) {
+                statusField.setText("Thank you for selling a Health Potion!");
+            }
+            world.sellItem(itemToSell);
+        } else {
+            if (itemID == swordID) {
+                statusField.setText("You don't have a Sword to sell!");
+            } else if (itemID == staffID) {
+                statusField.setText("You don't have a Staff to sell!");
+            } else if (itemID == stakeID) {
+                statusField.setText("You don't have a Stake to sell!");
+            } else if (itemID == shieldID) {
+                statusField.setText("You don't have a Shield to sell!");
+            } else if (itemID == helmetID) {
+                statusField.setText("You don't have a Helmet to sell!");
+            } else if (itemID == armorID) {
+                statusField.setText("You don't have Armour to sell!");
+            } else if (itemID == healthPotionID) {
+                statusField.setText("You don't have a Health Potion to sell!");
+            }
+        }
     }
 }
