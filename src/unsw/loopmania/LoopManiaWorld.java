@@ -1669,19 +1669,6 @@ public class LoopManiaWorld {
     }
 
 
-    /**
-     * 
-     * @param itemNodeX
-     * @param itemNodeY
-     * @return Item
-     */
-    public Item getItem(int itemNodeX, int itemNodeY) {
-        // get the item
-        Item item = (Item) getUnequippedInventoryItemEntityByCoordinates(itemNodeX, itemNodeY);
-        return item;
-    }
-
-
     public Item checkValidItemSlot(int itemNodeX, int itemNodeY, int slotX, int slotY) {
         Item item = null;
         // getting the appropiate item
