@@ -220,10 +220,6 @@ public class LoopManiaWorld {
         return doggieCoinPrice;
     }
 
-    public List<BasicEnemy> getEnemies() {
-        return enemies;
-    }
-
     /**
      * Setters for the different modes
      */
