@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.javatuples.Pair;
 import org.junit.Test;
+import org.junit.jupiter.api.TestFactory;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.Character;
@@ -40,8 +41,9 @@ public class ShopItemAndExpiryTest {
     private int staffID = 3;
     private int stakeID = 4;
     private int swordID = 5;
-    private int oneRingID = 6;
+    private int andurilID = 6;
     private int healthPotionID = 7;
+    private int AndurilID = 8;
     private int characterPosition = 0;
     private Character newCharacter;
     private LoopManiaWorld testWorld;
@@ -267,7 +269,7 @@ public class ShopItemAndExpiryTest {
                 newCharacter.setGold(ring.getItemCost());
 
                 // character should be able to buy item
-                OneRing orgOneRing = (OneRing) testWorld.buyItemByID(oneRingID);
+                OneRing orgOneRing = (OneRing) testWorld.buyItemByID(andurilID);
 
                 // item should appear in character's inventory
                 boolean equipmentContains = false;
@@ -279,10 +281,43 @@ public class ShopItemAndExpiryTest {
                 assertTrue(equipmentContains);
 
                 // cant buy another item, insufficient gold
-                assertFalse(testWorld.buyItemByID(oneRingID) != null);
+                assertFalse(testWorld.buyItemByID(andurilID) != null);
 
                 // checking that oneRing highest usage is still 1
-                assertTrue(testWorld.getHighestUsageItem(oneRingID) == orgOneRing);
+                assertTrue(testWorld.getHighestUsageItem(andurilID) == orgOneRing);
+            }
+        }
+        assertTrue(itemPresent);
+    }
+
+    @Test
+    public void testBuyAnduril() {
+        boolean itemPresent = false;
+        for (BattleItem item : battleItems) {
+            if (item instanceof Anduril) {
+                Anduril anduril = (Anduril) item;
+                itemPresent = true;
+
+                // character has enough gold to buy item
+                newCharacter.setGold(anduril.getItemCost());
+
+                // character should be able to buy item
+                Anduril orgAnduril = (Anduril) testWorld.buyItemByID(andurilID);
+
+                // item should appear in character's inventory
+                boolean equipmentContains = false;
+                for (Entity entities : testWorld.getCharacterInventory()) {
+                    if (entities instanceof Anduril) {
+                        equipmentContains = true;
+                    }
+                }
+                assertTrue(equipmentContains);
+
+                // cant buy another item, insufficient gold
+                assertFalse(testWorld.buyItemByID(andurilID) != null);
+
+                // checking that oneRing highest usage is still 1
+                assertTrue(testWorld.getHighestUsageItem(andurilID) == orgAnduril);
             }
         }
         assertTrue(itemPresent);
