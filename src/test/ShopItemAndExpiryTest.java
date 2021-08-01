@@ -326,7 +326,7 @@ public class ShopItemAndExpiryTest {
     public void testBuyShield() {
         boolean itemPresent = false;
         for (BattleItem item : battleItems) {
-            if (item instanceof Shield) {
+            if (item instanceof Shield && !(item instanceof TreeStump)) {
                 Shield shield = (Shield) item;
                 itemPresent = true;
 
