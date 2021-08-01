@@ -6,8 +6,8 @@ import java.util.ArrayList;
 
 import org.javatuples.Pair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONString;
 import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -26,15 +26,17 @@ import java.util.List;
  */
 public abstract class LoopManiaWorldLoader {
     private JSONObject json;
-
+    
     public LoopManiaWorldLoader(String filename) throws FileNotFoundException {
         json = new JSONObject(new JSONTokener(new FileReader("worlds/" + filename)));
     }
 
     /**
      * Parses the JSON to create a world.
+     * @throws FileNotFoundException
+     * @throws JSONException
      */
-    public LoopManiaWorld load() {
+    public LoopManiaWorld load() throws JSONException, FileNotFoundException {
         int width = json.getInt("width");
         int height = json.getInt("height");
 
@@ -48,22 +50,6 @@ public abstract class LoopManiaWorldLoader {
         // load non-path entities later so that they're shown on-top
         for (int i = 0; i < jsonEntities.length(); i++) {
             loadEntity(world, jsonEntities.getJSONObject(i), orderedPath);
-        }
-
-        JSONObject goals = json.getJSONObject("goal-condition");
-        // Check for sub goals
-        if (goals.getString("goal") == "AND") {
-            // Check for operators
-        } else {
-            // There are no subgoals
-            try {
-                if (goals.getString("goal") == "experience") world.setWinXp(goals.getInt("quantity"));
-                if (goals.getString("goal") == "cycles") world.setWinLoops(goals.getInt("quantity"));
-                if (goals.getString("goal") == "gold") world.setWinGold(goals.getInt("quantity"));
-                if (goals.getString("goal") == "bosses") world.setWinBoss(true);
-            } catch (Exception e) {
-                System.out.println("Condition is missing");
-            }
         }
 
         return world;

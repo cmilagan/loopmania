@@ -295,6 +295,8 @@ public class LoopManiaWorldController {
      */
     private MenuSwitcher endScreenSwitcher;
 
+    private LoopManiaWorldLoader loader;
+
     /**
      * @param world world object loaded from file
      * @param initialEntities the initial JavaFX nodes (ImageViews) which should be loaded into the GUI
@@ -541,9 +543,17 @@ public class LoopManiaWorldController {
             String loopNum = Integer.toString(world.getLoopCount());
             loopcounter.setText(loopNum);
             // Check to see if the win conditions are met
+
+            System.out.println("char gold"+world.getCharacter().getGold());
+            System.out.println("char xp"+world.getCharacter().getXP());
+            System.out.println("char loop"+world.getLoopCount());
+
+            System.out.println("win gold"+world.getWinGold());
+            System.out.println("win xp"+world.getWinXp());
+            System.out.println("win loop"+world.getWinLoops());
             if ((world.getCharacter().getGold() >= world.getWinGold())
                     && (world.getCharacter().getXP() >= world.getWinXp())
-                    && (world.getWinLoops() >= world.getWinLoops())) {
+                    && (world.getLoopCount() >= world.getWinLoops())) {
                 switchToWinScreen();
             } 
             if (world.getWinBoss()) {

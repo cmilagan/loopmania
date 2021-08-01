@@ -1,5 +1,7 @@
 package unsw.loopmania;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -7,6 +9,9 @@ import java.util.List;
 import java.util.Random;
 
 import org.javatuples.Pair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import unsw.loopmania.buildings.Building;
@@ -119,6 +124,8 @@ public class LoopManiaWorld {
      */
     private int elanTimer = 0;
 
+    private JSONObject json;
+
     /**
      * generic entitites - i.e. those which don't have dedicated fields
      */
@@ -159,8 +166,10 @@ public class LoopManiaWorld {
      * @param height      height of world in number of cells
      * @param orderedPath ordered list of x, y coordinate pairs representing
      *                    position of path cells in world
+     * @throws FileNotFoundException
+     * @throws JSONException
      */
-    public LoopManiaWorld(int width, int height, List<Pair<Integer, Integer>> orderedPath) {
+    public LoopManiaWorld(int width, int height, List<Pair<Integer, Integer>> orderedPath) throws JSONException, FileNotFoundException {
         this.width = width;
         this.height = height;
         nonSpecifiedEntities = new ArrayList<>();
@@ -177,14 +186,15 @@ public class LoopManiaWorld {
         survivalMode = false;
         berserkerMode = false;
         confusingMode = false;
-        winXP = 0;
-        winGold = 0;
-        winLoops = 0;
-        bosses = false;
-        bossesdefeated = false;
+        this.winXP = 3000;
+        this.winGold = 0;
+        this.winLoops = 0;
+        this.bosses = false;
+        this.bossesdefeated = false;
         previousShopRound = 1;
         shopCounter = 1;
         battleEnemies = new ArrayList<BasicEnemy>();
+        json = new JSONObject(new JSONTokener(new FileReader("worlds/world_with_twists_and_turns")));
     }
 
     public List<BasicEnemy> getEnemies() {
@@ -295,6 +305,12 @@ public class LoopManiaWorld {
      * @return the amount of xp needed to win
      */
     public int getWinXp() {
+        JSONObject goals = json.getJSONObject("goal-condition");
+        try {
+            if (goals.getString("goal") == "experience") setWinXp(goals.getInt("quantity"));
+        } catch (Exception e) {
+            System.out.println("Condition is missing");
+        }
         return this.winXP;
     }
 
@@ -303,6 +319,12 @@ public class LoopManiaWorld {
      * @return the amount of gold needed to win
      */
     public int getWinGold() {
+        JSONObject goals = json.getJSONObject("goal-condition");
+        try {
+            if (goals.getString("goal") == "gold") setWinGold(goals.getInt("quantity"));
+        } catch (Exception e) {
+            System.out.println("Condition is missing");
+        }
         return this.winGold;
     }
 
@@ -311,6 +333,12 @@ public class LoopManiaWorld {
      * @return the amount of loops needed to win
      */
     public int getWinLoops() {
+        JSONObject goals = json.getJSONObject("goal-condition");
+        try {
+            if (goals.getString("goal") == "cycles") setWinLoops(goals.getInt("quantity"));
+        } catch (Exception e) {
+            System.out.println("Condition is missing");
+        }
         return this.winLoops;
     }
 
@@ -319,6 +347,12 @@ public class LoopManiaWorld {
      * @return true or false
      */
     public boolean getWinBoss() {
+        JSONObject goals = json.getJSONObject("goal-condition");
+        try {
+            if (goals.getString("goal") == "bosses") setWinBoss(true);
+        } catch (Exception e) {
+            System.out.println("Condition is missing");
+        }
         return this.bosses;
     }
 
@@ -355,7 +389,7 @@ public class LoopManiaWorld {
      * Sets true or false if the bosses are a goal
      */
     public void setWinBoss(boolean bool) {
-        bosses = bool;
+        this.bosses = bool;
     }
 
     /**
