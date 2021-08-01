@@ -1,6 +1,8 @@
 package unsw.loopmania;
 
 import javafx.fxml.FXML;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 /**
  * controller for credits.
@@ -18,6 +20,7 @@ public class CreditsController {
 
     @FXML
     private void backButton() {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         backButton.switchMenu();
     }
 }

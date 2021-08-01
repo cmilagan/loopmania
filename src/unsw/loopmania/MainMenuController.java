@@ -2,6 +2,8 @@ package unsw.loopmania;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 /**
  * controller for the main menu.
@@ -47,6 +49,7 @@ public class MainMenuController {
      */
     @FXML
     private void switchToGame() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         gameSwitcher.switchMenu();
     }
 
@@ -56,6 +59,7 @@ public class MainMenuController {
      */
     @FXML
     private void switchToNewGameMenu() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         newMenuSwitcher.switchMenu();
     }
 
@@ -65,6 +69,7 @@ public class MainMenuController {
      */
     @FXML
     private void switchToCredits() throws IOException {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         creditsSwitcher.switchMenu();
     }
 
@@ -73,6 +78,7 @@ public class MainMenuController {
      */
     @FXML
     private void exitGame() {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         exitSwitcher.switchMenu();
     }
 }

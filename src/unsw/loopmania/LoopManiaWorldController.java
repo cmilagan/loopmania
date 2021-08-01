@@ -67,6 +67,8 @@ import unsw.loopmania.npcs.ElanMuske;
 import unsw.loopmania.npcs.Slug;
 import unsw.loopmania.npcs.Vampire;
 import unsw.loopmania.npcs.Zombie;
+import unsw.loopmania.soundplayer.LoopManiaSound;
+import unsw.loopmania.soundplayer.LoopManiaSoundPlayer;
 
 import javafx.scene.shape.Rectangle;
 import java.util.EnumMap;
@@ -350,6 +352,7 @@ public class LoopManiaWorldController {
 
     @FXML
     public void initialize() {
+
         Image pathTilesImage = new Image((new File("src/images/32x32GrassAndDirtPath.png")).toURI().toString());
         Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         Image inventorySlotImage = new Image((new File("src/images/empty_slot.png")).toURI().toString());
@@ -458,6 +461,7 @@ public class LoopManiaWorldController {
      * create and run the timer
      */
     public void startTimer() {
+        LoopManiaSoundPlayer.playBGM();
         Image imageJustBlack = new Image((new File("src/images/image_just_black_tiny.png")).toURI().toString());
         System.out.println("starting timer");
         isPaused = false;
@@ -474,6 +478,7 @@ public class LoopManiaWorldController {
 
             List<BasicEnemy> defeatedEnemies = world.runBattles();
             for (BasicEnemy e: defeatedEnemies){
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.FIGHT);
                 reactToEnemyDefeat(e);
             }
 
@@ -547,6 +552,8 @@ public class LoopManiaWorldController {
                 // if not trigger end game screen
                 if (!world.getCharacter().useOneRing()) {
                     switchToGameOver();
+                } else {
+                    LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.REVIVE);
                 }
             }
 
@@ -562,6 +569,7 @@ public class LoopManiaWorldController {
      */
     public void pause(){
         isPaused = true;
+        LoopManiaSoundPlayer.stopBGM();
         System.out.println("pausing");
         timeline.stop();
     }
@@ -940,6 +948,7 @@ public class LoopManiaWorldController {
                             
                                 Building newBuilding = convertCardToBuildingByCoordinates(nodeX, nodeY, x, y);
                                 onLoad(newBuilding);
+                                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.BUILD);
                                 break;
                             case ITEM:
                                 Pair<Item,Item> items = world.equipItemByCoordinates(nodeX, nodeY, x, y);
@@ -955,10 +964,11 @@ public class LoopManiaWorldController {
                                 if (unequipped != null) {
                                     onLoad(unequipped);
                                 }
+                                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.ITEM_EQUIP);
 
                                 removeDraggableDragEventHandlers(draggableType, targetGridPane);
                                 removeItemByCoordinates(nodeX, nodeY);
-                                targetGridPane.add(image, x, y, 1, 1);
+                                // targetGridPane.add(image, x, y, 1, 1);                                
                                 break;
                             
                             default:
@@ -1190,7 +1200,13 @@ public class LoopManiaWorldController {
             }
             break;
         case H:
+            int initialHealth = world.getCharacter().getHealth();
             world.consumePotion();
+            int afterHealth = world.getCharacter().getHealth();
+            if (afterHealth > initialHealth) {
+                LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.POTION);
+
+            }
             break;
         default:
             break;
@@ -1208,6 +1224,7 @@ public class LoopManiaWorldController {
     @FXML
     private void switchToMainMenu() throws IOException {
         pause();
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         mainMenuSwitcher.switchMenu();
     }
 
@@ -1223,6 +1240,7 @@ public class LoopManiaWorldController {
      * Method to switch to the new game screen
      */
     public void switchToNewGameMenu() {
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.CLICK);
         newGameMenuSwitcher.switchMenu();
     }
 
@@ -1245,6 +1263,7 @@ public class LoopManiaWorldController {
      */
     public void switchToShopMenu() {
         pause();
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.SHOP_ENTER);
         shopMenuSwitcher.switchMenu();
     }
 
@@ -1260,6 +1279,8 @@ public class LoopManiaWorldController {
      * Method to switch to the win screen when the game is won
      */
     public void switchToWinScreen() {
+        pause();
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.WIN);
         winScreenSwitcher.switchMenu();
     }
 
@@ -1267,7 +1288,7 @@ public class LoopManiaWorldController {
     //                          Game over UI                            //
     //////////////////////////////////////////////////////////////////////
 
-    public void setGameOverSwitcher(MenuSwitcher endScreenSwitcher) {
+    public void setGameOverSwitcher(MenuSwitcher endScreenSwitcher) {        
         this.endScreenSwitcher = endScreenSwitcher;
     }
 
@@ -1278,6 +1299,7 @@ public class LoopManiaWorldController {
      */
     public void switchToGameOver() {
         pause();
+        LoopManiaSoundPlayer.playSoundEffect(LoopManiaSound.GAME_OVER);
         endScreenSwitcher.switchMenu();
     }
 

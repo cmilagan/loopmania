@@ -20,6 +20,11 @@ public class LoopManiaSoundPlayer {
 			put(LoopManiaSound.WIN, new AudioClip(new File("src/sounds/win.mp3").toURI().toString()));
 			put(LoopManiaSound.GAME_OVER, new AudioClip(new File("src/sounds/gameover.mp3").toURI().toString()));
 			put(LoopManiaSound.MUSIC, new AudioClip(new File("src/sounds/bgm.mp3").toURI().toString()));
+			put(LoopManiaSound.CLICK, new AudioClip(new File("src/sounds/click.mp3").toURI().toString()));
+			put(LoopManiaSound.BUILD, new AudioClip(new File("src/sounds/build.mp3").toURI().toString()));
+			put(LoopManiaSound.ERROR, new AudioClip(new File("src/sounds/error.mp3").toURI().toString()));
+			put(LoopManiaSound.REVIVE, new AudioClip(new File("src/sounds/onering.mp3").toURI().toString()));
+
 		}
 	};
 
